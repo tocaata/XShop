@@ -1,0 +1,88 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+<%@ Register Src="../UserControl/navigationControl.ascx" TagName="navigationControl"
+    TagPrefix="uc2" %>
+<%@ Register Src="../UserControl/MHelp.ascx" TagName="MHelp" TagPrefix="uc1" %>
+<%@ Register Src="../UserControl/bottom.ascx" TagName="bottom" TagPrefix="uc6" %>
+<%@ Register Src="../UserControl/LoadingControl.ascx" TagName="LoadingControl" TagPrefix="uc7" %>
+<%@ Register Src="../UserControl/ShoppingCarControl.ascx" TagName="ShoppingCarControl"
+    TagPrefix="uc8" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>母版页</title>
+   <style >
+   body {margin-top:0px}
+   </style>    
+</head>
+<body >
+    <form id="form1" runat="server" >
+    <table style=" width :1002px; height :855px; font-size: 9pt; font-family: 宋体; background-image: url(../Images/index/左右两侧背景.jpg); vertical-align :top" align =center >
+    <tr valign =top  align =left >
+    <td bordercolor =ActiveBorder>
+   
+    <table style="width :780px; height :97px;　font-size: 9pt; font-family: 宋体; background-image: url(../Images/index/navigation.jpg);"  align =center border="0" cellpadding="0" cellspacing="0">
+    <tr valign =top ><td colspan =2 align =left style="width: 785px; height: 93px;"  valign =top rowspan="2" ><br />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<asp:LinkButton ID="lnkbtnShopCart" runat="server" OnClick="lnkbtnShopCart_Click" Font-Names="宋体" Font-Underline="False" ForeColor="Black" CausesValidation="False">购物车</asp:LinkButton>
+        |<a href="mailto:evercindylulu@163.com" style=" color:Black; font-size: 9pt; font-family: 宋体;  text-decoration :none;">联系管理员</a>
+        <br /><br />
+        &nbsp; &nbsp; &nbsp;
+         <font color="white">今天是：</font><asp:Label ID="labDate" runat="server" Font-Names="宋体" ForeColor="White"><%# System.DateTime.Now.ToLongDateString() %></asp:Label>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp;<asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="~/User/index.aspx?" ForeColor="White">商城首页</asp:HyperLink>&nbsp;
+        <font color="white">/&nbsp; </font><asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=1" ForeColor="White">团购</asp:HyperLink>&nbsp;
+        <font color="white">/</font>&nbsp;<asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=3" ForeColor="White">爆款广告</asp:HyperLink>
+        &nbsp;
+        <font color="white">/&nbsp; </font><asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=2" ForeColor="White">秒杀</asp:HyperLink>&nbsp;<br />
+        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+        <asp:Label ID="labDateTime" runat="server" Text="Label" Font-Names="宋体" ForeColor="White"></asp:Label></td> 
+     </tr> 
+     <tr>
+        </tr>
+    </table>
+   
+      <table style="width :780px; height :420px;　font-size: 9pt; font-family: 宋体;"  align =center border="0" cellpadding="0" cellspacing="0">
+        <tr>
+        <td  rowspan="2" valign="top"  align =left style="width: 220px; height :666px" >
+           <uc7:LoadingControl ID="LoadingControl1" runat="server"  />
+            <uc2:navigationControl ID="NavigationControl1" runat="server" />
+        </td>
+        <td align =left  rowspan="2" valign =top style="width: 560px" >
+        <table style="width :560px; height :120px;"  background ="../Images/index/产品展销---最底部.jpg" border="0" cellpadding="0" cellspacing="0">
+        <tr style="width :560px; height :125px;" align =center>
+        <td background ="../Images/index/banner.jpg" style="height: 125px">
+        
+        </td>
+        </tr>
+        
+        </table>
+                <asp:ContentPlaceHolder ID="FartherMain" runat =server >
+      </asp:ContentPlaceHolder>
+          
+        </td>
+        </tr>
+    <tr valign =top>
+  
+    </tr> 
+     <tr align =right  >
+    <td colspan =2 align =center cellpadding=0 cellspacing=0 >
+        <uc1:MHelp id="MHelp1" runat="server">
+        </uc1:MHelp>
+       </td>  
+    </tr>
+      <tr align =right >
+    <td colspan =2 >
+        <uc6:bottom ID="Bottom1" runat="server" /></td>  
+    </tr>
+    </table>
+   
+    
+    </td>
+    </tr>
+    </table>
+   
+    </form>
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿
+LoginTextBox
+{
+	height: 12px;
+	width :107px;
+}
+.Logintr
+{
+	width :152px;
+	height:18px;
+}
+.LoginTable
+{
+	height : 94px;
+	width :178px;
+	font-size :9pt;
+	font-family :宋体;
+	
+}
+.Loginbtn
+{
+	height :18px;
+	width :40px;
+}
+
+.table_biao { 
+    border:1px solid #d7d7d7; border-top:1px solid #3164af; width:100%; margin-bottom:10px; 
+}
+
+.table_biao thead  
+{
+    font-size:12px; text-align:left; 
+}
+.table_biao thead th 
+{
+     background:#f3f3f3; padding:5px; text-align:left;font-weight:normal;font-family:"\5FAE\8F6F\96C5\9ED1";}
+.table_biao tbody  
+{
+    text-align:left; 
+}
+.table_biao .center
+{
+    text-align:center;
+}
+.table_biao .middle
+{
+    vertical-align:middle;}
+.table_biao tbody td 
+{ 
+    padding:5px; vertical-align:top;word-wrap: break-word; word-break: normal; }
+.table_biao .left 
+{ 
+    text-align:left; 
+}
+.table_biao .right 
+{ 
+    text-align:right; 
+}
+.table_biao .bold
+{ 
+    font-weight:bold;
+}
+.table_biao .wrap_btn
+{ 
+    margin-bottom:-10px;
+}
+.table_biao .other_info p
+{
+    word-wrap: break-word; word-break: normal;
+}
+.table_biao .other_info p.escription a 
+{
+    color:#333;
+}
+
+.table_biao p.kong
+{ 
+    text-align:center; padding:20px;white-space:nowrap;}
