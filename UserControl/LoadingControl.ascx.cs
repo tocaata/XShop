@@ -48,10 +48,10 @@ public partial class LoadingControl : System.Web.UI.UserControl
                 int P_Int_IsExists = uiObj.UserExists(txtName.Text.Trim(), txtPassword.Text.Trim());
                 if (P_Int_IsExists == 100)
                 {
-                    DataSet ds = uiObj.ReturnUIDs(txtName.Text.Trim(), txtPassword.Text.Trim(), "UserInfo");
-                    
-                    Session["UID"] = Convert.ToInt32(ds.Tables["UserInfo"].Rows[0][0].ToString());
-                    Session["Username"] = ds.Tables["UserInfo"].Rows[0][1].ToString();
+                    DataSet ds = uiObj.ReturnUIDs(txtName.Text.Trim(), txtPassword.Text.Trim(), "users");
+
+                    Session["UID"] = Convert.ToInt32(ds.Tables["users"].Rows[0][0].ToString());
+                    Session["Username"] = ds.Tables["users"].Rows[0][1].ToString();
                     Response.Redirect("index.aspx");
                   
                 }

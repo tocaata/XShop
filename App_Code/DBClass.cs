@@ -15,7 +15,7 @@ using System.Data.SqlClient;
 /// </summary>
 public class DBClass
 {
-
+    private static string connstr = ConfigurationManager.AppSettings["ConnectionString"].ToString();
 	public DBClass()
 	{
 		//
@@ -28,8 +28,52 @@ public class DBClass
     /// <returns>SqlConnection对象</returns>
     public SqlConnection GetConnection()
     {
-        string myStr = ConfigurationManager.AppSettings["ConnectionString"].ToString();
-        SqlConnection myConn = new SqlConnection(myStr);
+        SqlConnection myConn = new SqlConnection(connstr);
         return myConn;
+    }
+
+    public Object[] GetData(String command)
+    {
+        Object[] values = null;
+        using (SqlConnection sqlConn = GetConnection())
+        {
+            sqlConn.Open();
+            using (SqlCommand myCmd = new SqlCommand(command.ToString(), sqlConn))
+            {
+                SqlDataReader reader = myCmd.ExecuteReader();
+                try
+                {
+                    values = new Object[reader.FieldCount];
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+        }
+        return values;
+    }
+
+    public DataSet GetDataSet(String command, String table_name = null)
+    {
+        DataSet dataSet = new DataSet();
+        using (SqlConnection sqlConn = GetConnection())
+        {
+            sqlConn.Open();
+            using (SqlCommand myCmd = new SqlCommand(command.ToString(), sqlConn))
+            {
+                myCmd.ExecuteNonQuery();
+                SqlDataAdapter da = new SqlDataAdapter(myCmd);
+                if (table_name == null)
+                {
+                    da.Fill(dataSet);
+                }
+                else
+                {
+                    da.Fill(dataSet, table_name);
+                }
+            }
+        }
+        return dataSet;
     }
 }

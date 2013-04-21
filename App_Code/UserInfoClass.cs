@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Text;
 
 /// <summary>
 /// UserInfoClass 的摘要说明
@@ -72,38 +73,41 @@ public class UserInfoClass
   /// <returns></returns>
     public DataSet ReturnUIDs(string P_Str_Name, string P_Str_Password,string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetUserInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        Name.Value = P_Str_Name;
-        myCmd.Parameters.Add(Name);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        StringBuilder cmd = new StringBuilder();
+        cmd.AppendFormat("SELECT * FROM users WHERE Name='{0}' and Password='{1}'", P_Str_Name, P_Str_Password);
+        return dbObj.GetDataSet(cmd.ToString(), P_Str_srcTable);
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetUserInfo", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
+        //Name.Value = P_Str_Name;
+        //myCmd.Parameters.Add(Name);
+        ////添加参数
+        //SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
+        //Password.Value = P_Str_Password;
+        //myCmd.Parameters.Add(Password);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        { 
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{ 
+        //    myCmd.Dispose();
+        //    myConn.Close();
         
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds= new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        return ds;
+        //}
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds= new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //return ds;
 
     }
     //***************************************注册界面************************************************************
@@ -126,6 +130,11 @@ public class UserInfoClass
     public int AddUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address, string P_Str_PostCode)
     {
         SqlConnection myConn = dbObj.GetConnection();
+        //StringBuilder command = new StringBuilder();
+        //command.Append("insert into users (name, password, email, address, phone, sex) values (");
+        //command.AppendFormat("'{0}', '{1}', '{2}', '{3}', '{4}',{5})", P_Str_Name.Replace("'", "''"), P_Str_Password.Replace("'", "''"), 
+        //    P_Str_Emails.Replace("'", "''"), P_Str_Address.Replace("'", "''"), P_Str_Phonecode.Replace("'", "''"), P_Bl_Sex ? "true" : "false");
+        //SqlCommand myCmd = new SqlCommand(command.ToString(), myConn);
         SqlCommand myCmd = new SqlCommand("Proc_InsertUInfo", myConn);
         myCmd.CommandType = CommandType.StoredProcedure;
         //添加参数
