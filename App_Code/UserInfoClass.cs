@@ -29,40 +29,20 @@ public class UserInfoClass
     /// <param name="P_Str_Name">会员登录名</param>
     /// <param name="P_Str_Password">会员登录密码</param>
     /// <returns></returns>
-    public int UserExists(string P_Str_Name,string P_Str_Password)
+    public bool UserExists(string P_Str_Name,string P_Str_Password)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_UserExists", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        Name.Value = P_Str_Name;
-        myCmd.Parameters.Add(Name);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnValue", SqlDbType.Int, 4);
-        returnValue.Direction = ParameterDirection.ReturnValue;
-        //执行过程
-        myConn.Open();
-        try
+        StringBuilder cmd = new StringBuilder();
+        cmd.AppendFormat("SELECT * FROM users WHERE Name='{0}' and Password='{1}'", P_Str_Name, P_Str_Password);
+        DataSet ds = dbObj.GetDataSet(cmd.ToString(), "users");
+        int hasUser = ds.Tables["users"].Rows.Count;
+        if (hasUser == 1)
         {
-            myCmd.ExecuteNonQuery();
+            return true;
         }
-        catch (Exception ex)
+        else
         {
-            throw (ex);
+            return false;
         }
-        finally
-        { 
-          myCmd.Dispose();
-          myConn.Close();
-        
-        }
-        int P_Int_returnValue = Convert.ToInt32(returnValue.Value.ToString());
-        return P_Int_returnValue;  
     }
   /// <summary>
   /// 获取会员信息
@@ -76,39 +56,6 @@ public class UserInfoClass
         StringBuilder cmd = new StringBuilder();
         cmd.AppendFormat("SELECT * FROM users WHERE Name='{0}' and Password='{1}'", P_Str_Name, P_Str_Password);
         return dbObj.GetDataSet(cmd.ToString(), P_Str_srcTable);
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_GetUserInfo", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        //Name.Value = P_Str_Name;
-        //myCmd.Parameters.Add(Name);
-        ////添加参数
-        //SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        //Password.Value = P_Str_Password;
-        //myCmd.Parameters.Add(Password);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{ 
-        //    myCmd.Dispose();
-        //    myConn.Close();
-        
-        //}
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds= new DataSet();
-        //da.Fill(ds, P_Str_srcTable);
-        //return ds;
-
     }
     //***************************************注册界面************************************************************
     /// <summary>
@@ -129,79 +76,14 @@ public class UserInfoClass
     /// <param name="P_Date_LoadDate">登录日期</param>
     public int AddUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address, string P_Str_PostCode)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        //StringBuilder command = new StringBuilder();
-        //command.Append("insert into users (name, password, email, address, phone, sex) values (");
-        //command.AppendFormat("'{0}', '{1}', '{2}', '{3}', '{4}',{5})", P_Str_Name.Replace("'", "''"), P_Str_Password.Replace("'", "''"), 
-        //    P_Str_Emails.Replace("'", "''"), P_Str_Address.Replace("'", "''"), P_Str_Phonecode.Replace("'", "''"), P_Bl_Sex ? "true" : "false");
-        //SqlCommand myCmd = new SqlCommand(command.ToString(), myConn);
-        SqlCommand myCmd = new SqlCommand("Proc_InsertUInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        Name.Value = P_Str_Name;
-        myCmd.Parameters.Add(Name);
-        //添加参数
-        SqlParameter sex = new SqlParameter("@sex", SqlDbType.Bit,1);
-        sex.Value = P_Bl_Sex;
-        myCmd.Parameters.Add(sex);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //添加参数
-        SqlParameter TrueName = new SqlParameter("@TrueName", SqlDbType.VarChar, 50);
-        TrueName.Value = P_Str_TrueName;
-        myCmd.Parameters.Add(TrueName);
-        //添加参数
-        SqlParameter Questions = new SqlParameter("@Questions", SqlDbType.VarChar, 50);
-        Questions.Value = P_Str_Questions;
-        myCmd.Parameters.Add(Questions);
-        //添加参数
-        SqlParameter Answers = new SqlParameter("@Answers", SqlDbType.VarChar, 50);
-        Answers.Value = P_Str_Answers;
-        myCmd.Parameters.Add(Answers);
-        //添加参数
-        SqlParameter Phonecode = new SqlParameter("@Phonecode", SqlDbType.VarChar, 20);
-        Phonecode.Value = P_Str_Phonecode;
-        myCmd.Parameters.Add(Phonecode);
-        //添加参数
-        SqlParameter Emails = new SqlParameter("@Emails", SqlDbType.VarChar, 50);
-        Emails.Value = P_Str_Emails;
-        myCmd.Parameters.Add(Emails);
-        //添加参数
-        SqlParameter City = new SqlParameter("@City", SqlDbType.VarChar, 50);
-        City.Value = P_Str_City;
-        myCmd.Parameters.Add(City);
-        //添加参数
-        SqlParameter Address = new SqlParameter("@Address", SqlDbType.VarChar, 200);
-        Address.Value = P_Str_Address;
-        myCmd.Parameters.Add(Address);
-        //添加参数
-        SqlParameter PostCode = new SqlParameter("@PostCode", SqlDbType.Char, 10);
-        PostCode.Value = P_Str_PostCode;
-        myCmd.Parameters.Add(PostCode);
-        //添加参数
-        SqlParameter MemberId = myCmd.Parameters.Add("@MemberId",SqlDbType.BigInt,8);
-        MemberId.Direction = ParameterDirection.Output;
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw(ex);
-           
-        }
-        finally
-        {
-             myCmd.Dispose();
-             myConn.Close();
-        }
-        return Convert.ToInt32(MemberId.Value.ToString());
-      
+        DataSet ds = dbObj.GetDataSet("Insert users(Name,Sex,Password,TrueName,Questions,Answers,Phonecode,Emails,City,Address,PostCode) values(@Name,@Sex,@Password,@TrueName,@Questions,@Answers,@Phonecode,@Emails,@City,@Address,@PostCode);select @@identity;", "id",
+            new SqlParameter("@Name", P_Str_Name), new SqlParameter("@sex", P_Bl_Sex),
+            new SqlParameter("@Password", P_Str_Password), new SqlParameter("@TrueName", P_Str_TrueName),
+            new SqlParameter("@Questions", P_Str_Questions), new SqlParameter("@Answers", P_Str_Answers),
+            new SqlParameter("@Phonecode", P_Str_Phonecode), new SqlParameter("@Emails", P_Str_Emails),
+            new SqlParameter("@City", P_Str_City), new SqlParameter("@Address", P_Str_Address),
+            new SqlParameter("@PostCode", P_Str_PostCode));
+        return Convert.ToInt32(ds.Tables["id"].Rows[0][0].ToString());
     }
     /// <summary>
     /// 修改会员充值
@@ -210,35 +92,9 @@ public class UserInfoClass
     /// <param name="P_Flt_AdvancePayment">充值金额</param>
     public void UpdateAP(int P_Int_MemberID, float P_Flt_AdvancePayment)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_UpdateAP", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //添加参数
-        SqlParameter AdvancePayment = new SqlParameter("@AdvancePayment", SqlDbType.Float, 8);
-        AdvancePayment.Value = P_Flt_AdvancePayment;
-        myCmd.Parameters.Add(AdvancePayment);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-        }
-      
-    
+        DataSet ds = dbObj.GetDataSet("set @OldPayment=(select AdvancePayment from users where MemberID=@MemberID);update tb_Member set AdvancePayment=(@AdvancePayment+@OldPayment) where MemberID=@MemberID", 
+            "return", new SqlParameter("@MemberID", P_Int_MemberID),
+            new SqlParameter("@AdvancePayment", P_Flt_AdvancePayment));
     }
     //********************************更新用户信息*************************************************
     /// <summary>
@@ -277,7 +133,6 @@ public class UserInfoClass
         DataSet ds = new DataSet();
         da.Fill(ds, P_Str_srcTable);
         return ds;
-
     }
     /// <summary>
     /// 修改会员表中的信息
@@ -364,7 +219,6 @@ public class UserInfoClass
             myCmd.Dispose();
             myConn.Close();
         }
-      
     }
     //**********************************************************************************
     /// <summary>

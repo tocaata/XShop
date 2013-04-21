@@ -45,8 +45,8 @@ public partial class LoadingControl : System.Web.UI.UserControl
             if (txtValid.Text.Trim() == lbValid.Text.Trim())
             {
 
-                int P_Int_IsExists = uiObj.UserExists(txtName.Text.Trim(), txtPassword.Text.Trim());
-                if (P_Int_IsExists == 100)
+                bool P_Int_IsExists = uiObj.UserExists(txtName.Text.Trim(), txtPassword.Text.Trim());
+                if (P_Int_IsExists)
                 {
                     DataSet ds = uiObj.ReturnUIDs(txtName.Text.Trim(), txtPassword.Text.Trim(), "users");
 

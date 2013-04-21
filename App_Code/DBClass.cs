@@ -38,7 +38,7 @@ public class DBClass
         using (SqlConnection sqlConn = GetConnection())
         {
             sqlConn.Open();
-            using (SqlCommand myCmd = new SqlCommand(command.ToString(), sqlConn))
+            using (SqlCommand myCmd = new SqlCommand(command, sqlConn))
             {
                 SqlDataReader reader = myCmd.ExecuteReader();
                 try
@@ -60,7 +60,7 @@ public class DBClass
         using (SqlConnection sqlConn = GetConnection())
         {
             sqlConn.Open();
-            using (SqlCommand myCmd = new SqlCommand(command.ToString(), sqlConn))
+            using (SqlCommand myCmd = new SqlCommand(command, sqlConn))
             {
                 myCmd.ExecuteNonQuery();
                 SqlDataAdapter da = new SqlDataAdapter(myCmd);
@@ -72,6 +72,38 @@ public class DBClass
                 {
                     da.Fill(dataSet, table_name);
                 }
+            }
+        }
+        return dataSet;
+    }
+
+    public DataSet GetDataSet(String command, String table_name, params SqlParameter[] arugments)
+    {
+        DataSet dataSet = new DataSet();
+        using (SqlConnection sqlConn = GetConnection())
+        {
+            sqlConn.Open();
+            SqlCommand myCmd = new SqlCommand(command, sqlConn);
+            try
+            {
+                for (int i = 0; i < arugments.Length; i++)
+                {
+                    myCmd.Parameters.Add(arugments[i]);
+                }
+                myCmd.ExecuteNonQuery();
+                SqlDataAdapter da = new SqlDataAdapter(myCmd);
+                if (table_name == null)
+                {
+                    da.Fill(dataSet);
+                }
+                else
+                {
+                    da.Fill(dataSet, table_name);
+                }
+            }
+            finally
+            {
+                myCmd.Dispose();
             }
         }
         return dataSet;
