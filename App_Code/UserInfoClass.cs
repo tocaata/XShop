@@ -105,34 +105,35 @@ public class UserInfoClass
     /// <returns></returns>
     public DataSet ReturnUIDsByID(int P_Int_MemberID, string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetUIByID", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        return dbObj.GetDataSet("select * from users where MemberID=@MemberID", P_Str_srcTable, new SqlParameter("@MemberID", P_Int_MemberID));
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetUIByID", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
 
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        return ds;
+        //}
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //return ds;
     }
     /// <summary>
     /// 修改会员表中的信息
@@ -152,73 +153,13 @@ public class UserInfoClass
     /// <param name="P_Date_LoadDate">登录日期</param>
     public void  UpdateUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address, string P_Str_PostCode,int P_Int_MemberID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_UpdateUIbyID", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        Name.Value = P_Str_Name;
-        myCmd.Parameters.Add(Name);
-        //添加参数
-        SqlParameter sex = new SqlParameter("@sex", SqlDbType.Bit, 1);
-        sex.Value = P_Bl_Sex;
-        myCmd.Parameters.Add(sex);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //添加参数
-        SqlParameter TrueName = new SqlParameter("@TrueName", SqlDbType.VarChar, 50);
-        TrueName.Value = P_Str_TrueName;
-        myCmd.Parameters.Add(TrueName);
-        //添加参数
-        SqlParameter Questions = new SqlParameter("@Questions", SqlDbType.VarChar, 50);
-        Questions.Value = P_Str_Questions;
-        myCmd.Parameters.Add(Questions);
-        //添加参数
-        SqlParameter Answers = new SqlParameter("@Answers", SqlDbType.VarChar, 50);
-        Answers.Value = P_Str_Answers;
-        myCmd.Parameters.Add(Answers);
-        //添加参数
-        SqlParameter Phonecode = new SqlParameter("@Phonecode", SqlDbType.VarChar, 20);
-        Phonecode.Value = P_Str_Phonecode;
-        myCmd.Parameters.Add(Phonecode);
-        //添加参数
-        SqlParameter Emails = new SqlParameter("@Emails", SqlDbType.VarChar, 50);
-        Emails.Value = P_Str_Emails;
-        myCmd.Parameters.Add(Emails);
-        //添加参数
-        SqlParameter City = new SqlParameter("@City", SqlDbType.VarChar, 50);
-        City.Value = P_Str_City;
-        myCmd.Parameters.Add(City);
-        //添加参数
-        SqlParameter Address = new SqlParameter("@Address", SqlDbType.VarChar, 200);
-        Address.Value = P_Str_Address;
-        myCmd.Parameters.Add(Address);
-        //添加参数
-        SqlParameter PostCode = new SqlParameter("@PostCode", SqlDbType.Char, 10);
-        PostCode.Value = P_Str_PostCode;
-        myCmd.Parameters.Add(PostCode);
-        //添加参数
-        SqlParameter MemberId = new SqlParameter("@MemberId", SqlDbType.BigInt, 8);
-        MemberId.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberId);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-        }
+        dbObj.GetDataSet("update users set Name=@Name, Sex=@Sex, Password=@Password, TrueName=@TrueName, Questions=@Questions, Answers=@Answers, Phonecode=@Phonecode, Emails=@Emails,City=@City,Address=@Address,PostCode=@PostCode where MemberID=@MemberID", "return",
+            new SqlParameter("@Name", P_Str_Name), new SqlParameter("@Sex", P_Bl_Sex),
+            new SqlParameter("@Password", P_Str_Password), new SqlParameter("@TrueName", P_Str_TrueName),
+            new SqlParameter("@Questions", P_Str_Questions), new SqlParameter("@Answers", P_Str_Answers),
+            new SqlParameter("@Phonecode", P_Str_Phonecode), new SqlParameter("@Emails", P_Str_Emails),
+            new SqlParameter("@City", P_Str_City), new SqlParameter("@Address", P_Str_Address),
+            new SqlParameter("@PostCode", P_Str_PostCode), new SqlParameter("@MemberID", P_Int_MemberID));
     }
     //**********************************************************************************
     /// <summary>
@@ -369,36 +310,39 @@ public class UserInfoClass
     /// <param name="P_Int_MemberID">会员编号</param>
     public void SCIBind(string P_Str_srcTable, GridView  gvName, int P_Int_MemberID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetShopCart", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetShopCart", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
 
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        //}
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
+        //gvName.DataBind();
+        DataSet ds = dbObj.GetDataSet("select CartID,GoodsName,MarketPrice,MemberPrice,Num,SumPrice,MemberID from tb_ShopCart b,tb_GoodsInfo i where b.GoodsID=i.GoodsID and MemberID=@MemberID", P_Str_srcTable,
+            new SqlParameter("@MemberID", P_Int_MemberID));
         gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
         gvName.DataBind();
-
     }
     /// <summary>
     /// 返回合计总数的Ds
@@ -408,34 +352,35 @@ public class UserInfoClass
     /// <returns>返回合计总数的Ds</returns>
     public DataSet ReturnTotalDs(int P_Int_MemberID,string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_TotalInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        return dbObj.GetDataSet("select Sum(SumPrice),Sum(GoodsWeight),Sum(Num) from tb_ShopCart where MemberID=@MemberID", P_Str_srcTable, new SqlParameter("@MemberID", P_Int_MemberID));
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_TotalInfo", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
 
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        return ds;
+        //}
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //return ds;
          
     }
     /// <summary>
@@ -444,30 +389,31 @@ public class UserInfoClass
     /// <param name="P_Int_MemberID">会员编号</param>
     public void DeleteShopCart(int P_Int_MemberID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_DeleteShopCart", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        dbObj.GetDataSet("delete from tb_ShopCart where MemberID=@MemberID", "return", new SqlParameter("@MemberID", P_Int_MemberID));
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_DeleteShopCart", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
 
-        }
+        //}
     }
     /// <summary>
     ///  删除指定购物车中的信息
