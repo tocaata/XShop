@@ -532,116 +532,130 @@ public class UserInfoClass
     }
     public int AddOrderInfo(float P_Flt_GoodsFee, float P_Flt_ShipFee, int P_Int_ShipType, int P_Int_PayType, int P_Int_MemberID, string P_Str_RName, string P_Str_RPhone, string P_Str_RPostCode, string P_Str_RAddress, string P_Str_REmails)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_InsertOrderInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
+        DataSet ds = dbObj.GetDataSet(
+            "insert tb_OrderInfo" + 
+            "(GoodsFee,TotalPrice,ShipFee,ShipType,PayType,MemberID,ReceiverName,ReceiverPhone,ReceiverPostCode,ReceiverAddress,ReceiverEmails) " + 
+            "values (@GoodsFee,(@GoodsFee+@ShipFee),@ShipFee,@ShipType,@PayType,@MemberID,@RName,@RPhone,@RPostCode,@RAddress,@REmails)" +
+            "select @@identity", "id", new SqlParameter("@GoodsFee", P_Flt_GoodsFee),
+            new SqlParameter("@ShipFee", P_Flt_ShipFee), new SqlParameter("@ShipType", P_Int_ShipType),
+            new SqlParameter("@PayType", P_Int_PayType), new SqlParameter("@MemberID", P_Int_MemberID),
+            new SqlParameter("@RName", P_Str_RName), new SqlParameter("@RPhone", P_Str_RPhone),
+            new SqlParameter("@RPostCode", P_Str_RPostCode), new SqlParameter("@RAddress", P_Str_RAddress),
+            new SqlParameter("@REmails", P_Str_REmails));
+        return Convert.ToInt32(ds.Tables["id"].Rows[0][0].ToString());
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_InsertOrderInfo", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
 
-        //添加参数
-        SqlParameter GoodsFee = new SqlParameter("@GoodsFee", SqlDbType.Float, 8);
-        GoodsFee.Value = P_Flt_GoodsFee;
-        myCmd.Parameters.Add(GoodsFee);
-        //添加参数
-        SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float , 8);
-        ShipFee.Value = P_Flt_ShipFee;
-        myCmd.Parameters.Add(ShipFee);
-        //添加参数
-        SqlParameter ShipType = new SqlParameter("@ShipType", SqlDbType.Int,4);
-        ShipType.Value = P_Int_ShipType;
-        myCmd.Parameters.Add(ShipType);
-        //添加参数
-        SqlParameter PayType = new SqlParameter("@PayType", SqlDbType.Int, 4);
-        PayType.Value = P_Int_PayType;
-        myCmd.Parameters.Add(PayType);
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID ", SqlDbType.BigInt,8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //添加参数
-        SqlParameter RName = new SqlParameter("@RName", SqlDbType.VarChar, 50);
-        RName.Value = P_Str_RName;
-        myCmd.Parameters.Add(RName);
-        //添加参数
-        SqlParameter RPhone = new SqlParameter("@RPhone", SqlDbType.VarChar, 50);
-        RPhone.Value = P_Str_RPhone;
-        myCmd.Parameters.Add(RPhone);
-        //添加参数
-        SqlParameter RPostCode = new SqlParameter("@RPostCode", SqlDbType.Char, 10);
-        RPostCode.Value = P_Str_RPostCode;
-        myCmd.Parameters.Add(RPostCode);
-        //添加参数
-        SqlParameter RAddress = new SqlParameter("@RAddress", SqlDbType.VarChar, 200);
-        RAddress.Value = P_Str_RAddress;
-        myCmd.Parameters.Add(RAddress);
+        ////添加参数
+        //SqlParameter GoodsFee = new SqlParameter("@GoodsFee", SqlDbType.Float, 8);
+        //GoodsFee.Value = P_Flt_GoodsFee;
+        //myCmd.Parameters.Add(GoodsFee);
+        ////添加参数
+        //SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float , 8);
+        //ShipFee.Value = P_Flt_ShipFee;
+        //myCmd.Parameters.Add(ShipFee);
+        ////添加参数
+        //SqlParameter ShipType = new SqlParameter("@ShipType", SqlDbType.Int,4);
+        //ShipType.Value = P_Int_ShipType;
+        //myCmd.Parameters.Add(ShipType);
+        ////添加参数
+        //SqlParameter PayType = new SqlParameter("@PayType", SqlDbType.Int, 4);
+        //PayType.Value = P_Int_PayType;
+        //myCmd.Parameters.Add(PayType);
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID ", SqlDbType.BigInt,8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////添加参数
+        //SqlParameter RName = new SqlParameter("@RName", SqlDbType.VarChar, 50);
+        //RName.Value = P_Str_RName;
+        //myCmd.Parameters.Add(RName);
+        ////添加参数
+        //SqlParameter RPhone = new SqlParameter("@RPhone", SqlDbType.VarChar, 50);
+        //RPhone.Value = P_Str_RPhone;
+        //myCmd.Parameters.Add(RPhone);
+        ////添加参数
+        //SqlParameter RPostCode = new SqlParameter("@RPostCode", SqlDbType.Char, 10);
+        //RPostCode.Value = P_Str_RPostCode;
+        //myCmd.Parameters.Add(RPostCode);
+        ////添加参数
+        //SqlParameter RAddress = new SqlParameter("@RAddress", SqlDbType.VarChar, 200);
+        //RAddress.Value = P_Str_RAddress;
+        //myCmd.Parameters.Add(RAddress);
         
-        //添加参数
-        SqlParameter REmails = new SqlParameter("@REmails", SqlDbType.VarChar, 50);
-        REmails.Value = P_Str_REmails;
-        myCmd.Parameters.Add(REmails);
-        //添加参数
-        SqlParameter OrderID = myCmd.Parameters.Add("@OrderID", SqlDbType.BigInt,8);
-        OrderID.Direction = ParameterDirection.Output;
+        ////添加参数
+        //SqlParameter REmails = new SqlParameter("@REmails", SqlDbType.VarChar, 50);
+        //REmails.Value = P_Str_REmails;
+        //myCmd.Parameters.Add(REmails);
+        ////添加参数
+        //SqlParameter OrderID = myCmd.Parameters.Add("@OrderID", SqlDbType.BigInt,8);
+        //OrderID.Direction = ParameterDirection.Output;
        
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
 
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-        }
-        return Convert.ToInt32(OrderID.Value);
-      
-
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
+        //}
+        //return Convert.ToInt32(OrderID.Value);
     }
+
     public void  AddBuyInfo(int P_Int_GoodsID, int P_Int_Num, int P_Int_OrderID, float  P_Flt_SumPrice, int P_Int_MemberID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_InsertBuy", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 4);
-        GoodsID.Value = P_Int_GoodsID;
-        myCmd.Parameters.Add(GoodsID);
-        //添加参数
-        SqlParameter Num = new SqlParameter("@Num", SqlDbType.Int, 4);
-        Num.Value = P_Int_Num;
-        myCmd.Parameters.Add(Num);
-        //添加参数
-        SqlParameter OrderID = new SqlParameter("@OrderID", SqlDbType.BigInt, 8);
-        OrderID.Value = P_Int_OrderID;
-        myCmd.Parameters.Add(OrderID);
-        //添加参数
-        SqlParameter SumPrice = new SqlParameter("@SumPrice", SqlDbType.Float , 8);
-        SumPrice.Value = P_Flt_SumPrice;
-        myCmd.Parameters.Add(SumPrice);
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID ", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
+        dbObj.GetDataSet("insert into tb_BuyInfo(GoodsID,Num,OrderID,SumPrice, MemberID) values (@GoodsID,@Num,@OrderID,@SumPrice, @MemberID)", "re",
+            new SqlParameter("@GoodsID", P_Int_GoodsID), new SqlParameter("@Num", P_Int_Num),
+            new SqlParameter("@OrderID", P_Int_OrderID), new SqlParameter("@SumPrice", P_Flt_SumPrice),
+            new SqlParameter("@MemberID", P_Int_MemberID));
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_InsertBuy", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 4);
+        //GoodsID.Value = P_Int_GoodsID;
+        //myCmd.Parameters.Add(GoodsID);
+        ////添加参数
+        //SqlParameter Num = new SqlParameter("@Num", SqlDbType.Int, 4);
+        //Num.Value = P_Int_Num;
+        //myCmd.Parameters.Add(Num);
+        ////添加参数
+        //SqlParameter OrderID = new SqlParameter("@OrderID", SqlDbType.BigInt, 8);
+        //OrderID.Value = P_Int_OrderID;
+        //myCmd.Parameters.Add(OrderID);
+        ////添加参数
+        //SqlParameter SumPrice = new SqlParameter("@SumPrice", SqlDbType.Float , 8);
+        //SumPrice.Value = P_Flt_SumPrice;
+        //myCmd.Parameters.Add(SumPrice);
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID ", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
 
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-        }
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
+        //}
     }
     /// <summary>
     /// 查询购物车中的信息
@@ -651,34 +665,36 @@ public class UserInfoClass
     /// <returns>返回购物车中的信息的数据集</returns>
     public DataSet ReturnSCDs(int P_Int_MemberID, string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetSCI", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        return dbObj.GetDataSet("select * from tb_ShopCart where MemberID=@MemberID", P_Str_srcTable, new SqlParameter("@MemberID", P_Int_MemberID));
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetSCI", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        return ds;
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
+
+        //}
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //return ds;
 
     }
     /// <summary>
@@ -687,30 +703,31 @@ public class UserInfoClass
     /// <param name="P_Int_MemberID">会员ID</param>
     public void DeleteSCInfo(int P_Int_MemberID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_DeleteSC", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        MemberID.Value = P_Int_MemberID;
-        myCmd.Parameters.Add(MemberID);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
+        dbObj.GetDataSet("delete from tb_ShopCart where MemberID=@MemberID", null, new SqlParameter("@MemberID", P_Int_MemberID));
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_DeleteSC", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
+        //MemberID.Value = P_Int_MemberID;
+        //myCmd.Parameters.Add(MemberID);
+        ////执行过程
+        //myConn.Open();
+        //try
+        //{
+        //    myCmd.ExecuteNonQuery();
 
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw (ex);
+        //}
+        //finally
+        //{
+        //    myCmd.Dispose();
+        //    myConn.Close();
 
-        } 
+        //} 
     }
    /// <summary>
    ///　获取运输费用
@@ -720,47 +737,56 @@ public class UserInfoClass
     /// <returns>返回运输费用</returns>
     public float  GetSFValue(int P_Int_GoodsID,string P_Str_ShipWay)
     {
-
-
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GSF", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
-        GoodsID.Value = P_Int_GoodsID;
-        myCmd.Parameters.Add(GoodsID);
-        //添加参数
-        SqlParameter ShipWay = new SqlParameter("@ShipWay", SqlDbType.VarChar,50);
-        ShipWay.Value = P_Str_ShipWay;
-        myCmd.Parameters.Add(ShipWay);
-        //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnvalue", SqlDbType.Float, 8);
-        returnValue.Direction = ParameterDirection.ReturnValue;
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteScalar();
-        try
-        { 
-            if (Convert.ToInt32(returnValue.Value) == 100)
-                return 100;
-            else
-            { 
-                float  P_Flt_SF=float.Parse(myCmd.ExecuteScalar().ToString());
-                return P_Flt_SF;
-            }
-        
-        }
-        catch(Exception ex)
+        DataSet ds = dbObj.GetDataSet("select ShipFee from tb_ShipType where shipWay=@shipWay and ClassID=(select ClassID from tb_GoodsInfo where GoodsID=@GoodsID)", "re",
+            new SqlParameter("@GoodsID", P_Int_GoodsID),
+            new SqlParameter("@ShipWay", P_Str_ShipWay));
+        if (ds.Tables["re"].Rows.Count > 0)
         {
-            throw (ex);
-        
+            return Convert.ToInt32(ds.Tables["re"].Rows[0][0].ToString());
         }
-        finally
+        else
         {
-         myCmd.Dispose();
-        myConn.Close();
-        
+            return 100;
         }
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GSF", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
+        //GoodsID.Value = P_Int_GoodsID;
+        //myCmd.Parameters.Add(GoodsID);
+        ////添加参数
+        //SqlParameter ShipWay = new SqlParameter("@ShipWay", SqlDbType.VarChar,50);
+        //ShipWay.Value = P_Str_ShipWay;
+        //myCmd.Parameters.Add(ShipWay);
+        ////添加参数
+        //SqlParameter returnValue = myCmd.Parameters.Add("returnvalue", SqlDbType.Float, 8);
+        //returnValue.Direction = ParameterDirection.ReturnValue;
+        ////执行过程
+        //myConn.Open();
+        //myCmd.ExecuteScalar();
+        //try
+        //{ 
+        //    if (Convert.ToInt32(returnValue.Value) == 100)
+        //        return 100;
+        //    else
+        //    { 
+        //        float  P_Flt_SF=float.Parse(myCmd.ExecuteScalar().ToString());
+        //        return P_Flt_SF;
+        //    }
+        
+        //}
+        //catch(Exception ex)
+        //{
+        //    throw (ex);
+        
+        //}
+        //finally
+        //{
+        // myCmd.Dispose();
+        //myConn.Close();
+        
+        //}
         
     }
     /// <summary>
