@@ -49,15 +49,15 @@ public partial class User_RHDGoods : System.Web.UI.Page
     }
     public void RefineBind()
     {
-        ucObj.DGIBind(1, "Refine", DLrefinement);
+        ucObj.DGIBind(0, "Refine", DLrefinement);
     }
     public void HotBind()
     {
-        ucObj.DGIBind(2, "Hot", DLHot);
+        ucObj.DGIBind(1, "Hot", DLHot);
     }
     public void DiscountBind()
     {
-        ucObj.DGIBind(3, "Discount", DLDiscount);
+        ucObj.DGIBind(2, "Discount", DLDiscount);
     }
     //当购买商品时，获取商品信息
     public SaveSubGoodsClass GetSubGoodsInformation(DataListCommandEventArgs e, DataList DLName)

@@ -52,7 +52,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     {
        DataSet ds= ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()), "TotalInfo");
        lbSumPrice.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][0].ToString(),1);
-       lbSumNum.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][2].ToString(),1);
+       lbSumNum.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][1].ToString(),1);
     }
     protected void lnkbtnContinue_Click(object sender, EventArgs e)
     {

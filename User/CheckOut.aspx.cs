@@ -76,32 +76,32 @@ public partial class User_CheckOut : System.Web.UI.Page
             return;
         }
         else
-        { 
-          float  P_Flt_TotalSF=TotalShipFee();
-          if (P_Flt_TotalSF <= 0 || P_Flt_TotalSF == 100)
-          {
-              return;
-          }
-          float  P_Flt_TotalGP=TotalGoodsPrice();
-          int P_Int_Cart = ucObj.IsUserCart(Convert.ToInt32(Session["UID"].ToString()), P_Flt_TotalGP, P_Flt_TotalSF);
-          if (P_Int_Cart == -100 && ddlPayType.SelectedItem.Text.Trim() == "会员卡")
-          {
-              Response.Write("<script>alert('您的会员卡中余额不足，不能购买商品，请充值！')</script>");
-              return;
-          }
-          else
-          {
-              int P_Int_OrderID = ucObj.AddOrderInfo(P_Flt_TotalGP, P_Flt_TotalSF, Convert.ToInt32(ddlShipType.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPayType.SelectedItem.Value.ToString()), Convert.ToInt32(Session["UID"].ToString()), txtReciverName.Text.Trim(), txtReceiverPhone.Text.Trim(), txtReceiverPostCode.Text.Trim(), txtReceiverAddress.Text.Trim(), txtReceiverEmails.Text.Trim());
-               DataSet ds = ucObj.ReturnSCDs(Convert.ToInt32(Session["UID"].ToString()), "SCInfo");
-               for(int i = 0; i < ds.Tables["SCInfo"].Rows.Count; i++)
-               {
-                  ucObj.AddBuyInfo(Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][1].ToString()), Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][2].ToString()), P_Int_OrderID, float.Parse (ds.Tables["SCInfo"].Rows[i][3].ToString()), Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][4].ToString()));
-               } 
-               ucObj.DeleteSCInfo(Convert.ToInt32(Session["UID"].ToString()));
-               Response.Write("<script>alert('购物成功 ！');location='index.aspx'</script>");
-               return;
-          }
-         
+        {
+            int UserID = Convert.ToInt32(Session["UID"].ToString());
+            float P_Flt_TotalSF = 0;//TotalShipFee();
+            //if (P_Flt_TotalSF <= 0 || P_Flt_TotalSF == 100)
+            //{
+            //    return;
+            //}
+            float P_Flt_TotalGP = TotalGoodsPrice();
+            int P_Int_Cart = ucObj.IsUserCart(UserID, P_Flt_TotalGP, P_Flt_TotalSF);
+            if (P_Int_Cart == -100 && ddlPayType.SelectedItem.Text.Trim() == "会员卡")
+            {
+                Response.Write("<script>alert('您的会员卡中余额不足，不能购买商品，请充值！')</script>");
+                return;
+            }
+            else
+            {
+                int P_Int_OrderID = ucObj.AddOrderInfo(UserID, P_Flt_TotalGP, P_Flt_TotalSF, Convert.ToInt32(ddlShipType.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPayType.SelectedItem.Value.ToString()), UserID, txtReciverName.Text.Trim(), txtReceiverPhone.Text.Trim(), txtReceiverPostCode.Text.Trim(), txtReceiverAddress.Text.Trim(), txtReceiverEmails.Text.Trim());
+                //DataSet ds = ucObj.ReturnSCDs(UserID, "SCInfo");
+                //for (int i = 0; i < ds.Tables["SCInfo"].Rows.Count; i++)
+                //{
+                //    ucObj.AddBuyInfo(Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][1].ToString()), Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][2].ToString()), P_Int_OrderID, float.Parse(ds.Tables["SCInfo"].Rows[i][3].ToString()), Convert.ToInt32(ds.Tables["SCInfo"].Rows[i][4].ToString()));
+                //}
+                //ucObj.DeleteSCInfo(UserID);
+                Response.Write("<script>alert('购物成功 ！');location='index.aspx'</script>");
+                return;
+            }
         }
     }
 

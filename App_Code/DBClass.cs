@@ -8,6 +8,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Text;
+using System.Collections;
 
 
 /// <summary>
@@ -45,6 +47,10 @@ public class DBClass
                 {
                     values = new Object[reader.FieldCount];
                 }
+                catch (Exception ex)
+                {
+                    throw (ex);
+                }
                 finally
                 {
                     reader.Close();
@@ -54,7 +60,7 @@ public class DBClass
         return values;
     }
 
-    public DataSet GetDataSet(String command, String table_name = null)
+    public DataSet GetDataSet(String command, String table_name)
     {
         DataSet dataSet = new DataSet();
         using (SqlConnection sqlConn = GetConnection())
@@ -90,6 +96,66 @@ public class DBClass
                 {
                     myCmd.Parameters.Add(arugments[i]);
                 }
+                //myCmd.ExecuteNonQuery();
+                SqlDataAdapter da = new SqlDataAdapter(myCmd);
+                if (table_name == null)
+                {
+                    da.Fill(dataSet);
+                }
+                else
+                {
+                    da.Fill(dataSet, table_name);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw(ex);
+            }
+            finally
+            {
+                myCmd.Dispose();
+            }
+        }
+        return dataSet;
+    }
+
+    public int GetInt32(String command, params SqlParameter[] arugments)
+    {
+        DataSet ds = GetDataSet(command, "re", arugments);
+        if (ds.Tables["re"].Rows.Count > 0)
+        {
+            return Convert.ToInt32(ds.Tables["re"].Rows[0][0].ToString());
+        }
+        else
+        {
+            throw(new Exception("Can't find this record"));
+        }
+    }
+
+    public void Update(String command, params SqlParameter[] arugments)
+    {
+        GetDataSet(command, "re", arugments);
+    }
+
+    public DataSet Find(String table_name, params SqlParameter[] arugments)
+    {
+        DataSet dataSet = new DataSet();
+        StringBuilder cmd = new StringBuilder();
+        cmd.AppendFormat("select * from {0} where ", table_name);
+        for (int i = 0; i < arugments.Length; i++)
+        {
+            cmd.AppendFormat("{0} = {1} ", arugments[0].ParameterName.Trim('@'), arugments[0].ParameterName);
+        }
+        using (SqlConnection sqlConn = GetConnection())
+        {
+            sqlConn.Open();
+            SqlCommand myCmd = new SqlCommand(cmd.ToString(), sqlConn);
+            try
+            {
+                for (int i = 0; i < arugments.Length; i++)
+                {
+                    myCmd.Parameters.Add(arugments[i]);
+                }
                 myCmd.ExecuteNonQuery();
                 SqlDataAdapter da = new SqlDataAdapter(myCmd);
                 if (table_name == null)
@@ -108,4 +174,21 @@ public class DBClass
         }
         return dataSet;
     }
+
+    //private String[] GetVariable(String str)
+    //{
+    //    int count = 0;
+    //    for (int i = 0; i < str.Length; i++)
+    //    {
+    //        if (str[i] == '@')
+    //            count++;
+    //    }
+
+    //    String [] ret = new String[count];
+
+    //    for (int i = str.IndexOf('@'); i != -1; i = str.IndexOf('@', i + 1))
+    //    {
+    //        int j = str.IndexOf(
+    //    }
+    //}
 }

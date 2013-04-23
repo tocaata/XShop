@@ -44,28 +44,23 @@ public partial class User_UpdateMember : System.Web.UI.Page
                     ddlSex.SelectedIndex = 1;
                 }
                 txtTrueName.Text =ds.Tables["UserInfo"].Rows[0][4].ToString ();
-                ddlCity.SelectedItem.Text =ds.Tables["UserInfo"].Rows [0][9].ToString ();
-                txtAddress.Text=ds.Tables["UserInfo"].Rows[0][10].ToString ();
-                txtPostCode.Text =ds.Tables["UserInfo"].Rows[0][11].ToString();
-                txtPhone.Text=ds.Tables["UserInfo"].Rows[0][7].ToString ();
-                txtEmail.Text = ds.Tables["UserInfo"].Rows[0][8].ToString();
+                ddlCity.SelectedItem.Text =ds.Tables["UserInfo"].Rows [0][8].ToString ();
+                txtAddress.Text=ds.Tables["UserInfo"].Rows[0][7].ToString ();
+                //txtPostCode.Text =ds.Tables["UserInfo"].Rows[0][11].ToString();
+                txtPhone.Text=ds.Tables["UserInfo"].Rows[0][5].ToString ();
+                txtEmail.Text = ds.Tables["UserInfo"].Rows[0][6].ToString();
                
         }
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-        if (txtName.Text.Trim() == "" && txtPassword.Text.Trim() == "" && txtAddress.Text.Trim() == "" && txtPostCode.Text.Trim() == "" && txtPassword.Text.Trim() == "")
+        if (txtName.Text.Trim() == "" && txtPassword.Text.Trim() == "" && txtAddress.Text.Trim() == "" && txtPassword.Text.Trim() == "")
         {
             Response.Write("<script>alert('请输入完整信息！');location='javascript:history.go(-1)';</script>");
         }
         else
         {
-            if (IsValidPostCode(txtPostCode.Text.Trim()) == false)
-            {
-                Response.Write("<script>alert('您的邮编输入有误！')</script>");
-                return;
-            }
-            else if (IsValidPhone(txtPhone.Text.Trim()) == false)
+            if (IsValidPhone(txtPhone.Text.Trim()) == false)
             {
                 Response.Write("<script>alert('您输入的电话号码有误，请重新输入')</script>");
                 return;
@@ -88,7 +83,7 @@ public partial class User_UpdateMember : System.Web.UI.Page
                     P_Bl_Sex = false;
 
                 }
-                uiObj.UpdateUInfo(txtName.Text.Trim(), P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim(), txtPostCode.Text.Trim(), Convert.ToInt32(Session["UID"].ToString()));
+                uiObj.UpdateUInfo(txtName.Text.Trim(), P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim(), Convert.ToInt32(Session["UID"].ToString()));
 
                 Session["Username"] = "";
                 Session["Username"] = txtName.Text.Trim();

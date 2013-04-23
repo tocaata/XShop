@@ -46,8 +46,8 @@ public partial class index : System.Web.UI.Page
         int index = GoodsStyle.IndexOf("|");
         if (index < -1 || index + 1 >= GoodsStyle.Length)
             return Goods;
-        Goods.GoodsWeight = float.Parse(GoodsStyle.Substring(0, index));
-        Goods.MemberPrice =float.Parse( GoodsStyle.Substring(index + 1));
+        Goods.MemberPrice = float.Parse(GoodsStyle);
+        //Goods.MemberPrice =float.Parse( GoodsStyle.Substring(index + 1));
         return (Goods);
 
     }
@@ -80,15 +80,15 @@ public partial class index : System.Web.UI.Page
 
     public void RefineBind()
     {
-        ucObj.DGIBind(1, "Refine", DLrefinement);
+        ucObj.DGIBind(0, "Refine", DLrefinement);
     }
     public void HotBind()
     {
-        ucObj.DGIBind(2, "Hot", DLHot);
+        ucObj.DGIBind(1, "Hot", DLHot);
     }
     public void DiscountBind()
     {
-        ucObj.DGIBind(3, "Discount", DLDiscount);
+        ucObj.DGIBind(2, "Discount", DLDiscount);
     }
     protected void DLrefinement_ItemCommand(object source, DataListCommandEventArgs e)
     {

@@ -15,20 +15,20 @@ using System.Data.SqlClient;
 public class MangerClass
 {
     DBClass dbObj = new DBClass();
-	public MangerClass()
-	{
-		//
-		// TODO: 在此处添加构造函数逻辑
-		//
-	}
+    public MangerClass()
+    {
+        //
+        // TODO: 在此处添加构造函数逻辑
+        //
+    }
     //*************************************************************************************************
     /// <summary>
     /// GridView控件的绑定
     /// </summary>
     /// <param name="gvName">控件名字</param>
     /// <param name="P_Str_srcTable">绑定信息</param>
-    public  void gvBind(GridView gvName, SqlCommand myCmd, string P_Str_srcTable)
-    {      
+    public void gvBind(GridView gvName, SqlCommand myCmd, string P_Str_srcTable)
+    {
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
         DataSet ds = new DataSet();
         da.Fill(ds, P_Str_srcTable);
@@ -65,7 +65,7 @@ public class MangerClass
 
         }
         int P_Int_returnValue = Convert.ToInt32(returnValue.Value.ToString());
-        return P_Int_returnValue;      
+        return P_Int_returnValue;
     }
     /// <summary>
     /// 绑定最新信息(最新订单信息，最新用户信息量)
@@ -96,8 +96,8 @@ public class MangerClass
             myConn.Close();
 
         }
-      
-         return myCmd ;   
+
+        return myCmd;
     }
     //*************************************************************************************************
     /// <summary>
@@ -116,7 +116,7 @@ public class MangerClass
     /// <param name="P_Int_IsConsignment">订单是否已发贷</param>
     /// <param name="P_Int_IsPigeonhole">订单是否已归档</param>
     /// <returns>返回Sqlcommand</returns>
-    public SqlCommand  GetOrderInfo(int P_Int_Flag,int P_Int_IsMember, int P_Int_MemberID, int P_Int_OrderID, int P_Int_Confirm,int P_Int_Payed,int P_Int_Shipped,int P_Int_Finished,int P_Int_IsConfirm, int P_Int_IsPayment, int P_Int_IsConsignment, int P_Int_IsPigeonhole)
+    public SqlCommand GetOrderInfo(int P_Int_Flag, int P_Int_IsMember, int P_Int_MemberID, int P_Int_OrderID, int P_Int_Confirm, int P_Int_Payed, int P_Int_Shipped, int P_Int_Finished, int P_Int_IsConfirm, int P_Int_IsPayment, int P_Int_IsConsignment, int P_Int_IsPigeonhole)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetOrderInfo", myConn);
@@ -227,12 +227,12 @@ public class MangerClass
         SqlCommand myCmd = new SqlCommand("Proc_GetShipWay", myConn);
         myCmd.CommandType = CommandType.StoredProcedure;
         //添加参数
-        SqlParameter ShipType = new SqlParameter("@ShipType", SqlDbType.Int,4);
+        SqlParameter ShipType = new SqlParameter("@ShipType", SqlDbType.Int, 4);
         ShipType.Value = P_Int_ShipType;
         myCmd.Parameters.Add(ShipType);
         //执行过程
         myConn.Open();
-        string P_Str_ShipWay =Convert.ToString(myCmd.ExecuteScalar());
+        string P_Str_ShipWay = Convert.ToString(myCmd.ExecuteScalar());
         myCmd.Dispose();
         myConn.Close();
         return P_Str_ShipWay;
@@ -253,7 +253,7 @@ public class MangerClass
         myCmd.Parameters.Add(PayType);
         //执行过程
         myConn.Open();
-        string P_Str_PayWay = Convert.ToString (myCmd.ExecuteScalar());
+        string P_Str_PayWay = Convert.ToString(myCmd.ExecuteScalar());
         myCmd.Dispose();
         myConn.Close();
         return P_Str_PayWay;
@@ -264,7 +264,7 @@ public class MangerClass
     /// <param name="P_Int_OrderID">订单编号</param>
     /// <param name="P_Str_srcTable">订单信息</param>
     /// <returns>返回Dataset</returns>
-    public DataSet GetStatusDS(int P_Int_OrderID,string P_Str_srcTable)
+    public DataSet GetStatusDS(int P_Int_OrderID, string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetStatus", myConn);
@@ -277,7 +277,7 @@ public class MangerClass
         myConn.Open();
         myCmd.ExecuteNonQuery();
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds=new DataSet ();
+        DataSet ds = new DataSet();
         da.Fill(ds, P_Str_srcTable);
         myCmd.Dispose();
         myConn.Dispose();
@@ -341,7 +341,7 @@ public class MangerClass
     /// <param name="P_Bl_IsPayment">是否付款</param>
     /// <param name="P_Bl_IsConsignment">是否已发货</param>
     /// <param name="P_Bl_IsPigeonhole">是否已归档</param>
-    public void UpdateOI(int P_Int_OrderID,bool P_Bl_IsConfirm,bool P_Bl_IsPayment,bool P_Bl_IsConsignment,bool P_Bl_IsPigeonhole)
+    public void UpdateOI(int P_Int_OrderID, bool P_Bl_IsConfirm, bool P_Bl_IsPayment, bool P_Bl_IsConsignment, bool P_Bl_IsPigeonhole)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_UpdateOI", myConn);
@@ -430,7 +430,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">商品类别信息表名</param>
     /// <returns>商品类别的数据集</returns>
-    public DataSet GetCategory( string P_Str_srcTable)
+    public DataSet GetCategory(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetCategory", myConn);
@@ -449,7 +449,7 @@ public class MangerClass
     /// 删除指定商品的类别名
     /// </summary>
     /// <param name="P_Int_ClassID">类别编号</param>
-    public void  DeleteCategory(int P_Int_ClassID)
+    public void DeleteCategory(int P_Int_ClassID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_DeleteCategory", myConn);
@@ -482,7 +482,7 @@ public class MangerClass
     /// </summary>
     /// <param name="ddlName">绑定控件名</param>
     public void ddlClassBind(DropDownList ddlName)
-    { 
+    {
         string P_Str_SqlStr = "select * from tb_Class";
         SqlConnection myConn = dbObj.GetConnection();
         SqlDataAdapter da = new SqlDataAdapter(P_Str_SqlStr, myConn);
@@ -534,7 +534,7 @@ public class MangerClass
         SqlCommand myCmd = new SqlCommand("Proc_AddGoodsInfo", myConn);
         myCmd.CommandType = CommandType.StoredProcedure;
         //添加参数
-        SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.BigInt,8);
+        SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.BigInt, 8);
         ClassID.Value = P_Int_ClassID;
         myCmd.Parameters.Add(ClassID);
         //添加参数
@@ -554,7 +554,7 @@ public class MangerClass
         GoodsUnit.Value = P_Str_GoodsUnit;
         myCmd.Parameters.Add(GoodsUnit);
         //添加参数
-        SqlParameter GoodsWeight = new SqlParameter("@GoodsWeight", SqlDbType.Float , 8);
+        SqlParameter GoodsWeight = new SqlParameter("@GoodsWeight", SqlDbType.Float, 8);
         GoodsWeight.Value = P_Flt_GoodsWeight;
         myCmd.Parameters.Add(GoodsWeight);
         //添加参数
@@ -562,7 +562,7 @@ public class MangerClass
         GoodsUrl.Value = P_Str_GoodsUrl;
         myCmd.Parameters.Add(GoodsUrl);
         //添加参数
-        SqlParameter MarketPrice = new SqlParameter("@MarketPrice", SqlDbType.Float , 8);
+        SqlParameter MarketPrice = new SqlParameter("@MarketPrice", SqlDbType.Float, 8);
         MarketPrice.Value = P_Flt_MarketPrice;
         myCmd.Parameters.Add(MarketPrice);
         //添加参数
@@ -582,7 +582,7 @@ public class MangerClass
         IsDiscount.Value = P_Bl_IsDiscount;
         myCmd.Parameters.Add(IsDiscount);
         //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnValue",SqlDbType.Int,4);
+        SqlParameter returnValue = myCmd.Parameters.Add("returnValue", SqlDbType.Int, 4);
         returnValue.Direction = ParameterDirection.ReturnValue;
         //执行过程
         myConn.Open();
@@ -629,24 +629,28 @@ public class MangerClass
     /// <param name="P_Int_GoodsID">指定商品的ID</param>
     /// <param name="P_Str_srcTable">商品信息表</param>
     /// <returns>返回指定商品信息的数据集</returns>
-    public DataSet GetGoodsInfoByIDDs(int P_Int_GoodsID,string P_Str_srcTable)
+    public DataSet GetGoodsInfoByIDDs(int P_Int_GoodsID, string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetGoodsInfoByID", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
-        GoodsID.Value = P_Int_GoodsID;
-        myCmd.Parameters.Add(GoodsID);
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteNonQuery();
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        myCmd.Dispose();
-        myConn.Dispose();
-        return ds;
+        DataSet good = dbObj.GetDataSet(
+            "select * from items where item_id = @item_id", P_Str_srcTable,
+            new SqlParameter("@item_id", P_Int_GoodsID));
+        return good;
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetGoodsInfoByID", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
+        //GoodsID.Value = P_Int_GoodsID;
+        //myCmd.Parameters.Add(GoodsID);
+        ////执行过程
+        //myConn.Open();
+        //myCmd.ExecuteNonQuery();
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //myCmd.Dispose();
+        //myConn.Dispose();
+        //return ds;
     }
     /// <summary>
     /// 获取搜索商品信息的数据集
@@ -731,7 +735,7 @@ public class MangerClass
         GoodsUnit.Value = P_Str_GoodsUnit;
         myCmd.Parameters.Add(GoodsUnit);
         //添加参数
-        SqlParameter GoodsWeight = new SqlParameter("@GoodsWeight", SqlDbType.Float , 8);
+        SqlParameter GoodsWeight = new SqlParameter("@GoodsWeight", SqlDbType.Float, 8);
         GoodsWeight.Value = P_Flt_GoodsWeight;
         myCmd.Parameters.Add(GoodsWeight);
         //添加参数
@@ -739,11 +743,11 @@ public class MangerClass
         GoodsUrl.Value = P_Str_GoodsUrl;
         myCmd.Parameters.Add(GoodsUrl);
         //添加参数
-        SqlParameter MarketPrice = new SqlParameter("@MarketPrice", SqlDbType.Float , 8);
+        SqlParameter MarketPrice = new SqlParameter("@MarketPrice", SqlDbType.Float, 8);
         MarketPrice.Value = P_Flt_MarketPrice;
         myCmd.Parameters.Add(MarketPrice);
         //添加参数
-        SqlParameter MemberPrice = new SqlParameter("@MemberPrice", SqlDbType.Float , 8);
+        SqlParameter MemberPrice = new SqlParameter("@MemberPrice", SqlDbType.Float, 8);
         MemberPrice.Value = P_Flt_MemberPrice;
         myCmd.Parameters.Add(MemberPrice);
         //添加参数
@@ -785,7 +789,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_Admin">管理员名</param>
     /// <returns></returns>
-    public int AddAdmin(string P_Str_Admin,string P_Str_Password)
+    public int AddAdmin(string P_Str_Admin, string P_Str_Password)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_AddAdmin", myConn);
@@ -941,13 +945,13 @@ public class MangerClass
     /// 删除指定管理员信息
     /// </summary>
     /// <param name="P_Int_AdminID">管理员编号</param>
-    public void  DeleteAdminInfo(int P_Int_AdminID)
+    public void DeleteAdminInfo(int P_Int_AdminID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_DeleteAdminInfo", myConn);
         myCmd.CommandType = CommandType.StoredProcedure;
         //添加参数
-        SqlParameter AdminID = new SqlParameter("@AdminID", SqlDbType.BigInt,8);
+        SqlParameter AdminID = new SqlParameter("@AdminID", SqlDbType.BigInt, 8);
         AdminID.Value = P_Int_AdminID;
         myCmd.Parameters.Add(AdminID);
         //执行过程
@@ -967,7 +971,7 @@ public class MangerClass
 
         }
     }
-    public void UpdateAdminInfo(int P_Int_AdminID,string P_Str_Admin,string P_Str_Password)
+    public void UpdateAdminInfo(int P_Int_AdminID, string P_Str_Admin, string P_Str_Password)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_UpdateAdminInfo", myConn);
@@ -1040,7 +1044,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_ImageName">图像名</param>
     /// <param name="P_Int_ImageUrl">图像路径</param>
-    public void  InsertImage(string P_Str_ImageName,string P_Str_ImageUrl)
+    public void InsertImage(string P_Str_ImageName, string P_Str_ImageUrl)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_InsertImageInfo", myConn);
@@ -1102,7 +1106,7 @@ public class MangerClass
 
         }
     }
-   //**************************************************************************************************
+    //**************************************************************************************************
     public DataSet ReturnMemberDs(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
@@ -1194,13 +1198,13 @@ public class MangerClass
         da.Fill(ds, P_Str_srcTable);
         return ds;
     }
-   /// <summary>
-   /// 返回指定配送方式信息的数据集
-   /// </summary>
-   /// <param name="P_Int_ShipID">配送方式ID</param>
-   /// <param name="P_Str_srcTable">配送方式信息</param>
-   /// <returns></returns>
-    public DataSet ReturnShipDsByID(int P_Int_ShipID,string P_Str_srcTable)
+    /// <summary>
+    /// 返回指定配送方式信息的数据集
+    /// </summary>
+    /// <param name="P_Int_ShipID">配送方式ID</param>
+    /// <param name="P_Str_srcTable">配送方式信息</param>
+    /// <returns></returns>
+    public DataSet ReturnShipDsByID(int P_Int_ShipID, string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetShipInfoByID", myConn);
@@ -1269,19 +1273,22 @@ public class MangerClass
     /// <returns></returns>
     public string GetClass(int P_Int_ClassID)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetClassName", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.Int, 8);
-        ClassID.Value = P_Int_ClassID;
-        myCmd.Parameters.Add(ClassID);
-        //执行过程
-        myConn.Open();
-        string P_Str_Class = Convert.ToString(myCmd.ExecuteScalar());
-        myCmd.Dispose();
-        myConn.Close();
-        return P_Str_Class;
+        DataSet ds = dbObj.GetDataSet("select name from categories where category_id = @category_id", "catergory",
+            new SqlParameter("@category_id", P_Int_ClassID));
+        return ds.Tables["catergory"].Rows[0][0].ToString();
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_GetClassName", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.Int, 8);
+        //ClassID.Value = P_Int_ClassID;
+        //myCmd.Parameters.Add(ClassID);
+        ////执行过程
+        //myConn.Open();
+        //string P_Str_Class = Convert.ToString(myCmd.ExecuteScalar());
+        //myCmd.Dispose();
+        //myConn.Close();
+        //return P_Str_Class;
     }
     public void InsertShip(string P_Str_ShipWay, float P_Flt_ShipFee, int P_int_ClassID)
     {
@@ -1293,10 +1300,10 @@ public class MangerClass
         ShipWay.Value = P_Str_ShipWay;
         myCmd.Parameters.Add(ShipWay);
         //添加参数
-        SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float , 8);
+        SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float, 8);
         ShipFee.Value = P_Flt_ShipFee;
         myCmd.Parameters.Add(ShipFee);
-       
+
         //添加参数
         SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.BigInt, 8);
         ClassID.Value = P_int_ClassID;
@@ -1333,7 +1340,7 @@ public class MangerClass
         ShipWay.Value = P_Str_ShipWay;
         myCmd.Parameters.Add(ShipWay);
         //添加参数
-        SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float , 8);
+        SqlParameter ShipFee = new SqlParameter("@ShipFee", SqlDbType.Float, 8);
         ShipFee.Value = P_Flt_ShipFee;
         myCmd.Parameters.Add(ShipFee);
 
@@ -1468,7 +1475,7 @@ public class MangerClass
         //添加参数
         SqlParameter PayWay = new SqlParameter("@PayWay", SqlDbType.VarChar, 50);
         PayWay.Value = P_Str_PayWay;
-        myCmd.Parameters.Add(PayWay);  
+        myCmd.Parameters.Add(PayWay);
         //执行过程
         myConn.Open();
         try
@@ -1518,7 +1525,7 @@ public class MangerClass
 
         }
     }
-   //*********************************************************
+    //*********************************************************
     /// <summary>
     /// 查询所有配送地点信息
     /// </summary>
@@ -1619,7 +1626,7 @@ public class MangerClass
         da.Fill(ds, P_Str_srcTable);
         return ds;
     }
-    public void InsertArea(string P_Str_AreaName,int P_Int_AreaKM)
+    public void InsertArea(string P_Str_AreaName, int P_Int_AreaKM)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_InsertAreaInfo", myConn);
@@ -1650,7 +1657,7 @@ public class MangerClass
 
         }
     }
-    public void UpdateArea(int P_Int_AreaID,string P_Str_AreaName, int P_Int_AreaKM)
+    public void UpdateArea(int P_Int_AreaID, string P_Str_AreaName, int P_Int_AreaKM)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_UpdateAreaInfo", myConn);
@@ -1711,10 +1718,10 @@ public class MangerClass
     public string VarStr(string sString, int nLeng)
     {
         int index = sString.IndexOf(".");
-        if (index == -1||index+2>=sString.Length)
+        if (index == -1 || index + 2 >= sString.Length)
             return sString;
         else
-            return sString.Substring(0, (index + nLeng+1));
+            return sString.Substring(0, (index + nLeng + 1));
     }
 
 }
