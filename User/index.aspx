@@ -2,9 +2,21 @@
     CodeFile="index.aspx.cs" Inherits="index" Title="User Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FartherMain" runat="Server">
-    <table cellpadding="0" cellspacing="0" style="font-size: 9pt; font-family: 宋体; width: 560px;
+    <table cellpadding="0" cellspacing="0" style="font-size: 9pt; width: 560px;
         vertical-align: top; border-top-style: none; border-right-style: none; border-left-style: none;
         text-align: left; border-bottom-style: none;">
+        <tr>
+            <td>
+                <div>
+                    &nbsp;
+                    <asp:TextBox ID="search_name" runat="server" Height="20px" Width="301px"></asp:TextBox>
+                    &nbsp;
+                    <asp:Button ID="search_button" runat="server" Height="30px" Width="40px" OnClick="search_Click"
+                        Text="搜索" CausesValidation="False" />
+                </div>
+                <div style="display: block; height: 20px"></div>
+            </td>
+        </tr>
         <tr align="left">
             <td align="left" style="width: 560px; height: 22px; vertical-align: top; text-align: left;"
                 colspan="0" rowspan="0" background="../Images/index/精品推荐.jpg">
@@ -22,13 +34,13 @@
                                 </td>
                             </tr>
                             <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
-                                font-family: 宋体;">
+                                ">
                                 <td colspan="2" align="center">
                                     <%#DataBinder.Eval(Container.DataItem, "name")%>
                                 </td>
                             </tr>
                             <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
-                                font-family: 宋体;">
+                                ">
                                 <td align="center">
                                     价格
                                 </td>
@@ -37,7 +49,7 @@
                             </tr>
 
                             <tr align="left" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
-                                font-family: 宋体;">
+                                ">
                                 <td colspan="2" align="center">
                                     <asp:LinkButton ID="lnkbtnClass" runat="server" CommandName="detailSee">详细</asp:LinkButton>
                                     <asp:LinkButton ID="lnkbtnBuy" runat="server" CommandName="buyGoods" CommandArgument='<%#DataBinder.Eval(Container.DataItem,"price") %>'>购买</asp:LinkButton>

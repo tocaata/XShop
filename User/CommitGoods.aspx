@@ -3,7 +3,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FartherMain" runat="Server">
     <table cellspacing="0" cellpadding="0" width="480" align="center" border="0">
-        <tr style="font: 9pt; font-family: 宋体;">
+        <tr style="font: 9pt; ">
             <th align="left" height="25" colspan="2">
                 &nbsp;&nbsp;
                 <asp:Label ID="lblTitleInfo" runat="server">购物车</asp:Label>
@@ -12,10 +12,10 @@
             </tr>
     </table>
     <table cellspacing="1" cellpadding="1" width="480" align="center" border="0">
-        <tr style="font: 9pt; font-family: 宋体;">
+        <tr style="font: 9pt; ">
             <td>
                 <table cellspacing="0" cellpadding="0" width="95%" align="center" border="0">
-                    <tr style="font: 9pt; font-family: 宋体;">
+                    <tr style="font: 9pt; ">
                         <td align="left" style="height: 135px">
                             <asp:GridView ID="gvShopCart" DataKeyNames="order_item_id" runat="server" AllowPaging="True"
                                 AutoGenerateColumns="False" PageSize="5" OnPageIndexChanging="gvShopCart_PageIndexChanging"

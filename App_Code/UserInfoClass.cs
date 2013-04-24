@@ -471,7 +471,7 @@ public class UserInfoClass
             "id",
             new SqlParameter("@user_id", P_Int_MemberID),
             new SqlParameter("@cart_id", P_Int_CartID));
-        dbObj.GetDataSet("update order_items set count = @count where order_item_id = @order_item_id", null,
+        dbObj.Update("update order_items set count = @count where order_item_id = @order_item_id",
             new SqlParameter("@order_item_id", Convert.ToInt32(ds.Tables["id"].Rows[0][0].ToString())));
         //SqlConnection myConn = dbObj.GetConnection();
         //SqlCommand myCmd = new SqlCommand("Proc_UpdateSC", myConn);
@@ -577,7 +577,6 @@ public class UserInfoClass
             "update carts " + 
             "set order_id = @order_id " + 
             "where cart_id = @cart_id",
-            null,
             new SqlParameter("@order_id", newOrderId),
             new SqlParameter("@cart_id", getInt32(order, "order", 0, 1)));
 
@@ -585,7 +584,7 @@ public class UserInfoClass
         dbObj.Update(
             "update orders " +
             "set status = 1, address = @address, phone = @phone, name = @name " + 
-            "where order_id = @order_id", null,
+            "where order_id = @order_id",
             new SqlParameter("@address", P_Str_RAddress),
             new SqlParameter("@phone", P_Str_RPhone),
             new SqlParameter("@name", P_Str_RName),
@@ -699,6 +698,16 @@ public class UserInfoClass
             return sString;
         else
             return sString.Substring(0, (index + nLeng + 1));
+    }
+
+    public void SearchBind(DataList searchResult, String searchStr)
+    {
+        DataSet ds = dbObj.GetDataSet(
+            "SELECT [item_id], [name], [price], [description], [image_url], [quota], [sell_count], [is_discount], [is_group_buy], [is_rush_buy] FROM [items] WHERE name like '%" + searchStr.Replace('\'', ' ') + "%'",
+            "result");
+        int c = ds.Tables["result"].Rows.Count;
+        searchResult.DataSource = ds.Tables["result"].DefaultView;
+        searchResult.DataBind();
     }
 
     private int getInt32(DataSet ds, String tableName, int x, int y)

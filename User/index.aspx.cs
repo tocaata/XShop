@@ -130,4 +130,9 @@ public partial class index : System.Web.UI.Page
             AddShopCart(e,DLDiscount);
         }
     }
+    protected void search_Click(object sender, EventArgs e)
+    {
+        Session["address"] = "index.aspx";
+        Response.Redirect("~/User/Search.aspx?string=" + search_name.Text.Trim());
+    }
 }
