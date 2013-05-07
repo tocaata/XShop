@@ -1,43 +1,34 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage/MasterPage.master" AutoEventWireup="true" CodeFile="OrderItems.aspx.cs" Inherits="User_OrderItems" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage/MasterPage.master" AutoEventWireup="true" CodeFile="OrderItems.aspx.cs" Inherits="User_OrderItems" Title="User Order" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FartherMain" runat="Server">
-<asp:repeater id="OrderItems" runat="server" onitemcommand="RepCmd">
-<HeaderTemplate>
-<table class="tb_void" width="100%">
-<thead>
-<tr class="tb_void">
-<th>订单编号</th>
-<th>订单状态</th>
-<th>收货人</th>
-<th>收货地址</th>
-<th>订单金额</th>
-</tr>
-</thead>
-</HeaderTemplate>
-<ItemTemplate >
-<tr class="tb_void">
-<td>
-<%# Eval("order_id")%>
-<br />
-<%# Eval("create_at")%>
-<br />
-</td>
-<td>
-<%# Eval("status")%>
-</td>
-<td>
-<%# Eval("name") %>
-</td>
-<td>
-<%# Eval("address") %>
-</td>
-<td>
-￥<%# Eval("total_price")%>
-</td>
-</tr>
-</ItemTemplate>
-<FooterTemplate>
-</table>
-</FooterTemplate>
-</asp:repeater>
+    <h3 style="text-align: center">订单</h3>
+    <br />
+    <asp:GridView ID="OrderItems" CssClass="table_cart" DataKeyNames="order_item_id" runat="server" AllowPaging="True"
+        AutoGenerateColumns="False" PageSize="5" OnPageIndexChanging="OrderIndexChange">
+        <Columns>
+            <asp:HyperLinkField DataTextField="name" HeaderText="商品名称" 
+                DataNavigateUrlFields="item_id" 
+                DataNavigateUrlFormatString="~/User/GoodsDetail.aspx?GoodsID={0}" />
+            <asp:BoundField DataField="price" HeaderText="单价" ReadOnly="True">
+                <ItemStyle HorizontalAlign="Center" />
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:BoundField>
+            <asp:BoundField DataField="count" HeaderText="购买数量"  ReadOnly="True">
+                <ItemStyle HorizontalAlign="Center" />
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:BoundField>
+            <asp:BoundField DataField="sum_price" HeaderText="金额小计" ReadOnly="True">
+                <ItemStyle HorizontalAlign="Center" />
+                <HeaderStyle HorizontalAlign="Center" />
+            </asp:BoundField>
+        </Columns>
+    </asp:GridView>
+    <br style="clear: both" />
+    合计： &nbsp; &nbsp;
+    <div class="right_div">
+    <asp:Label ID="lbSumPrice" runat="server" Text="Label"></asp:Label>￥  
+    <br />
+    商品数量：
+    <asp:Label ID="lbSumNum" runat="server" Text="Label"></asp:Label>
+    </div>
 </asp:Content>

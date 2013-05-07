@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -21,7 +20,7 @@ public partial class User_OrderItems : System.Web.UI.Page
             }
             else
             {
-                ucObj.OrderBind(OrderItems, int.Parse(Session["UID"].ToString()));
+                ucObj.OrderTabBind(OrderItems, int.Parse(Session["UID"].ToString()), 2);
             }
         }
     }
@@ -34,5 +33,12 @@ public partial class User_OrderItems : System.Web.UI.Page
             Session["address"] = "index.aspx";
             Response.Redirect("~/User/GoodsDetail.aspx?GoodsID=");
         }
+    }
+
+    protected void OrderIndexChange(object sender, GridViewPageEventArgs e)
+    {
+        OrderItems.PageIndex = e.NewPageIndex;
+        ucObj.OrderTabBind(OrderItems, int.Parse(Session["UID"].ToString()), 2);
+
     }
 }

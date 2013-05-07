@@ -87,7 +87,7 @@ public class UserInfoClass
     /// <param name="P_Str_PostCode">邮编</param>
     /// <param name="P_Flt_AdvancePayment">预付金额</param>
     /// <param name="P_Date_LoadDate">登录日期</param>
-    public int AddUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address, string P_Str_PostCode)
+    public int AddUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address)
     {
         int user_id = dbObj.GetInt32("Insert users(name,sex,password,phone,email,address) values(@Name,@Sex,@Password,@Phone,@Email,@Address);select @@identity;",
             new SqlParameter("@Name", P_Str_Name), new SqlParameter("@sex", P_Bl_Sex),
