@@ -66,11 +66,7 @@ public partial class User_RHDGoods : System.Web.UI.Page
         SaveSubGoodsClass Goods = new SaveSubGoodsClass();
         Goods.GoodsID = int.Parse(DLName.DataKeys[e.Item.ItemIndex].ToString());
         string GoodsStyle = e.CommandArgument.ToString();
-        int index = GoodsStyle.IndexOf("|");
-        if (index < -1 || index + 1 >= GoodsStyle.Length)
-            return Goods;
-        Goods.GoodsWeight = float.Parse(GoodsStyle.Substring(0, index));
-        Goods.MemberPrice = float.Parse(GoodsStyle.Substring(index + 1));
+        Goods.MemberPrice = float.Parse(GoodsStyle);
         return (Goods);
 
     }

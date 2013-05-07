@@ -2,41 +2,45 @@
     CodeFile="Search.aspx.cs" Inherits="User_Search" Title="User Search" %>
 
 <asp:Content ID="search_result" ContentPlaceHolderID="FartherMain" runat="Server">
-    <asp:DataList ID="searchResult" runat="server" DataKeyField="item_id" RepeatColumns="4" RepeatDirection="Horizontal">
+<ul>
+    <asp:DataList ID="searchResult" runat="server" DataKeyField="item_id" RepeatColumns="3" RepeatDirection="Horizontal" OnItemCommand="ItemCommand">
     <ItemTemplate>
-        name:
+        <li style="width: 150px; border: 1px solid #FFD9C0;">
+        <asp:LinkButton ID="lnkbtnItem" runat="server" CommandName="detailSee"><asp:Image ID="image1" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' /></asp:LinkButton>
+        <br />
+        名字:
         <asp:Label ID="nameLabel" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"name") %>' />
         <br />
-        price:
+        价格:
         <asp:Label ID="priceLabel" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"price") %>' />
         <br />
-        description:
+        描述:
         <asp:Label ID="descriptionLabel" runat="server" 
             Text='<%# DataBinder.Eval(Container.DataItem,"description") %>' />
         <br />
-        image_url:
-        <asp:Label ID="image_urlLabel" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"image_url") %>' />
-        <br />
-        quota:
+        库存:
         <asp:Label ID="quotaLabel" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"quota") %>' />
         <br />
-        sell_count:
+        已销售:
         <asp:Label ID="sell_countLabel" runat="server" 
             Text='<%# DataBinder.Eval(Container.DataItem,"sell_count") %>' />
         <br />
-        is_discount:
+        是否秒杀:
         <asp:Label ID="is_discountLabel" runat="server" 
             Text='<%# DataBinder.Eval(Container.DataItem,"is_discount") %>' />
         <br />
-        is_group_buy:
+        是否团购:
         <asp:Label ID="is_group_buyLabel" runat="server" 
             Text='<%# DataBinder.Eval(Container.DataItem,"is_group_buy") %>' />
         <br />
-        is_rush_buy:
+        是否爆款:
         <asp:Label ID="is_rush_buyLabel" runat="server" 
             Text='<%# DataBinder.Eval(Container.DataItem,"is_rush_buy") %>' />
         <br />
-<br />
+        <asp:LinkButton ID="lnkbtnClass" runat="server" CommandName="detailSee">详细</asp:LinkButton>
+        <asp:LinkButton ID="lnkbtnBuy" runat="server" CommandName="buyGoods" CommandArgument='<%#DataBinder.Eval(Container.DataItem,"price") %>'>购买</asp:LinkButton>
+        </li>
     </ItemTemplate>
 </asp:DataList>
+</ul>
 </asp:Content>

@@ -5,18 +5,6 @@
     <table cellpadding="0" cellspacing="0" style="font-size: 9pt; width: 560px;
         vertical-align: top; border-top-style: none; border-right-style: none; border-left-style: none;
         text-align: left; border-bottom-style: none;">
-        <tr>
-            <td>
-                <div>
-                    &nbsp;
-                    <asp:TextBox ID="search_name" runat="server" Height="20px" Width="301px"></asp:TextBox>
-                    &nbsp;
-                    <asp:Button ID="search_button" runat="server" Height="30px" Width="40px" OnClick="search_Click"
-                        Text="搜索" CausesValidation="False" />
-                </div>
-                <div style="display: block; height: 20px"></div>
-            </td>
-        </tr>
         <tr align="left">
             <td align="left" style="width: 560px; height: 22px; vertical-align: top; text-align: left;"
                 colspan="0" rowspan="0" background="../Images/index/精品推荐.jpg">

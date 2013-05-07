@@ -10,6 +10,18 @@ using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
 using System.Text;
 
+
+public class NoneUserException : Exception
+{
+    public NoneUserException(String m) : base(m)
+    {
+    }
+
+    public NoneUserException() : base()
+    {
+    }
+}
+
 /// <summary>
 /// UserInfoClass 的摘要说明
 /// </summary>
@@ -328,47 +340,23 @@ public class UserInfoClass
     /// <param name="P_Int_MemberID">会员编号</param>
     public void SCIBind(string P_Str_srcTable, GridView  gvName, int P_Int_MemberID)
     {
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_GetShopCart", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        //MemberID.Value = P_Int_MemberID;
-        //myCmd.Parameters.Add(MemberID);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds = new DataSet();
-        //da.Fill(ds, P_Str_srcTable);
-        //gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
-        //gvName.DataBind();
-
-        //DataSet ds = dbObj.GetDataSet("select CartID,GoodsName,MarketPrice,MemberPrice,Num,SumPrice,MemberID from tb_ShopCart b,tb_GoodsInfo i where b.GoodsID=i.GoodsID and MemberID=@MemberID", P_Str_srcTable,
-        //    new SqlParameter("@MemberID", P_Int_MemberID));
-        //gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
-        //gvName.DataBind();
-
         DataSet ds = dbObj.GetDataSet(
-            "select order_items.order_item_id, items.name, order_items.price, order_items.count, order_items.price * order_items.count as sum_price, carts.user_id from " +
+            "select order_items.order_item_id, items.name, order_items.price, order_items.count, order_items.price * order_items.count as sum_price, carts.user_id, order_items.item_id from " +
             "carts join order_items on carts.order_id = order_items.order_id join items on order_items.item_id = items.item_id where carts.user_id = @user_id", P_Str_srcTable, 
             new SqlParameter("@user_id", P_Int_MemberID));
         gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
         gvName.DataBind();
+    }
+
+    public void OrderTabBind(GridView ItemData, int UserId, int OrderId)
+    {
+        DataSet ds = dbObj.GetDataSet(
+            "SELECT order_items.order_item_id, items.name, order_items.price, order_items.count, order_items.price * order_items.count AS sum_price, orders.user_id, order_items.item_id FROM " +
+            "orders JOIN order_items ON orders.order_id = order_items.order_id JOIN items ON order_items.item_id = items.item_id WHERE orders.user_id = @user_id AND orders.order_id = @order_id", "order",
+            new SqlParameter("@user_id", UserId),
+            new SqlParameter("@order_id", OrderId));
+        ItemData.DataSource = ds.Tables["order"].DefaultView;
+        ItemData.DataBind();
     }
     /// <summary>
     /// 返回合计总数的Ds
@@ -402,53 +390,10 @@ public class UserInfoClass
     /// <param name="P_Int_CartID">商品编号</param>
     public void DeleteShopCartByID(int P_Int_MemberID,int P_Int_CartID)
     {
-        DataSet ds =
-            dbObj.GetDataSet(
-            "select order_items.order_item_id from orders" +
-            "join carts" +
-            "on carts.order_id = orders.order_id" +
-            "join order_items" +
-            "on order_items.order_id = orders.order_id" +
-            "join items" +
-            "on items.item_id = order_items.item_id" +
-            "where orders.user_id = @user_id and order_items.order_item_id = @order_item_id",
-            "id",
-            new SqlParameter("@user_id", P_Int_MemberID),
-            new SqlParameter("@cart_id", P_Int_CartID));
-        int id = Convert.ToInt32(ds.Tables["id"].Rows[0][0].ToString());
+        dbObj.Update(
+            "delete from order_items where order_item_id = @order_item_id",
+            new SqlParameter("@order_item_id", P_Int_CartID));
 
-        dbObj.GetDataSet(
-            "delete from order_items where order_item_id = @order_item_id", null,
-            new SqlParameter("@order_item_id", id));
-
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_DeleteSCByID", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        //MemberID.Value = P_Int_MemberID;
-        //myCmd.Parameters.Add(MemberID);
-        ////添加参数
-        //SqlParameter CartID = new SqlParameter("@CartID", SqlDbType.BigInt, 8);
-        //CartID.Value = P_Int_CartID;
-        //myCmd.Parameters.Add(CartID);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
     }
     /// <summary>
     /// 当购物车中商品数量改变时，修改购物车中的信息
@@ -458,53 +403,9 @@ public class UserInfoClass
     /// <param name="P_Int_Num">商品数量</param>
     public void UpdateSCI(int P_Int_MemberID, int P_Int_CartID, int P_Int_Num)
     {
-        DataSet ds =
-            dbObj.GetDataSet(
-            "select order_items.order_item_id from orders" +
-            "join carts" +
-            "on carts.order_id = orders.order_id" +
-            "join order_items" +
-            "on order_items.order_id = orders.order_id" +
-            "join items" +
-            "on items.item_id = order_items.item_id" +
-            "where orders.user_id = @user_id and order_items.order_item_id = @order_item_id",
-            "id",
-            new SqlParameter("@user_id", P_Int_MemberID),
-            new SqlParameter("@cart_id", P_Int_CartID));
         dbObj.Update("update order_items set count = @count where order_item_id = @order_item_id",
-            new SqlParameter("@order_item_id", Convert.ToInt32(ds.Tables["id"].Rows[0][0].ToString())));
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_UpdateSC", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        //MemberID.Value = P_Int_MemberID;
-        //myCmd.Parameters.Add(MemberID);
-        ////添加参数
-        //SqlParameter CartID = new SqlParameter("@CartID", SqlDbType.BigInt, 8);
-        //CartID.Value = P_Int_CartID;
-        //myCmd.Parameters.Add(CartID);
-        ////添加参数
-        //SqlParameter Num = new SqlParameter("@Num", SqlDbType.BigInt, 8);
-        //Num.Value = P_Int_Num;
-        //myCmd.Parameters.Add(Num);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
+            new SqlParameter("@count", P_Int_Num),
+            new SqlParameter("@order_item_id", P_Int_CartID));
     }
     //*********************************结账********************************************************
     public void ddlCityBind(DropDownList ddlName)
@@ -708,6 +609,16 @@ public class UserInfoClass
         int c = ds.Tables["result"].Rows.Count;
         searchResult.DataSource = ds.Tables["result"].DefaultView;
         searchResult.DataBind();
+    }
+
+    public void OrderBind(Repeater OrderList, int UserId)
+    {
+        DataSet ds = dbObj.GetDataSet(
+            "SELECT order_id, create_at, status, name, finish_at, (SELECT Sum(price*count) FROM order_items WHERE order_id = orders.order_id) AS total_price, address FROM orders WHERE user_id = @user_id",
+            "result", new SqlParameter("@user_id", UserId));
+        int c = ds.Tables["result"].Rows.Count;
+        OrderList.DataSource = ds.Tables["result"].DefaultView;
+        OrderList.DataBind();
     }
 
     private int getInt32(DataSet ds, String tableName, int x, int y)

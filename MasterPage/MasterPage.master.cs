@@ -30,4 +30,22 @@ public partial class MasterPage : System.Web.UI.MasterPage
         }
 
     }
+
+    protected void search_Click(object sender, EventArgs e)
+    {
+        Session["address"] = "index.aspx";
+        Response.Redirect("~/User/Search.aspx?string=" + search_name.Text.Trim());
+    }
+    protected void lnkBtnOrderClick(object sender, EventArgs e)
+    {
+        if (Session["UID"] == null)
+        {
+            Response.Write("<script>alert('您还没有登录，请先登录！')</script>");
+
+        }
+        else
+        {
+            Response.Redirect("Orders.aspx");
+        }
+    }
 }

@@ -10,6 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Collections.Specialized;
 
 public partial class User_CommitGoods : System.Web.UI.Page
 {
@@ -90,8 +91,10 @@ public partial class User_CommitGoods : System.Web.UI.Page
     }
     protected void gvShopCart_RowUpdating(object sender, GridViewUpdateEventArgs e)
     {
+        IOrderedDictionary a = e.Keys, b = e.NewValues;
+
         int P_Int_CartID = Convert.ToInt32(gvShopCart.DataKeys[e.RowIndex].Value.ToString());
-        int P_Int_Num =Convert.ToInt32( ((TextBox)(gvShopCart.Rows[e.RowIndex].Cells[3].Controls[0])).Text.ToString());
+        int P_Int_Num =Convert.ToInt32( ((TextBox)(gvShopCart.Rows[e.RowIndex].Cells[2].Controls[0])).Text.ToString());
         if (IsValidNum(P_Int_Num.ToString()) == true)
         {
             ucObj.UpdateSCI(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID, P_Int_Num);

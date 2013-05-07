@@ -18,7 +18,7 @@ public partial class User_ClassGoods : System.Web.UI.Page
         if (!IsPostBack)
         {
             dlClassBind();
-            lbClassName.Text = GetClass(Convert.ToInt32(this.Request.QueryString["ClassID"].ToString()));
+            lbClassName.Text = GetClass(Convert.ToInt32(Request.QueryString["ClassID"].ToString()));
         }
     }
     public string GetClass(int P_Int_ClassID)
@@ -52,11 +52,11 @@ public partial class User_ClassGoods : System.Web.UI.Page
         SaveSubGoodsClass Goods = new SaveSubGoodsClass();
         Goods.GoodsID = int.Parse(DLName.DataKeys[e.Item.ItemIndex].ToString());
         string GoodsStyle = e.CommandArgument.ToString();
-        int index = GoodsStyle.IndexOf("|");
-        if (index < -1 || index + 1 >= GoodsStyle.Length)
-            return Goods;
-        Goods.GoodsWeight = float.Parse(GoodsStyle.Substring(0, index));
-        Goods.MemberPrice = float.Parse(GoodsStyle.Substring(index + 1));
+        //int index = GoodsStyle.IndexOf("|");
+        //if (index < -1 || index + 1 >= GoodsStyle.Length)
+        //    return Goods;
+        //Goods.GoodsWeight = float.Parse(GoodsStyle.Substring(0, index));
+        Goods.MemberPrice = float.Parse(GoodsStyle);
         return (Goods);
 
     }

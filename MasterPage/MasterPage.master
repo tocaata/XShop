@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="../main.css" type="text/css" />
     <title>母版页</title>
     <style type="text/css">
         body
@@ -29,12 +29,13 @@
                 <table style="width: 780px; height: 97px; font-size: 9pt; background-image: url(../Images/index/navigation.jpg);"
                     align="center" border="0" cellpadding="0" cellspacing="0">
                     <tr valign="top">
-                        <td colspan="2" align="left" style="width: 785px; height: 93px;" valign="top" rowspan="2">
+                        <td colspan="2" align="left" style="width: 785px; height: 93px;" valign="top">
                             <br />
                             <div style="float: right">
+                                <asp:LinkButton ID="lnkBtnOrder" runat="server" OnClick="lnkBtnOrderClick" Font-Names="宋体" Font-Underline="False" ForeColor="Black">订单</asp:LinkButton>|
                                 <asp:LinkButton ID="lnkbtnShopCart" runat="server" OnClick="lnkbtnShopCart_Click"
                                     Font-Names="宋体" Font-Underline="False" ForeColor="Black" CausesValidation="False">购物车</asp:LinkButton>
-                                |<a href="mailto:evercindylulu@163.com" style="color: Black; font-size: 9pt; text-decoration: none;">联系管理员</a>
+                                | <a href="mailto:evercindylulu@163.com" style="color: Black; font-size: 9pt; text-decoration: none;">联系管理员</a>
                             </div>
                             
                             <br />
@@ -44,7 +45,7 @@
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<asp:HyperLink ID="HyperLink7" runat="server"
                                 NavigateUrl="~/User/index.aspx?" ForeColor="White">商城首页</asp:HyperLink>&nbsp;
-                            <font color="white">/&nbsp; </font>
+                            <font color="white">/&nbsp;&nbsp; </font>
                             <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=1"
                                 ForeColor="White">团购</asp:HyperLink>&nbsp; <font color="white">/</font>&nbsp;<asp:HyperLink
                                     ID="HyperLink4" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=3" ForeColor="White">爆款广告</asp:HyperLink>
@@ -61,23 +62,28 @@
                 <table style="width: 780px; height: 420px; font-size: 9pt;" align="center" border="0"
                     cellpadding="0" cellspacing="0">
                     <tr>
-                        <td rowspan="2" valign="top" align="left" style="width: 220px; height: 666px">
+                        <td valign="top" align="left" style="width: 220px; height: 666px">
                             <uc7:LoadingControl ID="LoadingControl1" runat="server" />
                             <uc2:navigationControl ID="NavigationControl1" runat="server" />
                         </td>
-                        <td align="left" rowspan="2" valign="top" style="width: 560px">
+                        <td align="left" valign="top" style="width: 560px">
                             <table style="width: 560px; height: 120px;" background="../Images/index/产品展销---最底部.jpg"
                                 border="0" cellpadding="0" cellspacing="0">
-                                <tr style="width: 560px; height: 125px;" align="center">
-                                    <td background="../Images/index/banner.jpg" style="height: 125px">
+                                <tr style="width: 560px; height: auto;" align="center">
+                                    <td style="height: auto">
+                                        <div>
+                                            &nbsp;
+                                            <asp:TextBox ID="search_name" runat="server" Height="20px" Width="301px"></asp:TextBox>
+                                            &nbsp;
+                                            <asp:Button ID="search_button" runat="server" Height="30px" Width="40px" OnClick="search_Click"
+                                                Text="搜索" CausesValidation="False" />
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
                             <asp:ContentPlaceHolder ID="FartherMain" runat="server">
                             </asp:ContentPlaceHolder>
                         </td>
-                    </tr>
-                    <tr valign="top">
                     </tr>
                     <tr align="right">
                         <td colspan="2" align="center" cellpadding="0" cellspacing="0">

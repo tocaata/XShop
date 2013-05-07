@@ -43,14 +43,10 @@ public partial class index : System.Web.UI.Page
         SaveSubGoodsClass Goods = new SaveSubGoodsClass();
         Goods.GoodsID = int.Parse(DLName.DataKeys[e.Item.ItemIndex].ToString());
         string GoodsStyle = e.CommandArgument.ToString();
-        int index = GoodsStyle.IndexOf("|");
-        if (index < -1 || index + 1 >= GoodsStyle.Length)
-            return Goods;
         Goods.MemberPrice = float.Parse(GoodsStyle);
-        //Goods.MemberPrice =float.Parse( GoodsStyle.Substring(index + 1));
         return (Goods);
-
     }
+
     public void AddShopCart(DataListCommandEventArgs e, DataList DLName)
     {
         if (Session["UID"] != null)
@@ -129,10 +125,5 @@ public partial class index : System.Web.UI.Page
         {
             AddShopCart(e,DLDiscount);
         }
-    }
-    protected void search_Click(object sender, EventArgs e)
-    {
-        Session["address"] = "index.aspx";
-        Response.Redirect("~/User/Search.aspx?string=" + search_name.Text.Trim());
     }
 }
