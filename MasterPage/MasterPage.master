@@ -45,13 +45,8 @@
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<asp:HyperLink ID="HyperLink7" runat="server"
                                 NavigateUrl="~/User/index.aspx?" ForeColor="White">商城首页</asp:HyperLink>&nbsp;
-                            <font color="white">/&nbsp;&nbsp; </font>
-                            <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=1"
-                                ForeColor="White">团购</asp:HyperLink>&nbsp; <font color="white">/</font>&nbsp;<asp:HyperLink
-                                    ID="HyperLink4" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=3" ForeColor="White">爆款广告</asp:HyperLink>
-                            &nbsp; <font color="white">/&nbsp; </font>
-                            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=2"
-                                ForeColor="White">秒杀</asp:HyperLink>&nbsp;<br />
+                            <font color="white">/</font>&nbsp;
+                            <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/User/RHDGoods.aspx?Display=3" ForeColor="White">打折商品</asp:HyperLink>&nbsp;<br />
                             &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
                             <asp:Label ID="labDateTime" runat="server" Text="Label" Font-Names="宋体" ForeColor="White"></asp:Label>
                         </td>

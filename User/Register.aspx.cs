@@ -36,7 +36,15 @@ public partial class Register : System.Web.UI.Page
               P_Bl_Sex =false ;
             
             }
-            G_Int_MemberID = uiObj.AddUInfo(txtName.Text.Trim(), P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim());
+            try
+            {
+                G_Int_MemberID = uiObj.AddUInfo(txtName.Text.Trim(), P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim());
+            }
+            catch (DuplicateNameException dname)
+            {
+                Response.Write("<script>alert('" + dname.Message + "');location='index.aspx'</script>");
+                return;
+            }
 
             Session["Username"] = "";
             Session["Username"] =txtName.Text.Trim();

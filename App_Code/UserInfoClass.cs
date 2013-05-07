@@ -89,16 +89,34 @@ public class UserInfoClass
     /// <param name="P_Date_LoadDate">登录日期</param>
     public int AddUInfo(string P_Str_Name, bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address)
     {
-        int user_id = dbObj.GetInt32("Insert users(name,sex,password,phone,email,address) values(@Name,@Sex,@Password,@Phone,@Email,@Address);select @@identity;",
+        bool DuplicateName = false;
+        try
+        {
+            dbObj.GetInt32("SELECT user_id FROM users WHERE name = @name", new SqlParameter("@name", P_Str_Name));
+            DuplicateName = true;
+        }
+        catch (Exception)
+        {
+            int user_id = dbObj.GetInt32("Insert users(name,sex,password,true_name,phone,email,address) values(@Name,@Sex,@Password,@True_name,@Phone,@Email,@Address);select @@identity;",
             new SqlParameter("@Name", P_Str_Name), new SqlParameter("@sex", P_Bl_Sex),
-            new SqlParameter("@Password", P_Str_Password), 
-            new SqlParameter("@Phone", P_Str_Phonecode), 
+            new SqlParameter("@Password", P_Str_Password),
+            new SqlParameter("@True_name", P_Str_TrueName),
+            new SqlParameter("@Phone", P_Str_Phonecode),
             new SqlParameter("@Email", P_Str_Emails),
             new SqlParameter("@Address", P_Str_Address));
 
-        int order_id = dbObj.GetInt32("insert into orders (name, user_id, status) values ('cart', @user_id, 0); select @@identity", new SqlParameter("@user_id", user_id));
-        dbObj.Update("insert into carts (order_id, user_id) values (@order_id, @user_id)", new SqlParameter("@order_id", order_id), new SqlParameter("@user_id", user_id));
-        return user_id;
+            int order_id = dbObj.GetInt32("insert into orders (name, user_id, status) values ('cart', @user_id, 0); select @@identity", new SqlParameter("@user_id", user_id));
+            dbObj.Update("insert into carts (order_id, user_id) values (@order_id, @user_id)", new SqlParameter("@order_id", order_id), new SqlParameter("@user_id", user_id));
+            return user_id;
+        }
+        finally
+        {
+            if (DuplicateName)
+            {
+                throw new DuplicateNameException("该用户名已经存在，请换一个用户名重新注册");
+            }
+        }
+        return -1;
     }
     /// <summary>
     /// 修改会员充值

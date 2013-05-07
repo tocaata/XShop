@@ -32,9 +32,7 @@ public partial class User_GoodsDetail : System.Web.UI.Page
         //txtFName.Text = GetClass(Convert.ToInt32(ds.Tables["GoodsInfo"].Rows[0][1].ToString()));
         txtMarketPrice.Text =mcObj.VarStr(ds.Tables["GoodsInfo"].Rows[0][2].ToString(),2);
         ImageMapPhoto.ImageUrl = ds.Tables["GoodsInfo"].Rows[0][6].ToString();
-        cbxCommend.Checked = Convert.ToBoolean(ds.Tables["GoodsInfo"].Rows[0][11].ToString());
-        cbxHot.Checked = Convert.ToBoolean(ds.Tables["GoodsInfo"].Rows[0][12].ToString());
-        cbxDiscount.Checked = Convert.ToBoolean(ds.Tables["GoodsInfo"].Rows[0][13].ToString());
+        cbxDiscount.Checked = Convert.ToBoolean(ds.Tables["GoodsInfo"].Rows[0][11].ToString());
         txtShortDesc.Text = ds.Tables["GoodsInfo"].Rows[0][3].ToString();
     }
     protected void btnExit_Click(object sender, EventArgs e)

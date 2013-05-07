@@ -40,18 +40,7 @@
                                     </asp:ImageMap></td>
 							</tr>
 							<tr>
-								<td align="left" style="height: 20px; width: 93px;">是否团购：
-								</td>
-								<td colSpan="3" style="height: 20px; width: 371px;" align="left"><asp:checkbox id="cbxCommend" runat="server" Checked="True" AutoPostBack="True" Enabled="False"></asp:checkbox></td>
-							</tr>
-							
-							<tr>
-								<td align="left" style="width: 93px">是否爆款：
-								</td>
-								<td colSpan="3" align="left" style="width: 371px"><asp:checkbox id="cbxHot" runat="server" Checked="True" AutoPostBack="True" Enabled="False"></asp:checkbox></td>
-							</tr>
-							<tr>
-								<td align="left" style="width: 93px">是否秒杀：
+								<td align="left" style="width: 93px">是否打折：
 								</td>
 								<td colSpan="3" align="left" style="width: 371px"><asp:checkbox id="cbxDiscount" runat="server" Checked="True" AutoPostBack="True" Enabled="False"></asp:checkbox></td>
 							</tr>
