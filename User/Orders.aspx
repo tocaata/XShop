@@ -4,7 +4,7 @@
     <asp:Label ID="lblTitleInfo" runat="server">订单</asp:Label>
     <br />
     <asp:GridView ID="OrderList" CssClass="table_cart" DataKeyNames="order_item_id" runat="server" AllowPaging="True"
-        AutoGenerateColumns="False" PageSize="5" OnPageIndexChanging="gvShopCart_PageIndexChanging">
+        AutoGenerateColumns="False" PageSize="5" OnPageIndexChanging="OrderIndexChange">
         <Columns>
             <asp:HyperLinkField DataTextField="name" HeaderText="商品名称" 
                 DataNavigateUrlFields="item_id" 

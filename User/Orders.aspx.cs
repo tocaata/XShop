@@ -34,4 +34,11 @@ public partial class User_Orders : System.Web.UI.Page
             Response.Redirect("~/User/GoodsDetail.aspx?GoodsID=");
         }
     }
+
+    protected void OrderIndexChange(object sender, GridViewPageEventArgs e)
+    {
+        OrderList.PageIndex = e.NewPageIndex;
+        ucObj.OrderTabBind(OrderList, int.Parse(Session["UID"].ToString()), 2);
+
+    }
 }
