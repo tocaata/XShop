@@ -13,6 +13,7 @@
 <th>收货人</th>
 <th>收货地址</th>
 <th>订单金额</th>
+<th>操作</th>
 </tr>
 </thead>
 </HeaderTemplate>
@@ -25,7 +26,7 @@
 <br />
 </td>
 <td>
-<%# Eval("status")%>
+  <%# StatusToString(Convert.ToInt32(Eval("status"))) %>
 </td>
 <td>
 <%# Eval("name") %>
@@ -34,7 +35,13 @@
 <%# Eval("address") %>
 </td>
 <td>
-￥<%# Eval("total_price")%></td>
+￥<%# Eval("total_price") %></td>
+<td>
+  <asp:LinkButton ID="LnkBtnConfirm" runat="server" CommandName="confirm" Visible='<%# Convert.ToInt32(Eval("status")) == 3 ? true : false %>'
+    CommandArgument='<%# Eval("order_id") %>'>确认收货</asp:LinkButton>
+  <asp:LinkButton ID="LinkButtonReturn" runat="server" CommandName="return" Visible='<%# Convert.ToInt32(Eval("status")) == 4 ? true : false %>'
+    CommandArgument='<%# Eval("order_id") %>'>退货</asp:LinkButton>
+</td>
 </tr>
 </ItemTemplate>
 <FooterTemplate>

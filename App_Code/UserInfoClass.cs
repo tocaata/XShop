@@ -639,6 +639,29 @@ public class UserInfoClass
         OrderList.DataBind();
     }
 
+
+    // 如果该订单为发货状态，将状态改为收货状态
+    // 行为Action
+    // 0：修改为收货状态； 1：修改为退货状态
+    public void OrderChangeStatus(int OrderID, int Action)
+    {
+        int[,] statHash = new int[,]{{2, 3, 4}, {3, 4, 5}}; //从状态2 -- 3, 3 --> 4 , 4 --> 5
+        DataSet ds = dbObj.GetDataSet(
+            "SELECT status FROM orders WHERE order_id = @order_id",
+            "order", new SqlParameter("@order_id", OrderID)
+            );
+        int status = Convert.ToInt32(ds.Tables["order"].Rows[0][0].ToString());
+        if (status != statHash[0,Action])
+        {
+            throw new Exception("无法改变订单状态，不满足改变订单状态条件");
+        }
+        else
+        {
+            // 状态3 为发货状态，状态4 为收货状态
+            dbObj.Update("UPDATE orders SET status = " + statHash[1,Action] + " WHERE order_id = @order_id", new SqlParameter("@order_id", OrderID));
+        }
+    }
+
     private int getInt32(DataSet ds, String tableName, int x, int y)
     {
         return Convert.ToInt32(ds.Tables[tableName].Rows[x][y].ToString());
