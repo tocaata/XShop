@@ -30,17 +30,15 @@ public partial class Manger_MemberAdd : System.Web.UI.Page
         }
         else
         {
-            int P_Int_returnValue = mc.AddAdmin(txtName.Text.Trim(),txtPass.Text.Trim());
-            if (P_Int_returnValue==100)
+            try
+            {
+                mc.AddAdmin(txtName.Text.Trim(), txtPass.Text.Trim());
+                Response.Write("<script>alert('添加成功！');location='javascript:history.go(-1)';</script>");
+            }
+            catch (Exception)
             {
                 Response.Write("<script>alert('该管理员名已存在！');location='javascript:history.go(-1)';</script>");
             }
-            else
-            {
-                Response.Write("<script>alert('添加成功！');location='javascript:history.go(-1)';</script>");
-            
-            }
-        
         }
     }
 }

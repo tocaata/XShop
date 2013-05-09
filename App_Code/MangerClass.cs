@@ -40,32 +40,31 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_ProcName">执行语句的存储过程名</param>
     /// <returns></returns>
-    public int IsExistsNI(string P_Str_ProcName)
+    public bool IsExistsNI(string TableName)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand(P_Str_ProcName, myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnValue", SqlDbType.Int, 4);
-        returnValue.Direction = ParameterDirection.ReturnValue;
-        //执行过程
-        myConn.Open();
         try
         {
-            myCmd.ExecuteNonQuery();
+            dbObj.GetInt32("SELECT " + TableName.Substring(0, TableName.Length - 1) + "_id FROM " + TableName + " WHERE DATEDIFF(day, create_at, getdate()) < 1");
+            return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw (ex);
+            return false;
         }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
+    }
 
-        }
-        int P_Int_returnValue = Convert.ToInt32(returnValue.Value.ToString());
-        return P_Int_returnValue;
+    // 得到一天以内的所有订单
+    public DataSet GetNewOrder(string TableSrc)
+    {
+        DataSet ds = dbObj.GetDataSet("SELECT * FROM orders LEFT JOIN carts ON carts.order_id = orders.order_id WHERE DATEDIFF(day, orders.create_at, getdate()) < 1 AND carts.cart_id IS NULL", TableSrc);
+        return ds;
+    }
+
+    // 得到一天以内新建的用户
+    public DataSet GetNewUser(string TableSrc)
+    {
+        DataSet ds = dbObj.GetDataSet("SELECT * FROM users WHERE DATEDIFF(day, create_at, getdate()) < 1", TableSrc);
+        return ds;
     }
     /// <summary>
     /// 绑定最新信息(最新订单信息，最新用户信息量)
@@ -116,6 +115,13 @@ public class MangerClass
     /// <param name="P_Int_IsConsignment">订单是否已发贷</param>
     /// <param name="P_Int_IsPigeonhole">订单是否已归档</param>
     /// <returns>返回Sqlcommand</returns>
+    /// 
+    public DataSet OrderByStatus(bool flag, int Status, string TableSrc)
+    {
+        return dbObj.GetDataSet("SELECT * FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE orders.status " + (flag ? "=" : "<>") + " @status AND carts.cart_id IS NULL",
+            "result", new SqlParameter("@status", Status));
+    }
+
     public SqlCommand GetOrderInfo(int P_Int_Flag, int P_Int_IsMember, int P_Int_MemberID, int P_Int_OrderID, int P_Int_Confirm, int P_Int_Payed, int P_Int_Shipped, int P_Int_Finished, int P_Int_IsConfirm, int P_Int_IsPayment, int P_Int_IsConsignment, int P_Int_IsPigeonhole)
     {
         SqlConnection myConn = dbObj.GetConnection();
@@ -610,18 +616,7 @@ public class MangerClass
     /// <returns>返回商品信息的数据集</returns>
     public DataSet GetGoodsInfoDs(string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetGoodsInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteNonQuery();
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        myCmd.Dispose();
-        myConn.Dispose();
-        return ds;
+        return dbObj.GetDataSet("SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id", P_Str_srcTable);
     }
     /// <summary>
     /// 获取指定商品信息的数据集
@@ -660,23 +655,28 @@ public class MangerClass
     /// <returns>返回搜索商品信息的数据集</returns>
     public DataSet SearchGoodsInfoDs(string P_Str_srcTable, string P_Str_keywords)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_SearchGoodsInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter keywords = new SqlParameter("@keywords", SqlDbType.VarChar, 50);
-        keywords.Value = P_Str_keywords;
-        myCmd.Parameters.Add(keywords);
+        return dbObj.GetDataSet(
+            "SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id WHERE " +
+            "items.name like '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or categories.name like '%' + CONVERT(NVARCHAR(50),@keywords) +'%' or items.description like '%' + CONVERT(NVARCHAR(50),@keywords) + '%'",
+            P_Str_srcTable, new SqlParameter("@keywords", P_Str_keywords));
 
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteNonQuery();
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        myCmd.Dispose();
-        myConn.Dispose();
-        return ds;
+        //SqlConnection myConn = dbObj.GetConnection();
+        //SqlCommand myCmd = new SqlCommand("Proc_SearchGoodsInfo", myConn);
+        //myCmd.CommandType = CommandType.StoredProcedure;
+        ////添加参数
+        //SqlParameter keywords = new SqlParameter("@keywords", SqlDbType.VarChar, 50);
+        //keywords.Value = P_Str_keywords;
+        //myCmd.Parameters.Add(keywords);
+
+        ////执行过程
+        //myConn.Open();
+        //myCmd.ExecuteNonQuery();
+        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
+        //DataSet ds = new DataSet();
+        //da.Fill(ds, P_Str_srcTable);
+        //myCmd.Dispose();
+        //myConn.Dispose();
+        //return ds;
     }
     /// <summary>
     /// 删除指定的商品信息
@@ -791,38 +791,25 @@ public class MangerClass
     /// <returns></returns>
     public int AddAdmin(string P_Str_Admin, string P_Str_Password)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_AddAdmin", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Admin = new SqlParameter("@Admin", SqlDbType.VarChar, 50);
-        Admin.Value = P_Str_Admin;
-        myCmd.Parameters.Add(Admin);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnValue", SqlDbType.Int, 4);
-        returnValue.Direction = ParameterDirection.ReturnValue;
-        //执行过程
-        myConn.Open();
+        bool adminExisted = false;
         try
         {
-            myCmd.ExecuteNonQuery();
+            dbObj.GetInt32("SELECT admin_id FROM admins WHERE name = @name", new SqlParameter("@name", P_Str_Admin));
+            adminExisted = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw (ex);
+            return dbObj.GetInt32("INSERT INTO admins (name, password) VALUES (@name, @password);select @@identity;", new SqlParameter("@name", P_Str_Admin), new SqlParameter("@password", P_Str_Password));
         }
         finally
         {
-            myCmd.Dispose();
-            myConn.Close();
-
+            if (adminExisted)
+            {
+                throw new DuplicateNameException("The name has existed.");
+            }
         }
-        int P_Int_returnValue = Convert.ToInt32(returnValue.Value.ToString());
-        return P_Int_returnValue;
+
+        return -1;
     }
     /// <summary>
     /// 判断管理员是否存在
@@ -874,39 +861,16 @@ public class MangerClass
     /// <returns></returns>
     public DataSet ReturnAIDs(string P_Str_Name, string P_Str_Password, string P_Str_srcTable)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetAInfo", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter Name = new SqlParameter("@Name", SqlDbType.VarChar, 50);
-        Name.Value = P_Str_Name;
-        myCmd.Parameters.Add(Name);
-        //添加参数
-        SqlParameter Password = new SqlParameter("@Password", SqlDbType.VarChar, 50);
-        Password.Value = P_Str_Password;
-        myCmd.Parameters.Add(Password);
-        //执行过程
-        myConn.Open();
-        try
+        DataSet ds = dbObj.GetDataSet("SELECT * FROM admins WHERE name = @name AND password = @password", P_Str_srcTable, 
+            new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
+        if (ds.Tables[P_Str_srcTable].Rows.Count > 0)
         {
-            myCmd.ExecuteNonQuery();
-
+            return ds;
         }
-        catch (Exception ex)
+        else
         {
-            throw (ex);
+            throw new Exception("错误的用户名或密码");
         }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-
-        }
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        return ds;
-
     }
     /// <summary>
     /// 获取所有管理员信息

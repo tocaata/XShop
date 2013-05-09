@@ -178,14 +178,6 @@ public class UserInfoClass
         DataSet ds = dbObj.GetDataSet("select * from categories where parent_id is null", "class");
         dlName.DataSource = ds.Tables["class"].DefaultView;
         dlName.DataBind();
-
-        //string P_Str_SqlStr = "select * from tb_Class";
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlDataAdapter da = new SqlDataAdapter(P_Str_SqlStr, myConn);
-        //DataSet ds = new DataSet();
-        //da.Fill(ds, "Class");
-        //dlName.DataSource = ds.Tables["Class"].DefaultView;
-        //dlName.DataBind();
     }
 
   /// <summary>
@@ -214,38 +206,6 @@ public class UserInfoClass
         DataSet ds = dbObj.GetDataSet("select top 4 * from items where " + stat + " = 1", P_Str_srcTable);
         DLName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
         DLName.DataBind();
-
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_DeplayGInfo", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter Deplay = new SqlParameter("@Deplay", SqlDbType.Int, 4);
-        //Deplay.Value = P_Int_Deplay;
-        //myCmd.Parameters.Add(Deplay);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds = new DataSet();
-
-        //da.Fill(ds, P_Str_srcTable);
-        //DLName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
-        //DLName.DataBind();
-    
     }
     /// <summary>
     /// 以商品类别分类绑定商品信息
@@ -259,35 +219,6 @@ public class UserInfoClass
             new SqlParameter("@cat_id", P_Int_ClassID));
         DLName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
         DLName.DataBind();
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_DeplayGIByC", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.BigInt, 8);
-        //ClassID.Value = P_Int_ClassID;
-        //myCmd.Parameters.Add(ClassID);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds = new DataSet();
-        //da.Fill(ds, P_Str_srcTable);
-        //DLName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
-        //DLName.DataBind();
     }
     //**************************购物车**********************************************************
     /// <summary>
@@ -312,43 +243,6 @@ public class UserInfoClass
             dbObj.Update("insert into order_items (item_id, order_id, count, price) select item_id, @order_id, 1, price from items where item_id = @item_id",
                 new SqlParameter("@order_id", OrderId), new SqlParameter("@item_id", P_Int_GoodsID));
         }
-        
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_InsertShopCart", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
-        //GoodsID.Value = P_Int_GoodsID;
-        //myCmd.Parameters.Add(GoodsID);
-        ////添加参数
-        //SqlParameter MemberPrice = new SqlParameter("@MemberPrice", SqlDbType.Float, 8);
-        //MemberPrice.Value = P_Flt_MemberPrice;
-        //myCmd.Parameters.Add(MemberPrice);
-        ////添加参数
-        //SqlParameter MemberID = new SqlParameter("@MemberID", SqlDbType.BigInt, 8);
-        //MemberID.Value = P_Int_MemberID;
-        //myCmd.Parameters.Add(MemberID);
-        ////添加参数
-        //SqlParameter GoodsWeight = new SqlParameter("@GoodsWeight", SqlDbType.Float , 8);
-        //GoodsWeight.Value = P_Flt_GoodsWeight;
-        //myCmd.Parameters.Add(GoodsWeight);
-        ////执行过程
-        //myConn.Open();
-        //try
-        //{
-        //    myCmd.ExecuteNonQuery();
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw (ex);
-        //}
-        //finally
-        //{
-        //    myCmd.Dispose();
-        //    myConn.Close();
-
-        //}
     }
     /// <summary>
     /// 显示购物车中的信息
@@ -491,7 +385,7 @@ public class UserInfoClass
             new SqlParameter("@user_id", user_id));
 
         // 设定购物车指向新的订单
-        // 订单状态, 0: 购物车状态, 1:未付款状态, 2: 付款状态， 3：出货状态， 4：收货状态
+        // 订单状态, 0: 购物车状态, 1:未付款状态, 2: 付款状态， 3：出货状态， 4：收货状态, 5: 退货状态
         dbObj.Update(
             "update carts " + 
             "set order_id = @order_id " + 
@@ -632,7 +526,8 @@ public class UserInfoClass
     public void OrderBind(Repeater OrderList, int UserId)
     {
         DataSet ds = dbObj.GetDataSet(
-            "SELECT order_id, create_at, status, name, finish_at, (SELECT Sum(price*count) FROM order_items WHERE order_id = orders.order_id) AS total_price, address FROM orders WHERE user_id = @user_id",
+            "SELECT orders.order_id, orders.create_at, orders.status, orders.name, orders.finish_at, (SELECT Sum(price*count) FROM order_items WHERE order_id = orders.order_id) AS total_price," +
+            " orders.address FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE orders.user_id = @user_id AND carts.cart_id IS NULL",
             "result", new SqlParameter("@user_id", UserId));
         int c = ds.Tables["result"].Rows.Count;
         OrderList.DataSource = ds.Tables["result"].DefaultView;

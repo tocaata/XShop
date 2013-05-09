@@ -31,39 +31,27 @@ public partial class Manger_Main : System.Web.UI.Page
     }
     public void gvNewOBind()
     {
-        int P_Int_returnValue = mcObj.IsExistsNI("Proc_GetNOI");
-        if (P_Int_returnValue == -100)
+        if (mcObj.IsExistsNI("orders"))
         {
-           
-        }
-        else
-        {
-            SqlCommand myCmd = mcObj.GetNewICmd("Proc_GetNOI");
-            mcObj.gvBind(gvOrderList,myCmd,"OrderInfo");
+            DataSet ds = mcObj.GetNewOrder("OrderInfo");
+            gvOrderList.DataSource = ds.Tables["OrderInfo"].DefaultView;
+            gvOrderList.DataBind();
         }
     }
     public void gvNewMBind()
     {
-        int P_Int_returnValue = mcObj.IsExistsNI("Proc_GetNMI");
-        if (P_Int_returnValue == -100)
+        if (mcObj.IsExistsNI("users"))
         {
-           
+            DataSet ds = mcObj.GetNewUser("MemberInfo");
+            gvMember.DataSource = ds.Tables["MemberInfo"].DefaultView;
+            gvMember.DataBind();
         }
-        else
-        {
-            SqlCommand myCmd = mcObj.GetNewICmd("Proc_GetNMI");
-            mcObj.gvBind(gvMember,myCmd,"MemberInfo");
-        
-        }
-    
-    
     }
 
     protected void gvOrderList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvOrderList.PageIndex = e.NewPageIndex;
         gvNewOBind();
-
     }
     protected void gvMember_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
