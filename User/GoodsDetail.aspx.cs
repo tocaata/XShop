@@ -13,11 +13,14 @@ using System.Data.SqlClient;
 public partial class User_GoodsDetail : System.Web.UI.Page
 {
     MangerClass mcObj = new MangerClass();
+    UserInfoClass urObj = new UserInfoClass();
+    DBClass dbObj = new DBClass();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             GetGoodsInfo();
+            CommentBind(Convert.ToInt32(Request["GoodsID"].Trim()));
         }
     }
     public string GetClass(int P_Int_ClassID)
@@ -28,12 +31,8 @@ public partial class User_GoodsDetail : System.Web.UI.Page
     public void GetGoodsInfo()
     {
         DataSet ds = mcObj.GetGoodsInfoByIDDs(Convert.ToInt32(Request["GoodsID"].Trim()), "GoodsInfo");
-        txtName.Text = ds.Tables["GoodsInfo"].Rows[0][1].ToString();
-        //txtFName.Text = GetClass(Convert.ToInt32(ds.Tables["GoodsInfo"].Rows[0][1].ToString()));
-        txtMarketPrice.Text =mcObj.VarStr(ds.Tables["GoodsInfo"].Rows[0][2].ToString(),2);
-        ImageMapPhoto.ImageUrl = ds.Tables["GoodsInfo"].Rows[0][6].ToString();
-        cbxDiscount.Checked = Convert.ToBoolean(ds.Tables["GoodsInfo"].Rows[0][11].ToString());
-        txtShortDesc.Text = ds.Tables["GoodsInfo"].Rows[0][3].ToString();
+        DetailsView.DataSource = ds.Tables["GoodsInfo"].DefaultView;
+        DetailsView.DataBind();
     }
     protected void btnExit_Click(object sender, EventArgs e)
     {
@@ -45,5 +44,28 @@ public partial class User_GoodsDetail : System.Web.UI.Page
             string addr = Session["address"].ToString();
             Response.Redirect(addr);
         } 
+    }
+
+    protected void CommentBind(int ItemID)
+    {
+        DataSet ds = urObj.GetComment(ItemID, "comments");
+        Comments.DataSource = ds.Tables["comments"].DefaultView;
+        Comments.DataBind();
+    }
+    protected void Submit_Click(object sender, EventArgs e)
+    {
+        int UserId = Convert.ToInt32(Session["UID"].ToString());
+        int ItemId = Convert.ToInt32(Request["GoodsID"].Trim());
+        if (urObj.HasRightComment(UserId, ItemId))
+        {
+            dbObj.Update("INSERT INTO comments (user_id, item_id, comment) VALUES (@user_id, @item_id, @comment)", new SqlParameter("@user_id", UserId),
+                new SqlParameter("@item_id", ItemId), new SqlParameter("@comment", Comment.Text.ToString()));
+            GetGoodsInfo();
+            CommentBind(Convert.ToInt32(Request["GoodsID"].Trim()));
+        }
+        else
+        {
+            Response.Write("<script>alert('没有买过该商品，不能评价！');location='javascript:history.go(-1)';</script>");
+        }
     }
 }

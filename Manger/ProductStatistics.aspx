@@ -28,14 +28,14 @@
               <asp:BoundField DataField="item_id" HeaderText="商品ID" InsertVisible="False" 
                 ReadOnly="True" SortExpression="item_id" />
               <asp:BoundField DataField="name" HeaderText="商品名" SortExpression="name" />
-              <asp:BoundField DataField="total_price" HeaderText="商品销售量" ReadOnly="True" SortExpression="total_price" />
+              <asp:BoundField DataField="count" HeaderText="商品销售量" ReadOnly="True" SortExpression="count" />
               <asp:BoundField DataField="total_price" HeaderText="商品总价格" 
                 ReadOnly="True" SortExpression="total_price" />
             </Columns>
           </asp:GridView>
           <asp:SqlDataSource ID="Products" runat="server" 
             ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
-            SelectCommand="SELECT items.item_id, items.name, SUM(order_items.count), SUM(order_items.count * order_items.price) AS total_price FROM items JOIN order_items ON items.item_id = order_items.item_id GROUP BY items.item_id, items.name">
+            SelectCommand="SELECT items.item_id, items.name, SUM(order_items.count) AS count, SUM(order_items.count * order_items.price) AS total_price FROM items JOIN order_items ON items.item_id = order_items.item_id GROUP BY items.item_id, items.name">
           </asp:SqlDataSource>
           <br />
         </td>

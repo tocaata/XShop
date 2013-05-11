@@ -582,25 +582,9 @@ public class MangerClass
     public DataSet GetGoodsInfoByIDDs(int P_Int_GoodsID, string P_Str_srcTable)
     {
         DataSet good = dbObj.GetDataSet(
-            "select * from items where item_id = @item_id", P_Str_srcTable,
+            "select items.*, categories.name as class_name from items join categories on items.cat_id = categories.category_id where item_id = @item_id", P_Str_srcTable,
             new SqlParameter("@item_id", P_Int_GoodsID));
         return good;
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_GetGoodsInfoByID", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter GoodsID = new SqlParameter("@GoodsID", SqlDbType.BigInt, 8);
-        //GoodsID.Value = P_Int_GoodsID;
-        //myCmd.Parameters.Add(GoodsID);
-        ////执行过程
-        //myConn.Open();
-        //myCmd.ExecuteNonQuery();
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds = new DataSet();
-        //da.Fill(ds, P_Str_srcTable);
-        //myCmd.Dispose();
-        //myConn.Dispose();
-        //return ds;
     }
     /// <summary>
     /// 获取搜索商品信息的数据集

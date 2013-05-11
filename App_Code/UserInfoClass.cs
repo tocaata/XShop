@@ -561,6 +561,26 @@ public class UserInfoClass
         }
     }
 
+    public DataSet GetComment(int ItemID, string Table)
+    {
+        return dbObj.GetDataSet("SELECT users.name AS name, comments.* FROM comments JOIN users ON users.user_id = comments.user_id WHERE item_id = @item_id", Table,
+            new SqlParameter("@item_id", ItemID));
+    }
+
+    public bool HasRightComment(int UserId, int ItemId)
+    {
+        try
+        {
+            dbObj.GetInt32("SELECT * FROM order_items JOIN orders ON orders.order_id = order_items.order_id WHERE order_items.item_id = @item_id AND orders.user_id = @user_id", 
+                new SqlParameter("@item_id", ItemId), new SqlParameter("@user_id", UserId));
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
     private int getInt32(DataSet ds, String tableName, int x, int y)
     {
         return Convert.ToInt32(ds.Tables[tableName].Rows[x][y].ToString());

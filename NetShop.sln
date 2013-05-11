@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "NetShop", ".", "{B450BF12-D1A1-4A75-B781-DE5929FBC466}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "XShop", ".", "{B450BF12-D1A1-4A75-B781-DE5929FBC466}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/NetShop"
@@ -18,7 +18,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "NetShop", ".", "{B450BF12-D
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "61024"
+		VWDPort = "65498"
 	EndProjectSection
 EndProject
 Global

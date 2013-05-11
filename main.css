@@ -66,3 +66,44 @@ table.good_list
     height: 158px;
     border-left: 1px dotted #F1F1F1;
 }
+
+input.text
+{
+    width: 300px;
+    height: 89px;
+}
+
+div.user_name{
+    width: 60px;
+    float: left;
+    height: 50px;
+    padding: 0 10px;
+    display: block;
+    text-align: center;
+}
+
+div.time
+{
+    text-align: right;
+}
+
+div.comment{
+    width: 300px;
+    _width: 290px;
+    height: 60px;
+    float: left;
+    color: #777;
+    border: 1px solid #F1F1F1;
+    margin-bottom: 6px;
+}
+
+td.td_header
+{
+    width: 70px;
+    height: 60px;
+}
+
+table.tab_detail
+{
+    margin-left: 30px;
+}

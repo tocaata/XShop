@@ -13,7 +13,7 @@
 </head>
 <body style="text-align: center">
   <form id="form1" runat="server">
-  <div style="width: 455px; height: 255px; background-image: url(../Images/index/网上商城购物系统后台登录页面.jpg);">
+  <div style="width: 455px; height: 255px;">
     <br />
     <br />
     <br />
