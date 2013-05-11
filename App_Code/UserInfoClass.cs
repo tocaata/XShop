@@ -192,13 +192,13 @@ public class UserInfoClass
         switch (P_Int_Deplay) 
         {
             case 0:
-                stat = "is_discount";
+                stat = "is_rush_buy";
                 break;
             case 1:
                 stat = "is_group_buy";
                 break;
             case 2:
-                stat = "is_rush_buy";
+                stat = "is_discount";
                 break;
             default:
                 throw(new Exception("Error Deplay"));

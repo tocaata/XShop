@@ -37,7 +37,7 @@ public partial class AdminManage_Login : System.Web.UI.Page
                    Session["AID"] = Convert.ToInt32(ds.Tables["AInfo"].Rows[0][0].ToString());
                    Session["Aname"] = ds.Tables["AInfo"].Rows[0][1].ToString();
                    //Response.Write("<script>alert('登陆成功');location='javascript:history.go(-1)';</script>");
-                   Response.Write("<script language=javascript>window.open('AdminIndex.aspx');window.close();</script>");
+                   Response.Write("<script language=javascript>location='AdminIndex.aspx';</script>");
                 }
                 catch (Exception)
                 {

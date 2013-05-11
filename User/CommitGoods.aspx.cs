@@ -19,9 +19,10 @@ public partial class User_CommitGoods : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
-        {  
-          ShopCartBind();
-          TotalDs();
+        {
+            GetUserId();
+            ShopCartBind();
+            TotalDs();
         }
     }
     //绑定市场价
@@ -44,13 +45,15 @@ public partial class User_CommitGoods : System.Web.UI.Page
     /// </summary>
     public void ShopCartBind()
     {
-        ucObj.SCIBind("ShopCart", gvShopCart, Convert.ToInt32(Session["UID"].ToString()));
+        int userId = GetUserId();
+        ucObj.SCIBind("ShopCart", gvShopCart, userId);
     }
    /// <summary>
    /// 显示购物车中的商品合计金额和商品数量
    /// </summary>
     public void  TotalDs()
     {
+       GetUserId();
        DataSet ds= ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()), "TotalInfo");
        lbSumPrice.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][0].ToString(),1);
        lbSumNum.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][1].ToString(),1);
@@ -65,6 +68,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     }
     protected void lnkbtnClear_Click(object sender, EventArgs e)
     {
+        GetUserId();
         ucObj.DeleteShopCart(Convert.ToInt32(Session["UID"].ToString()));
         ShopCartBind();
         TotalDs();
@@ -72,12 +76,14 @@ public partial class User_CommitGoods : System.Web.UI.Page
     }
     protected void gvShopCart_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
+        GetUserId();
         gvShopCart.PageIndex = e.NewPageIndex;
         ShopCartBind();
         
     }
     protected void gvShopCart_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
+        GetUserId();
         int P_Int_CartID = Convert.ToInt32(gvShopCart.DataKeys[e.RowIndex].Value.ToString());
         ucObj.DeleteShopCartByID(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID);
         ShopCartBind();
@@ -85,12 +91,14 @@ public partial class User_CommitGoods : System.Web.UI.Page
     }
     protected void gvShopCart_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
     {
+        GetUserId();
         gvShopCart.EditIndex = -1;
         ShopCartBind();
         TotalDs();
     }
     protected void gvShopCart_RowUpdating(object sender, GridViewUpdateEventArgs e)
     {
+        GetUserId();
         IOrderedDictionary a = e.Keys, b = e.NewValues;
 
         int P_Int_CartID = Convert.ToInt32(gvShopCart.DataKeys[e.RowIndex].Value.ToString());
@@ -113,6 +121,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     protected void gvShopCart_RowEditing(object sender, GridViewEditEventArgs e)
     {
         gvShopCart.EditIndex = e.NewEditIndex;
+        GetUserId();
         ShopCartBind();
         TotalDs();
     }
@@ -122,5 +131,16 @@ public partial class User_CommitGoods : System.Web.UI.Page
         return Regex.IsMatch(num, @"^\+?[1-9][0-9]*$");
     }
 
- 
+    protected int GetUserId()
+    {
+        try
+        {
+            return Convert.ToInt32(Session["UID"].ToString());
+        }
+        catch (Exception)
+        {
+            Response.Redirect("index.aspx?login=false");
+        }
+        return -1;
+    }
 }

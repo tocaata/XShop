@@ -18,11 +18,13 @@ public partial class index : System.Web.UI.Page
         
         if (!IsPostBack)
         {
+            if (Request["login"] != null && Request["login"] == "false")
+            {
+                Response.Write("<script>alert('请先登录，谢谢合作！');</script>");
+            }
             RefineBind();
             HotBind();
             DiscountBind();
-
-
         }
     }
     //绑定市场价格

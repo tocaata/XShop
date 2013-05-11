@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterPage/MasterPage.master" AutoEventWireup="true" CodeFile="Orders.aspx.cs" Inherits="User_Orders" Title="User Order List" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="FartherMain" runat="Server">
-<h3 style="text-align: center">订单列表</h3>
+  <h3 style="text-align: center">订单列表</h3>
 <br />
 <asp:repeater id="Orders" runat="server" onitemcommand="RepCmd">
 <HeaderTemplate>
-<table class="tb_void" width="100%">
+<table class="tb_void change_account" width="100%" align="center">
 <thead>
 <tr class="tb_void">
 <th>订单编号</th>

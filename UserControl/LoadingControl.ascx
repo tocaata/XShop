@@ -1,8 +1,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="LoadingControl.ascx.cs"
   Inherits="LoadingControl" %>
-<table style="border: 1px solid #d0d0d0; margin-top: 5px;margin-bottom: 5px; width: 220px; height: 117px" border="0" cellpadding="0" cellspacing="0" runat="server" id="tabLoading">
+<table class="change_account" style="border: 1px solid #2E9AFE;margin-top: 5px;width: 228px; height: 117px" cellpadding="0" cellspacing="0" runat="server" id="tabLoading">
   <tr>
-    <td align="center" valign="top" style="height: 117px; width: 220px;">
+    <td align="center" valign="top" style="height: 117px; width: 228px;">
       <table style="width: 178px; height: 90px; font-size: 9pt;">
         <tr style="width: 152px; height: auto; font-size: 9pt;">
           <td style="width: 160px" align="left">
@@ -41,11 +41,11 @@
     </td>
   </tr>
 </table>
-<table style="border: 1px solid #d0d0d0; margin-top: 5px;margin-bottom: 5px; width: 220px; height: 117px;
+<table class="change_account" style="border: 1px solid #2E9AFE; margin-top: 5px;width: 228px; height: 117px;
   font-size: 9pt; font-family: ËÎÌו;" runat="server" id="tabLoad" visible="false" border="0"
   cellpadding="0" cellspacing="0">
   <tr>
-    <td align="center" valign="top" style="height: 117px; width: 220px;">
+    <td align="center" valign="top" style="height: 117px; width: 228px;">
       <br />
       <br />
       <table style="width: 178px; height: 50px; font-size: 9pt;">

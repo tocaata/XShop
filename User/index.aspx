@@ -7,13 +7,20 @@
     border-bottom-style: none;">
     <tr align="left">
       <td align="left" style="width: 560px; height: 22px; vertical-align: top; text-align: left;"
-        colspan="0" rowspan="0" background="../Images/index/精品推荐.jpg">
+        colspan="0" rowspan="0">
+        <span class="name">精品推荐</span>
+        <span class="name_en">Refinement</span>
       </td>
     </tr>
     <tr>
       <td align="left" style="width: 560px;">
-        <asp:DataList ID="DLrefinement" DataKeyField="item_id" runat="server" RepeatColumns="4"
-          RepeatDirection="Horizontal" OnItemCommand="DLrefinement_ItemCommand">
+        <asp:DataList ID="DLrefinement" DataKeyField="item_id" runat="server" RepeatColumns="5"
+          RepeatDirection="Horizontal" OnItemCommand="DLrefinement_ItemCommand" 
+          CellPadding="4" ForeColor="#333333">
+          <AlternatingItemStyle BackColor="White" />
+          <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <ItemStyle BackColor="#EFF3FB" />
           <ItemTemplate>
             <table align="left" cellpadding="0" cellspacing="0" class="good_list">
               <tr align="center" style="width: 135px; height: 65px;">
@@ -41,20 +48,27 @@
               </tr>
             </table>
           </ItemTemplate>
+          <SelectedItemStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
         </asp:DataList>
       </td>
     </tr>
   </table>
   <table style="font-size: 9pt; font-family: 宋体;" cellpadding="0" cellspacing="0">
     <tr>
-      <td align="left" style="width: 560px; height: 22px; vertical-align: top; text-align: left;"
-        background="../Images/index/热销商品.jpg">
+      <td align="left" style="width: 560px; height: 22px; vertical-align: top; text-align: left;">
+        <span class="name">热销商品</span>
+        <span class="name_en">h o t</span>
       </td>
     </tr>
     <tr>
       <td style="width: 560px;" align="left">
-        <asp:DataList ID="DLHot" runat="server" DataKeyField="item_id" RepeatColumns="4"
-          RepeatDirection="Horizontal" OnItemCommand="DLHot_ItemCommand">
+        <asp:DataList ID="DLHot" runat="server" DataKeyField="item_id" RepeatColumns="5"
+          RepeatDirection="Horizontal" OnItemCommand="DLHot_ItemCommand" 
+          CellPadding="4" ForeColor="#333333">
+          <AlternatingItemStyle BackColor="White" />
+          <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <ItemStyle BackColor="#EFF3FB" />
           <ItemTemplate>
             <table align="left" cellpadding="0" cellspacing="0" class="good_list">
               <tr align="center" style="width: 135px; height: 65px; font-size: 9pt; font-family: 宋体;">
@@ -85,6 +99,7 @@
               </tr>
             </table>
           </ItemTemplate>
+          <SelectedItemStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
         </asp:DataList>
       </td>
     </tr>
@@ -92,13 +107,20 @@
   <table style="font-size: 9pt; font-family: 宋体; vertical-align: top; text-align: left;"
     cellpadding="0" cellspacing="0">
     <tr>
-      <td align="left" style="width: 560px; height: 22px;" background="../Images/index/特价商品.jpg">
+      <td align="left" style="width: 560px; height: 22px;">
+        <span class="name">特价商品</span>
+        <span class="name_en">At a sale</span>
       </td>
     </tr>
     <tr>
       <td align="left" style="width: 560px;">
-        <asp:DataList ID="DLDiscount" runat="server" DataKeyField="item_id" RepeatColumns="4"
-          RepeatDirection="Horizontal" OnItemCommand="DLDiscount_ItemCommand">
+        <asp:DataList ID="DLDiscount" runat="server" DataKeyField="item_id" RepeatColumns="5"
+          RepeatDirection="Horizontal" OnItemCommand="DLDiscount_ItemCommand" 
+          CellPadding="4" ForeColor="#333333">
+          <AlternatingItemStyle BackColor="White" />
+          <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+          <ItemStyle BackColor="#EFF3FB" />
           <ItemTemplate>
             <table align="left" cellpadding="0" cellspacing="0"  class="good_list">
               <tr align="center" valign="bottom" style="width: 135px; height: 65px; font-size: 9pt;
@@ -130,6 +152,7 @@
               </tr>
             </table>
           </ItemTemplate>
+          <SelectedItemStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
         </asp:DataList>
       </td>
     </tr>

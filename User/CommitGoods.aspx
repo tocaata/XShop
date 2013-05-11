@@ -2,12 +2,17 @@
     CodeFile="CommitGoods.aspx.cs" Inherits="User_CommitGoods" Title="Untitled Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FartherMain" runat="Server">
-    <asp:Label ID="lblTitleInfo" runat="server">购物车</asp:Label>
+<div class="title"><asp:Label ID="lblTitleInfo" runat="server">购物车</asp:Label></div>
+    
     <br />
-    <asp:GridView ID="gvShopCart" CssClass="table_cart" DataKeyNames="order_item_id" runat="server" AllowPaging="True"
+    <asp:GridView ID="gvShopCart" CssClass="table_cart" 
+      DataKeyNames="order_item_id" runat="server" AllowPaging="True"
         AutoGenerateColumns="False" PageSize="5" OnPageIndexChanging="gvShopCart_PageIndexChanging"
         OnRowCancelingEdit="gvShopCart_RowCancelingEdit" OnRowDeleting="gvShopCart_RowDeleting"
-        OnRowEditing="gvShopCart_RowEditing" OnRowUpdating="gvShopCart_RowUpdating">
+        OnRowEditing="gvShopCart_RowEditing"
+      OnRowUpdating="gvShopCart_RowUpdating" CellPadding="4" ForeColor="#333333" 
+      GridLines="None">
+        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
         <Columns>
             <asp:HyperLinkField DataTextField="name" HeaderText="商品名称" 
                 DataNavigateUrlFields="item_id" 
@@ -27,6 +32,12 @@
             <asp:CommandField ShowEditButton="True" EditText="编辑" UpdateText="保存" CancelText="取消" />
             <asp:CommandField ShowDeleteButton="True" DeleteText="删除" />
         </Columns>
+        <EditRowStyle BackColor="#999999" />
+        <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+        <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+        <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
     </asp:GridView>
     <asp:Label ID="lbLag" runat="server" Text="现购物车为空" Visible="False"></asp:Label>
     <br style="clear: both" />
