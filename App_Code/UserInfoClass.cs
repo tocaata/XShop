@@ -385,7 +385,7 @@ public class UserInfoClass
             new SqlParameter("@user_id", user_id));
 
         // 设定购物车指向新的订单
-        // 订单状态, 0: 购物车状态, 1:未付款状态, 2: 付款状态， 3：出货状态， 4：收货状态, 5: 退货状态
+        // 订单状态, 0: 购物车状态, 1:未付款状态, 2: 确认状态， 3：出货状态， 4：收货状态, 5: 退货状态
         dbObj.Update(
             "update carts " + 
             "set order_id = @order_id " + 
@@ -403,6 +403,9 @@ public class UserInfoClass
             new SqlParameter("@name", P_Str_RName),
             new SqlParameter("@order_id", getInt32(order, "order", 0, 0)));
 
+        //修改商品数量
+        dbObj.Update("UPDATE items SET items.quota = items.quota - order_items.count, items.sell_count = items.sell_count + order_items.count FROM orders JOIN order_items ON order_items.order_id = orders.order_id JOIN items ON order_items.item_id = items.item_id WHERE orders.order_id = @order_id", 
+            new SqlParameter("@order_id", getInt32(order, "order", 0, 0)));
         return getInt32(order, "order", 0, 0);
     }
 
@@ -513,11 +516,12 @@ public class UserInfoClass
             return sString.Substring(0, (index + nLeng + 1));
     }
 
-    public void SearchBind(DataList searchResult, String searchStr)
+    public void SearchBind(DataList searchResult, string searchStr)
     {
         DataSet ds = dbObj.GetDataSet(
-            "SELECT [item_id], [name], [price], [description], [image_url], [quota], [sell_count], [is_discount], [is_group_buy], [is_rush_buy] FROM [items] WHERE name like '%" + searchStr.Replace('\'', ' ') + "%'",
-            "result");
+            "SELECT [item_id], [name], [price], [description], [image_url], [quota], [sell_count], [is_discount], [is_group_buy], [is_rush_buy] FROM [items] WHERE name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' OR " +
+            "description LIKE '%' +  CONVERT(NVARCHAR(50),@keywords) + '%'",
+            "result", new SqlParameter("@keywords", searchStr));
         int c = ds.Tables["result"].Rows.Count;
         searchResult.DataSource = ds.Tables["result"].DefaultView;
         searchResult.DataBind();

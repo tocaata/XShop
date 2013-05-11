@@ -75,7 +75,6 @@ public partial class User_Search : System.Web.UI.Page
         else
         {
             Response.Write("<script>alert('请先登录，谢谢合作！');</script>");
-
         }
 
     }

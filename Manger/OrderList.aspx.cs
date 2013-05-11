@@ -26,7 +26,6 @@ public partial class Manger_OrderList : System.Web.UI.Page
     //绑定货品总额
     public string GetVarGF(string P_Str_GoodsFee)
     {
-
         return mcObj.VarStr(P_Str_GoodsFee, 2);
     }
     //绑定运费
@@ -44,63 +43,9 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void pageBind()
     {
-        if (this.Request.QueryString["OrderList"].ToString() != String.Empty.Trim())
-        {
-            int status = -1;
-            bool flag = false;
-            if (this.Request.QueryString["OrderList"].ToString() == "00" || this.Request.QueryString["OrderList"].ToString() == "01")
-            {
-                status = 4; //收货状态
-                if (this.Request.QueryString["OrderList"].ToString() == "00")
-                {
-
-                    flag = false;
-                }
-                else
-                {
-                    flag = true;
-                }
-            }
-            else if (this.Request.QueryString["OrderList"].ToString() == "10" || this.Request.QueryString["OrderList"].ToString() == "11")
-            {
-                status = 5; // 退货状态
-                if (this.Request.QueryString["OrderList"].ToString() == "10")
-                {
-                    flag = false;
-                }
-                else
-                {
-                    flag = true;
-                }
-            }
-            else if (this.Request.QueryString["OrderList"].ToString() == "20" || this.Request.QueryString["OrderList"].ToString() == "21")
-            {
-                status = 3; //出货状态
-                if (this.Request.QueryString["OrderList"].ToString() == "20")
-                {
-                    flag = false;
-                }
-                else
-                {
-                    flag = true;
-                }
-            }
-            else if (this.Request.QueryString["OrderList"].ToString() == "30" || this.Request.QueryString["OrderList"].ToString() == "31")
-            {
-                status = 2; // 订单确认状态
-                if (this.Request.QueryString["OrderList"].ToString() == "30")
-                {
-                    flag = false;
-                }
-                else
-                {
-                    flag = true;
-                }
-            }
-            DataSet ds = mcObj.OrderByStatus(flag, status, "orders");
-            gvOrderList.DataSource = ds.Tables["orders"].DefaultView;
-            gvOrderList.DataBind();
-        }
+        DataSet ds = mcObj.OrderByStatus(false, 1, "orders");
+        gvOrderList.DataSource = ds.Tables["orders"].DefaultView;
+        gvOrderList.DataBind();
     }
 
     /// <summary>
@@ -108,53 +53,10 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void gvSearchBind()
     {
-        int P_Int_Confirmed;
-        int P_Int_Payed;
-        int P_Int_Shipped;
-        int P_Int_Finished;
-        if (ddlConfirmed.SelectedIndex == 1)
-        {
-            P_Int_Confirmed = 1;
-        }
-        else
-        {
-            P_Int_Confirmed = 0;
-        }
-        if (ddlPayed.SelectedIndex == 1)
-        {
-            P_Int_Payed = 1;
-        }
-        else
-        {
-            P_Int_Payed = 0;
-        }
-        if (ddlShipped.SelectedIndex == 1)
-        {
-            P_Int_Shipped = 1;
-        }
-        else
-        {
-            P_Int_Shipped = 0;
-        }
-        if (ddlFinished.SelectedIndex == 1)
-        {
-            P_Int_Finished = 1;
-        }
-        else
-        {
-            P_Int_Finished = 0;
-        }
-        if (ddlKeyType.SelectedIndex == 0)
-        {
-            SqlCommand myCmd = mcObj.GetOrderInfo(0, 0, 0, Convert.ToInt32(txtKeyword.Text.Trim()), ddlConfirmed.SelectedIndex, ddlPayed.SelectedIndex, ddlShipped.SelectedIndex, ddlFinished.SelectedIndex, P_Int_Confirmed, P_Int_Payed, P_Int_Shipped, P_Int_Finished);
-            mcObj.gvBind(gvOrderList, myCmd, "OrderInfo");
-        }
-        else
-        {
-            SqlCommand myCmd = mcObj.GetOrderInfo(0, 1, Convert.ToInt32(txtKeyword.Text.Trim()), 0, ddlConfirmed.SelectedIndex, ddlPayed.SelectedIndex, ddlShipped.SelectedIndex, ddlFinished.SelectedIndex, P_Int_Confirmed, P_Int_Payed, P_Int_Shipped, P_Int_Finished);
-            mcObj.gvBind(gvOrderList, myCmd, "OrderInfo");
-        }
-
+        DataSet ds = mcObj.OrderByStatus(Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
+            Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue), "Orders");
+        gvOrderList.DataSource = ds.Tables["Orders"].DefaultView;
+        gvOrderList.DataBind();
     }
 
     protected void gvOrderList_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -173,16 +75,8 @@ public partial class Manger_OrderList : System.Web.UI.Page
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        if (txtKeyword.Text == "")
-        {
-            Response.Write("<script>alert('查询时关键字不能为空！')</script>");
-        }
-        else
-        {
-            P_Int_IsSearch = 1;
-            gvSearchBind();
-        }
-
+        P_Int_IsSearch = 1;
+        gvSearchBind();
     }
     protected void gvOrderList_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {

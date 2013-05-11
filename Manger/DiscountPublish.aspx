@@ -1,8 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Product.aspx.cs" Inherits="Manger_Product" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DiscountPublish.aspx.cs" Inherits="Manger_DiscountPublish" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
   <title>无标题页</title>
 </head>
 <body style="font-family: 宋体; font-size: 9pt;">

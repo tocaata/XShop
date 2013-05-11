@@ -10,29 +10,29 @@
 
 .right_div 
 {
-    float: right
+    float: right;
 }
 
-.table_cart td {
+td.table_cart { 
     padding: 13px 0;
     vertical-align: top;
     border-top: 1px solid #D0D0D0;
     border-bottom: 1px solid #d0d0d0;
 }
 
-.tb_void table {
+table.tb_void {
     border-collapse: collapse;
     border: solid #E6E6E6;
-    border-width: 0 1px 1px 1px;
+    border-width: 1px;
 }
 
-.tb_void tr {
+tr.tb_void {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
 }
 
-.tb_void td 
+td.tb_void 
 {
     vertical-align: top;
     padding-top: 10px;
@@ -40,4 +40,29 @@
     border-width: 1px 0 0 1px;
     padding: 5px 4px;
     text-align: center;
+}
+
+img.class_image
+{
+    max-width: 28px;
+    max-height: 28px;
+}
+
+img.item_image
+{
+    max-width: 86px;
+    max-height: 86px;
+}
+
+img.good_detail
+{
+    max-width: 300px;
+    max-height: 300px;
+}
+
+table.good_list
+{
+    width: 135px; 
+    height: 158px;
+    border-left: 1px dotted #F1F1F1;
 }

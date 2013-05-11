@@ -13,7 +13,6 @@
         <th align="left" height="25">
           &nbsp;&nbsp; 订单管理<asp:Label ID="lblTitleInfo" runat="server"></asp:Label>
         </th>
-        <tr>
         </tr>
     </table>
     <table cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
@@ -26,7 +25,7 @@
               </td>
               <td>
                 <asp:DropDownList ID="ddlKeyType" runat="server">
-                  <asp:ListItem Selected="True" Value="OrderID">订单号</asp:ListItem>
+                  <asp:ListItem Selected="True" Value="order_id">订单号</asp:ListItem>
                   <asp:ListItem Value="MemberID">会员号</asp:ListItem>
                 </asp:DropDownList>
                 <asp:TextBox ID="txtKeyword" runat="server"></asp:TextBox>
@@ -39,12 +38,7 @@
                 订单状态：
               </td>
               <td>
-                <asp:DropDownList ID="ddlConfirmed" runat="server">
-                  <asp:ListItem Selected="True" Value="All">是否已确认</asp:ListItem>
-                  <asp:ListItem Value="1">已确认</asp:ListItem>
-                  <asp:ListItem Value="0">未确认</asp:ListItem>
-                </asp:DropDownList>
-                <asp:DropDownList ID="ddlPayed" runat="server">
+                <%--<asp:DropDownList ID="ddlPayed" runat="server">
                   <asp:ListItem Selected="True" Value="All">是否已付款</asp:ListItem>
                   <asp:ListItem Value="2">已付款</asp:ListItem>
                   <asp:ListItem Value="0">未付款</asp:ListItem>
@@ -58,6 +52,31 @@
                   <asp:ListItem Selected="True" Value="All">是否已归档</asp:ListItem>
                   <asp:ListItem Value="1">已归档</asp:ListItem>
                   <asp:ListItem Value="0">未归档</asp:ListItem>
+                </asp:DropDownList>--%>
+                <asp:DropDownList ID="ddlConfirmed" runat="server">
+                  <asp:ListItem Selected="True" Value="2">是否已确认</asp:ListItem>
+                  <asp:ListItem Value="1">已确认</asp:ListItem>
+                  <asp:ListItem Value="0">未确认</asp:ListItem>
+                </asp:DropDownList>
+                <asp:DropDownList ID="ddlShipped" runat="server">
+                  <asp:ListItem Selected="True" Value="2">是否已发货</asp:ListItem>
+                  <asp:ListItem Value="1">已发货</asp:ListItem>
+                  <asp:ListItem Value="0">未发货</asp:ListItem>
+                </asp:DropDownList>
+                <asp:DropDownList ID="ddlSpeed" runat="server">
+                  <asp:ListItem Selected="True" Value="2">是否加急</asp:ListItem>
+                  <asp:ListItem Value="1">加急中</asp:ListItem>
+                  <asp:ListItem Value="0">未加急</asp:ListItem>
+                </asp:DropDownList>
+                <asp:DropDownList ID="ddlReceive" runat="server">
+                  <asp:ListItem Selected="True" Value="2">是否收到货</asp:ListItem>
+                  <asp:ListItem Value="1">收货</asp:ListItem>
+                  <asp:ListItem Value="0">未收货</asp:ListItem>
+                </asp:DropDownList>
+                <asp:DropDownList ID="ddlReturn" runat="server">
+                  <asp:ListItem Selected="True" Value="2">是否退货</asp:ListItem>
+                  <asp:ListItem Value="1">退货</asp:ListItem>
+                  <asp:ListItem Value="0">未退货</asp:ListItem>
                 </asp:DropDownList>
               </td>
             </tr>
@@ -75,7 +94,7 @@
       <tr>
         <td style="height: 23px">
           <asp:GridView ID="gvOrderList" runat="server" HorizontalAlign="Center" Width="100%"
-            DataKeyNames="OrderID" AutoGenerateColumns="False" PageSize="5" AllowPaging="True"
+            DataKeyNames="order_id" AutoGenerateColumns="False" PageSize="5" AllowPaging="True"
             OnPageIndexChanging="gvOrderList_PageIndexChanging" OnRowDeleting="gvOrderList_RowDeleting">
             <HeaderStyle Font-Bold="True" />
             <Columns>
@@ -83,87 +102,59 @@
                 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                 <ItemTemplate>
-                  <%# DataBinder.Eval(Container.DataItem, "OrderID") %>
+                  <%# Eval("order_id") %>
                 </ItemTemplate>
               </asp:TemplateField>
-              <asp:BoundField DataField="OrderDate" HeaderText="下订时间" DataFormatString="{0:yyyy-MM-dd HH:mm}">
+              <asp:BoundField DataField="create_at" HeaderText="下订时间" DataFormatString="{0:yyyy-MM-dd HH:mm}">
                 <ItemStyle HorizontalAlign="Center" />
               </asp:BoundField>
-              <asp:TemplateField HeaderText="货品总额">
-                <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
-                <ItemStyle HorizontalAlign="Left"></ItemStyle>
-                <ItemTemplate>
-                  <%#GetVarGF(DataBinder.Eval(Container.DataItem, "GoodsFee").ToString()) %>
-                </ItemTemplate>
-              </asp:TemplateField>
-              <asp:TemplateField HeaderText="运费">
-                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                <ItemTemplate>
-                  <%# GetVarSF(DataBinder.Eval(Container.DataItem, "ShipFee").ToString()) %>
-                </ItemTemplate>
-              </asp:TemplateField>
               <asp:TemplateField HeaderText="总金额">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# GetVarTP(DataBinder.Eval(Container.DataItem, "TotalPrice").ToString()) %>
-                </ItemTemplate>
-              </asp:TemplateField>
-              <asp:TemplateField HeaderText="配送方式">
-                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                <ItemTemplate>
-                  <%# GetShipName(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ShipType").ToString())) %>
-                </ItemTemplate>
-              </asp:TemplateField>
-              <asp:TemplateField HeaderText="支付方式">
-                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                <ItemTemplate>
-                  <%# GetPayName(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "PayType").ToString())) %>
+                  <%# GetVarTP(Eval("total_price").ToString()) %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="会员ID">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# DataBinder.Eval(Container.DataItem, "MemberID") %>
+                  <%# Eval("user_id") %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="购物会员">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# GetMemberName(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "MemberID").ToString())) %>
+                  <%# GetMemberName(Convert.ToInt32(Eval("user_id").ToString())) %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="收货人">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# DataBinder.Eval(Container.DataItem, "ReceiverName") %>
+                  <%# Eval("name") %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="联系电话">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# DataBinder.Eval(Container.DataItem, "ReceiverPhone") %>
+                  <%# Eval("phone") %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="订单状态">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# GetStatus(Convert.ToInt32(DataBinder.Eval(Container.DataItem, "OrderID").ToString()))%>
+                  <%# Eval("status")%>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="">
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <a href='OrderModify.aspx?OrderID=<%# DataBinder.Eval(Container.DataItem, "OrderID") %>'>
+                  <a href='OrderModify.aspx?order_id=<%# Eval("order_id") %>'>
                     管理</a>
                 </ItemTemplate>
               </asp:TemplateField>

@@ -11,19 +11,19 @@
       </td>
     </tr>
     <tr>
-      <td align="left" style="width: 560px;" background="../Images/index/精品推荐下面部分.jpg">
+      <td align="left" style="width: 560px;">
         <asp:DataList ID="DLrefinement" DataKeyField="item_id" runat="server" RepeatColumns="4"
           RepeatDirection="Horizontal" OnItemCommand="DLrefinement_ItemCommand">
           <ItemTemplate>
-            <table align="left" cellpadding="0" cellspacing="0" style="width: 135px; height: 158px;">
+            <table align="left" cellpadding="0" cellspacing="0" class="good_list">
               <tr align="center" style="width: 135px; height: 65px;">
                 <td colspan="2" align="center">
-                  <asp:Image ID="imageRefine" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
+                  <asp:Image ID="imageRefine" CssClass="item_image" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;">
                 <td colspan="2" align="center">
-                  <%#DataBinder.Eval(Container.DataItem, "name")%>
+                  <%#Eval("name")%>
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;">
@@ -31,8 +31,7 @@
                   价格
                 </td>
                 <td align="left">
-                  ￥<%#GetMKPStr(DataBinder.Eval(Container.DataItem, "price").ToString())%>
-                </td>
+                  ￥<%#GetMKPStr(Eval("price").ToString())%></td>
               </tr>
               <tr align="left" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;">
                 <td colspan="2" align="center">
@@ -53,20 +52,20 @@
       </td>
     </tr>
     <tr>
-      <td style="width: 560px;" background="../Images/index/精品推荐下面部分.jpg" align="left">
+      <td style="width: 560px;" align="left">
         <asp:DataList ID="DLHot" runat="server" DataKeyField="item_id" RepeatColumns="4"
           RepeatDirection="Horizontal" OnItemCommand="DLHot_ItemCommand">
           <ItemTemplate>
-            <table align="left" cellpadding="0" cellspacing="0" style="width: 135px; height: 158px;">
+            <table align="left" cellpadding="0" cellspacing="0" class="good_list">
               <tr align="center" style="width: 135px; height: 65px; font-size: 9pt; font-family: 宋体;">
                 <td colspan="2">
-                  <asp:Image ID="imageHot" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
+                  <asp:Image ID="imageHot" CssClass="item_image" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
                 font-family: 宋体;">
                 <td colspan="2" align="center">
-                  <%#DataBinder.Eval(Container.DataItem, "name")%>
+                  <%#Eval("name")%>
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
@@ -75,8 +74,7 @@
                   价格
                 </td>
                 <td align="left">
-                  ￥<%#GetMKPStr(DataBinder.Eval(Container.DataItem, "price").ToString())%>
-                </td>
+                  ￥<%#GetMKPStr(Eval("price").ToString())%></td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
                 font-family: 宋体;">
@@ -98,21 +96,21 @@
       </td>
     </tr>
     <tr>
-      <td align="left" style="width: 560px;" background="../Images/index/产品展销---最底部.jpg">
+      <td align="left" style="width: 560px;">
         <asp:DataList ID="DLDiscount" runat="server" DataKeyField="item_id" RepeatColumns="4"
           RepeatDirection="Horizontal" OnItemCommand="DLDiscount_ItemCommand">
           <ItemTemplate>
-            <table align="left" cellpadding="0" cellspacing="0" style="width: 135px; height: 158px;">
+            <table align="left" cellpadding="0" cellspacing="0"  class="good_list">
               <tr align="center" valign="bottom" style="width: 135px; height: 65px; font-size: 9pt;
                 font-family: 宋体;">
                 <td colspan="2">
-                  <asp:Image ID="imageDiscount" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
+                  <asp:Image ID="imageDiscount" CssClass="item_image" runat="server" ImageUrl='<%#DataBinder.Eval(Container.DataItem,"image_url")%>' />
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
                 font-family: 宋体;">
                 <td colspan="2" align="center">
-                  <%#DataBinder.Eval(Container.DataItem, "name")%>
+                  <%#Eval("name")%>
                 </td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
@@ -121,8 +119,7 @@
                   价格
                 </td>
                 <td align="left">
-                  ￥<%#GetMKPStr(DataBinder.Eval(Container.DataItem, "price").ToString())%>
-                </td>
+                  ￥<%#GetMKPStr(Eval("price").ToString())%></td>
               </tr>
               <tr align="center" valign="bottom" style="width: 135px; height: 11px; font-size: 9pt;
                 font-family: 宋体;">

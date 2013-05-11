@@ -68,9 +68,9 @@
                                     <td style="height: auto">
                                         <div>
                                             &nbsp;
-                                            <asp:TextBox ID="search_name" runat="server" Height="20px" Width="301px"></asp:TextBox>
+                                            <asp:TextBox ID="search_name" runat="server" CssClass="search_input" Width="300px"></asp:TextBox>
                                             &nbsp;
-                                            <asp:Button ID="search_button" runat="server" Height="30px" Width="40px" OnClick="search_Click"
+                                            <asp:Button ID="search_button" runat="server" CssClass="search_input" Width="40px" OnClick="search_Click"
                                                 Text="搜索" CausesValidation="False" />
                                         </div>
                                     </td>

@@ -127,26 +127,7 @@
           <table cellspacing="0" cellpadding="0" width="140" align="center" border="0">
             <tr>
               <td height="20">
-                <a href="OrderList.aspx?OrderList=00" target="right">未确认</a> | <a href="OrderList.aspx?OrderList=01"
-                  target="right">已确认</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="height: 20px">
-                <a href="OrderList.aspx?OrderList=10" target="right">未付款</a> | <a href="OrderList.aspx?OrderList=11"
-                  target="right">已付款</a>
-              </td>
-            </tr>
-            <tr>
-              <td height="20">
-                <a href="OrderList.aspx?OrderList=20" target="right">未发货</a> | <a href="OrderList.aspx?OrderList=21"
-                  target="right">已发货</a>
-              </td>
-            </tr>
-            <tr>
-              <td height="20">
-                <a href="OrderList.aspx?OrderList=30" target="right">未归档</a> | <a href="OrderList.aspx?OrderList=31"
-                  target="right">已归档</a>
+                <a href="OrderList.aspx" target="right">管理</a>
               </td>
             </tr>
           </table>
@@ -222,7 +203,7 @@
       <td height="25" class="menu_title" style="background: url('../Images/admin_title_bg_show.gif')"
         onmouseover="this.className='menu_title2';" onmouseout="this.className='menu_title';"
         onclick="menuChange(this,menu4);">
-        <span>物流系统</span>
+        <span>特价商品发布</span>
       </td>
     </tr>
     <tr>
@@ -231,20 +212,7 @@
           <table cellspacing="0" cellpadding="0" width="140" align="center">
             <tr>
               <td height="20">
-                <a href="Payment.aspx?Action=Add" target="right">支付方式添加</a> | <a href="Payment.aspx?Action=Manage"
-                  target="right">管理</a>
-              </td>
-            </tr>
-            <tr>
-              <td height="20">
-                <a href="Shipping.aspx?Action=Add" target="right">配送方式添加</a> | <a href="Shipping.aspx?Action=Manage"
-                  target="right">管理</a>
-              </td>
-            </tr>
-            <tr>
-              <td height="20">
-                <a href="ShipArea.aspx?Action=Add" target="right">配送地点添加</a> | <a href="ShipArea.aspx?Action=Manage"
-                  target="right">管理</a>
+                <a href="Payment.aspx?Action=Add" target="right">特价商品管理</a>
               </td>
             </tr>
           </table>

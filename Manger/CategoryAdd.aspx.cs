@@ -17,7 +17,7 @@ public partial class Manger_CategoryAdd : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            mcObj.ddlUrl(ddlUrl);
+            //mcObj.ddlUrl(ddlUrl);
         }
     }
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -32,23 +32,48 @@ public partial class Manger_CategoryAdd : System.Web.UI.Page
         }
         else
         {
-            int P_Int_ReturnValue = mcObj.AddCategory(txtName.Text.Trim(),ddlUrl.SelectedItem.Value.ToString());
-            if (P_Int_ReturnValue == -100)
+            try
             {
-                Response.Write("<script>alert('该商品类别名已存在，请输入其它的商品类别名！');location='javascript:history.go(-1)';</script>");
-            }
-            else
-            {
+                mcObj.AddCategory(txtName.Text.Trim(), ImageUrl.Text.Trim()); //ddlUrl.SelectedItem.Value.ToString());
                 Response.Write("<script>alert('添加成功！');location='javascript:history.go(-1)';</script>");
-            
             }
-
-        
+            catch (Exception err)
+            {
+                Response.Write("<script>alert('" + err.Message + "');location='javascript:history.go(-1)';</script>");
+            }
         }
 
     }
     protected void ddlUrl_SelectedIndexChanged(object sender, EventArgs e)
     {
-        ImageMapPhoto.ImageUrl = ddlUrl.SelectedItem.Value;
+        //ImageMapPhoto.ImageUrl = ddlUrl.SelectedItem.Value;
+    }
+
+    protected void UploadImage_OnClick(object sender, EventArgs e)
+    {
+        try
+        {
+            lbIamge.Visible = true;
+            if (imageUpload.PostedFile.FileName == "")
+            {
+                lbIamge.Text = "要上传的文件不允许为空！";
+                return;
+            }
+            else
+            {
+                string filePath = imageUpload.PostedFile.FileName;
+                string filename = filePath.Substring(filePath.LastIndexOf("\\") + 1);
+                string serverpath = Server.MapPath(@"~\Images\ftp\") + filename;
+                string relativepath = @"~\Images\ftp\" + filename;
+                imageUpload.PostedFile.SaveAs(serverpath);
+                lbIamge.Text = "上传成功！";
+                ImageUrl.Text = relativepath;
+            }
+
+        }
+        catch (Exception error)
+        {
+            lbIamge.Text = "处理发生错误！原因：" + error.ToString();
+        }
     }
 }

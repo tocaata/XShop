@@ -39,4 +39,10 @@ public partial class Manger_Manager : System.Web.UI.Page
         gvMemberBind();
     }
 
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        DataSet ds = mcObj.SearchUser("users", txtKey.Text.Trim());
+        gvMemberList.DataSource = ds.Tables["users"].DefaultView;
+        gvMemberList.DataBind();
+    }
 }
