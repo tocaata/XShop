@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ShoppingCarControl.ascx.cs" Inherits="ShoppingCarControl" %>
- <table  style="width: 200px; height: 115px; font-size: 9pt; font-family: 宋体;" >
+ <table  style="width: 200px; height: 115px; font-size: 9pt;" >
                 <tr>
                     <td colspan="3">
                         购物车</td>

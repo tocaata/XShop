@@ -2,7 +2,7 @@
   CodeFile="GoodsDetail.aspx.cs" Inherits="User_GoodsDetail" Title="Untitled Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FartherMain" runat="Server">
-  <table cellspacing="0" cellpadding="0" width="780px" align="center" border="0">
+  <table cellspacing="0" cellpadding="0" width="760px" align="center" border="0">
     <tr>
       <th align="left" height="25" colspan="2" style=" border-bottom: 2px #d0d0d0 solid;">
         <span class="name" style="padding-left: 30px; width: 130px"><asp:Label ID="lblTitleInfo" runat="server">商品详细信息</asp:Label></span>

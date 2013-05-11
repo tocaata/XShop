@@ -207,6 +207,26 @@ public class UserInfoClass
         DLName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
         DLName.DataBind();
     }
+
+    public DataSet DGIBind(int P_Int_Deplay, string P_Str_srcTable)
+    {
+        String stat = null;
+        switch (P_Int_Deplay)
+        {
+            case 0:
+                stat = "is_rush_buy";
+                break;
+            case 1:
+                stat = "is_group_buy";
+                break;
+            case 2:
+                stat = "is_discount";
+                break;
+            default:
+                throw (new Exception("Error Deplay"));
+        }
+        return dbObj.GetDataSet("select top 4 * from items where " + stat + " = 1", P_Str_srcTable);
+    }
     /// <summary>
     /// 以商品类别分类绑定商品信息
     /// </summary>
@@ -525,6 +545,14 @@ public class UserInfoClass
         int c = ds.Tables["result"].Rows.Count;
         searchResult.DataSource = ds.Tables["result"].DefaultView;
         searchResult.DataBind();
+    }
+
+    public DataSet SearchBind(string searchStr, string table)
+    {
+        return dbObj.GetDataSet(
+            "SELECT [item_id], [name], [price], [description], [image_url], [quota], [sell_count], [is_discount], [is_group_buy], [is_rush_buy] FROM [items] WHERE name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' OR " +
+            "description LIKE '%' +  CONVERT(NVARCHAR(50),@keywords) + '%'",
+            table, new SqlParameter("@keywords", searchStr));
     }
 
     public void OrderBind(Repeater OrderList, int UserId)

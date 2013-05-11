@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="navigationControl.ascx.cs"
   Inherits="UserControl_navigationControl" %>
 <%-- <%@ OutputCache Duration ="15" VaryByParam="None" %>--%>
-<table style="width: 220px; height: 549px; font-size: 9pt; font-family: 宋体; vertical-align: top; border: 1px solid #d0d0d0; background: #2E9AFE" cellpadding="0" cellspacing="0">
+<table style="width: 220px; height: 549px; font-size: 9pt; vertical-align: top; border: 1px solid #d0d0d0; background: #2E9AFE" cellpadding="0" cellspacing="0">
   <tr valign="top" align="center">
     <td>
     <div style="display: inline-block; height: 60px; text-align: center;"><br /><h3 style="color: White">商品分类</h3></div>

@@ -5,7 +5,7 @@
 <head runat="server">
   <title>无标题页</title>
 </head>
-<body style="font-family: 宋体; font-size: 9pt;">
+<body style="font-size: 9pt;">
   <form id="form1" runat="server">
   <div>
     <table cellspacing="0" cellpadding="0" width="100%" align="center" border="0">

@@ -20,7 +20,7 @@
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Width="101px"></asp:TextBox>
           </td>
         </tr>
-        <tr style="width: 152px; font-size: 9pt; font-family: 宋体;">
+        <tr style="width: 152px; font-size: 9pt;">
           <td align="left">
             验证码：
           </td>
@@ -42,7 +42,7 @@
   </tr>
 </table>
 <table class="change_account" style="border: 1px solid #2E9AFE; margin-top: 5px;width: 228px; height: 117px;
-  font-size: 9pt; font-family: 宋体;" runat="server" id="tabLoad" visible="false" border="0"
+  font-size: 9pt;" runat="server" id="tabLoad" visible="false" border="0"
   cellpadding="0" cellspacing="0">
   <tr>
     <td align="center" valign="top" style="height: 117px; width: 228px;">

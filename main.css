@@ -32,6 +32,8 @@ tr.tb_void {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
+    border: 1px solid white;
+    text-align: center;
 }
 
 td.tb_void 
@@ -206,8 +208,6 @@ input.user
 .change_account
 {
     z-index: 3;
-    width: 540px;
-    height: 455px;
     border: 1px solid #D7D7D7;
     background-color: #F3F3F3;
 }
@@ -222,6 +222,45 @@ input.user
     text-align: center;
     line-height: 26px;
     background-color: #da2121;
+    text-decoration: none;
+}
+
+.buy:hover
+{
+    float: left;
+    width: 69px;
+    height: 26px;
+    font-size: 14px;
+    color: #ddd;
+    text-align: center;
+    line-height: 26px;
+    background-color: #da2121;
+    text-decoration: none;
+}
+
+.lnk_btn
+{
+    float: left;
+    width: 69px;
+    height: 26px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    background-color: #81DAF5;
+    text-decoration: none;
+}
+
+.lnk_btn:hover
+{
+    float: left;
+    width: 69px;
+    height: 26px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    background-color: #68C5E0;
     text-decoration: none;
 }
 

@@ -50,9 +50,9 @@
               <br />
               <br />
                 <div style="float: right"><font color="white">今天是：</font><asp:Label ID="labDate" runat="server"
-                Font-Names="宋体" ForeColor="White"><%# System.DateTime.Now.ToLongDateString() %></asp:Label>
+                 ForeColor="White"><%# System.DateTime.Now.ToLongDateString() %></asp:Label>
                 <font color="white">/</font><br />
-                <asp:Label ID="labDateTime" runat="server" Text="Label" Font-Names="宋体" ForeColor="White"></asp:Label>
+                <asp:Label ID="labDateTime" runat="server" Text="Label" ForeColor="White"></asp:Label>
               </div>
             </td>
           </tr>
