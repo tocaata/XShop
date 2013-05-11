@@ -641,9 +641,19 @@ public class MangerClass
     {
         dbObj.Update("DELETE FROM items WHERE item_id = @id", new SqlParameter("@id", P_Int_GoodsID));
     }
+
+    public void SetDiscount(int P_Int_GoodsID, bool IsDiscount)
+    {
+        dbObj.Update("UPDATE items SET items.is_discount = @discount WHERE item_id = @id", new SqlParameter("@discount", IsDiscount), new SqlParameter("@id", P_Int_GoodsID));
+    }
+
+    public void SetPrice(int P_Int_GoodsID, Double Price)
+    {
+        dbObj.Update("UPDATE items SET items.price = @price WHERE item_id = @id", new SqlParameter("@price", Price), new SqlParameter("@id", P_Int_GoodsID));
+    }
+
     public void UpdateGInfo(int P_Int_ClassID, string P_Str_GoodsName, string P_Str_GoodsIntroduce, string P_Str_GoodsBrand, string P_Str_GoodsUnit, float P_Flt_GoodsWeight, string P_Str_GoodsUrl, float P_Flt_MarketPrice, float P_Flt_MemberPrice, bool P_Bl_Isrefinement, bool P_Bl_IsHot, bool P_Bl_IsDiscount, int P_Int_GoodsID)
     {
-
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_UpdateGoodsInfo", myConn);
         myCmd.CommandType = CommandType.StoredProcedure;

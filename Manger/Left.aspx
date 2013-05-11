@@ -212,7 +212,7 @@
           <table cellspacing="0" cellpadding="0" width="140" align="center">
             <tr>
               <td height="20">
-                <a href="Payment.aspx?Action=Add" target="right">特价商品管理</a>
+                <a href="DiscountPublish.aspx" target="right">特价商品管理</a>
               </td>
             </tr>
           </table>
@@ -227,7 +227,7 @@
       <td height="25" class="menu_title" style="background: url('../Images/admin_title_bg_show.gif')"
         onmouseover="this.className='menu_title2';" onmouseout="this.className='menu_title';"
         onclick="menuChange(this,menu5);">
-        <span>系统管理</span>
+        <span>销售统计</span>
       </td>
     </tr>
     <tr>
@@ -240,7 +240,7 @@
 							</tr>--%>
             <tr>
               <td height="20">
-                <a href="imagery.aspx" target="right">上传管理</a>
+                <a href="ProductStatistics.aspx" target="right">产品销售统计</a>| <a href="UserStatistics.aspx" target="right">用户销售统计</a>
               </td>
             </tr>
           </table>

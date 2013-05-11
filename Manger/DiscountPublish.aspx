@@ -30,13 +30,20 @@
           <asp:GridView ID="gvGoodsInfo" runat="server" CellPadding="4" Width="100%" HorizontalAlign="Center"
             DataKeyNames="item_id" HeaderStyle-CssClass="summary-title" AutoGenerateColumns="False"
             OnPageIndexChanging="gvGoodsInfo_PageIndexChanging" OnRowDeleting="gvGoodsInfo_RowDeleting"
+            OnRowEditing="gvGoodsInfo_RowEditing" OnRowUpdating="gvGoodsInfo_RowUpdating" OnRowCancelingEdit="gvGoodsInfo_RowCancel"
             AllowPaging="True" PageSize="5">
             <HeaderStyle Font-Bold="True" CssClass="summary-title"></HeaderStyle>
             <Columns>
-              <asp:BoundField DataField="item_id" HeaderText="商品ID">
+              <asp:TemplateField HeaderText="是否打折">
+                <ItemTemplate>
+                  <asp:CheckBox ID="IsDiscount" OnCheckedChanged="DiscountChanged" AutoPostBack="true" Checked='<%# Eval("is_discount") %>'
+                    runat="server" />
+                </ItemTemplate>
+              </asp:TemplateField>
+              <asp:BoundField DataField="item_id" HeaderText="商品ID" ReadOnly="true">
                 <ItemStyle HorizontalAlign="Center" />
               </asp:BoundField>
-              <asp:BoundField DataField="name" HeaderText="商品名称">
+              <asp:BoundField DataField="name" HeaderText="商品名称" ReadOnly="True">
                 <ItemStyle HorizontalAlign="Center" />
               </asp:BoundField>
               <asp:TemplateField HeaderText="商品类别">
@@ -46,18 +53,12 @@
                   <%# Eval("cat_name")%>
                 </ItemTemplate>
               </asp:TemplateField>
-              <asp:TemplateField HeaderText="商品价格">
-                <HeaderStyle HorizontalAlign="Center" />
+              <asp:BoundField DataField="price" HeaderText="价格">
                 <ItemStyle HorizontalAlign="Center" />
-                <ItemTemplate>
-                  <%# GetVarStr(Eval("price").ToString())%>￥
-                </ItemTemplate>
-              </asp:TemplateField>
-              <asp:HyperLinkField HeaderText="详细信息" Text="详细信息" DataNavigateUrlFields="item_id"
-                DataNavigateUrlFormatString="EditProduct.aspx?GoodsID={0}">
-                <ControlStyle Font-Underline="False" ForeColor="Black" />
-                <ItemStyle HorizontalAlign="Center" />
-              </asp:HyperLinkField>
+              </asp:BoundField>
+
+              <asp:CommandField AccessibleHeaderText="动作" CancelText="取消" EditText="更改" 
+                ShowEditButton="True" UpdateText="保存" />
               <asp:CommandField HeaderText="删除" ShowDeleteButton="True">
                 <ControlStyle Font-Underline="False" ForeColor="Black" />
                 <ItemStyle HorizontalAlign="Center" />
