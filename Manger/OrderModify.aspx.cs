@@ -27,17 +27,17 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     }
     public void IsCPCPBind()
     {
-        DataSet ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()), "OrderInfo");
-        chkConfirm.Checked = Convert.ToBoolean(ds.Tables["OrderInfo"].Rows[0][10].ToString());
-        chkPay.Checked = Convert.ToBoolean(ds.Tables["OrderInfo"].Rows[0][11].ToString());
-        chkConsignment.Checked = Convert.ToBoolean(ds.Tables["OrderInfo"].Rows[0][12].ToString());
-        chkPigeonhole.Checked = Convert.ToBoolean(ds.Tables["OrderInfo"].Rows[0][13].ToString());
+        DataTable ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()));
+        chkConfirm.Checked = Convert.ToBoolean(ds.Rows[0][10].ToString());
+        chkPay.Checked = Convert.ToBoolean(ds.Rows[0][11].ToString());
+        chkConsignment.Checked = Convert.ToBoolean(ds.Rows[0][12].ToString());
+        chkPigeonhole.Checked = Convert.ToBoolean(ds.Rows[0][13].ToString());
     
     }
     public void rpBind()
     {
-        DataSet ds=mcObj.GetGIByOID(Convert.ToInt32(Request["OrderID"].Trim()), "GoodsInfo");
-        rptOrderItems.DataSource = ds.Tables["GoodsInfo"].DefaultView;
+        DataTable ds=mcObj.GetGIByOID(Convert.ToInt32(Request["OrderID"].Trim()));
+        rptOrderItems.DataSource = ds.DefaultView;
         rptOrderItems.DataBind();
     }
     /// <summary>
@@ -47,25 +47,25 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     public CommonProperty GetOrderInfo()
     {
        
-        DataSet ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()), "OrderInfo");
-        DataSet UIDs = uiObj.ReturnUIDsByID(Convert.ToInt32(ds.Tables["OrderInfo"].Rows[0][7].ToString()), "UserInfo");
-        order.OrderNo = Convert.ToInt32(ds.Tables["OrderInfo"].Rows[0][0].ToString());
-        order.OrderTime = Convert.ToDateTime(ds.Tables["OrderInfo"].Rows[0][1].ToString());
-        order.ProductPrice = float.Parse (ds.Tables["OrderInfo"].Rows[0][2].ToString());
-        order.TotalPrice = float.Parse (ds.Tables["OrderInfo"].Rows[0][3].ToString());
-        order.ShipPrice = float.Parse (ds.Tables["OrderInfo"].Rows[0][4].ToString());
-        order.ReceiverName=ds.Tables["OrderInfo"].Rows[0][8].ToString();
-        order.ReceiverPhone =ds.Tables["OrderInfo"].Rows[0][9].ToString();
-        order.ReceiverPostalcode=ds.Tables["OrderInfo"].Rows[0][14].ToString();
-        order.ReceiverAddress =ds.Tables["OrderInfo"].Rows[0][15].ToString();
-        order.ReceiverEmail =ds.Tables["OrderInfo"].Rows[0][16].ToString();
-        order.ShipType = Convert.ToInt32(ds.Tables["OrderInfo"].Rows[0][5].ToString());
-        order.PayType = Convert.ToInt32(ds.Tables["OrderInfo"].Rows[0][6].ToString());
-        order.BuyerAddress = UIDs.Tables["UserInfo"].Rows[0][9].ToString();
-        order.BuyerEmail = UIDs.Tables["UserInfo"].Rows[0][8].ToString();
-        order.BuyerName = UIDs.Tables["UserInfo"].Rows[0][1].ToString();
-        order.BuyerPhone = UIDs.Tables["UserInfo"].Rows[0][7].ToString();
-        order.BuyerPostalcode = UIDs.Tables["UserInfo"].Rows[0][11].ToString();
+        DataTable ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()));
+        DataTable UIDs = uiObj.ReturnUIDsByID(Convert.ToInt32(ds.Rows[0][7].ToString()));
+        order.OrderNo = Convert.ToInt32(ds.Rows[0][0].ToString());
+        order.OrderTime = Convert.ToDateTime(ds.Rows[0][1].ToString());
+        order.ProductPrice = float.Parse (ds.Rows[0][2].ToString());
+        order.TotalPrice = float.Parse (ds.Rows[0][3].ToString());
+        order.ShipPrice = float.Parse (ds.Rows[0][4].ToString());
+        order.ReceiverName=ds.Rows[0][8].ToString();
+        order.ReceiverPhone =ds.Rows[0][9].ToString();
+        order.ReceiverPostalcode=ds.Rows[0][14].ToString();
+        order.ReceiverAddress =ds.Rows[0][15].ToString();
+        order.ReceiverEmail =ds.Rows[0][16].ToString();
+        order.ShipType = Convert.ToInt32(ds.Rows[0][5].ToString());
+        order.PayType = Convert.ToInt32(ds.Rows[0][6].ToString());
+        order.BuyerAddress = UIDs.Rows[0][9].ToString();
+        order.BuyerEmail = UIDs.Rows[0][8].ToString();
+        order.BuyerName = UIDs.Rows[0][1].ToString();
+        order.BuyerPhone = UIDs.Rows[0][7].ToString();
+        order.BuyerPostalcode = UIDs.Rows[0][11].ToString();
         
         return (order);
 
@@ -82,8 +82,8 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     }
     public string GetStatus(int P_Int_OrderID)
     {
-        DataSet ds = mcObj.GetStatusDS(P_Int_OrderID, "OrderInfo");
-        return (ds.Tables["OrderInfo"].Rows[0][0].ToString() + "|" + ds.Tables["OrderInfo"].Rows[0][1].ToString() + "<Br>" + ds.Tables["OrderInfo"].Rows[0][2].ToString() + "|" + ds.Tables["OrderInfo"].Rows[0][3].ToString());
+        DataTable ds = mcObj.GetStatusDS(P_Int_OrderID);
+        return (ds.Rows[0][0].ToString() + "|" + ds.Rows[0][1].ToString() + "<Br>" + ds.Rows[0][2].ToString() + "|" + ds.Rows[0][3].ToString());
     }
 
     protected void btnSave_Click(object sender, EventArgs e)

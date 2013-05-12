@@ -25,16 +25,16 @@ public partial class Manger_Main : System.Web.UI.Page
     }
     public string GetMemberName(int P_Int_MemberId)
     {   
-        DataSet ds = new DataSet();
-        ds = uiObj.ReturnUIDsByID(P_Int_MemberId, "UserInfo");
-        return  (ds.Tables["UserInfo"].Rows[0][1].ToString());  
+        DataTable ds = new DataTable();
+        ds = uiObj.ReturnUIDsByID(P_Int_MemberId);
+        return  (ds.Rows[0][1].ToString());  
     }
     public void gvNewOBind()
     {
         if (mcObj.IsExistsNI("orders"))
         {
-            DataSet ds = mcObj.GetNewOrder("OrderInfo");
-            gvOrderList.DataSource = ds.Tables["OrderInfo"].DefaultView;
+            DataTable ds = mcObj.GetNewOrder();
+            gvOrderList.DataSource = ds.DefaultView;
             gvOrderList.DataBind();
         }
     }
@@ -42,8 +42,8 @@ public partial class Manger_Main : System.Web.UI.Page
     {
         if (mcObj.IsExistsNI("users"))
         {
-            DataSet ds = mcObj.GetNewUser("MemberInfo");
-            gvMember.DataSource = ds.Tables["MemberInfo"].DefaultView;
+            DataTable ds = mcObj.GetNewUser();
+            gvMember.DataSource = ds.DefaultView;
             gvMember.DataBind();
         }
     }

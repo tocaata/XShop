@@ -23,9 +23,9 @@ public partial class index : System.Web.UI.Page
                 Response.Write("<script>alert('请先登录，谢谢合作！');</script>");
             }
 
-            GoodsControl.setAll(ucObj.DGIBind(0, "Refine"), "Refine", "精品推荐");
-            GoodsControl2.setAll(ucObj.DGIBind(1, "hot"), "hot", "热销商品");
-            GoodsControl3.setAll(ucObj.DGIBind(2, "Discount"), "Discount", "特价商品");
+            GoodsControl.setAll(ucObj.DGIBind(0), "Refine", "精品推荐");
+            GoodsControl2.setAll(ucObj.DGIBind(1), "hot", "热销商品");
+            GoodsControl3.setAll(ucObj.DGIBind(2), "Discount", "特价商品");
         }
     }
     //绑定市场价格

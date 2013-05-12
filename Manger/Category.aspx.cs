@@ -21,8 +21,8 @@ public partial class Manger_Category : System.Web.UI.Page
     }
     public void gvBind()
     {
-        DataSet ds = mcObj.GetCategory("ClassInfo");
-        gvCategoryList.DataSource = ds.Tables["ClassInfo"].DefaultView;
+        DataTable dt = mcObj.GetCategory("ClassInfo");
+        gvCategoryList.DataSource = dt.DefaultView;
         gvCategoryList.DataBind();
     }
 

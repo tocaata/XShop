@@ -30,8 +30,8 @@ public partial class User_GoodsDetail : System.Web.UI.Page
     }
     public void GetGoodsInfo()
     {
-        DataSet ds = mcObj.GetGoodsInfoByIDDs(Convert.ToInt32(Request["GoodsID"].Trim()), "GoodsInfo");
-        DetailsView.DataSource = ds.Tables["GoodsInfo"].DefaultView;
+        DataTable ds = mcObj.GetGoodsInfoByIDDs(Convert.ToInt32(Request["GoodsID"].Trim()));
+        DetailsView.DataSource = ds.DefaultView;
         DetailsView.DataBind();
     }
     protected void btnExit_Click(object sender, EventArgs e)
@@ -48,8 +48,8 @@ public partial class User_GoodsDetail : System.Web.UI.Page
 
     protected void CommentBind(int ItemID)
     {
-        DataSet ds = urObj.GetComment(ItemID, "comments");
-        Comments.DataSource = ds.Tables["comments"].DefaultView;
+        DataTable ds = urObj.GetComment(ItemID);
+        Comments.DataSource = ds.DefaultView;
         Comments.DataBind();
     }
     protected void Submit_Click(object sender, EventArgs e)

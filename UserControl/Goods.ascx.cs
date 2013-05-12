@@ -10,24 +10,24 @@ public partial class UserControl_Goods : System.Web.UI.UserControl
     MangerClass mcObj = new MangerClass();
     UserInfoClass ucObj = new UserInfoClass();
 
-    protected DataSet _dataSet;
+    protected DataTable _dataTable;
     public string table, _title;
 
-    public DataSet source
+    public DataTable source
     {
         get
         {
-            return _dataSet;
+            return _dataTable;
         }
         set
         {
-            _dataSet = value;
+            _dataTable = value;
         }
     }
 
-    public void setAll(DataSet ds, string tb, string tt)
+    public void setAll(DataTable ds, string tb, string tt)
     {
-        _dataSet = ds;
+        _dataTable = ds;
         table = tb;
         _title = tt;
     }
@@ -58,7 +58,7 @@ public partial class UserControl_Goods : System.Web.UI.UserControl
     /// </summary>
     public void dlClassBind()
     {
-        DLClass.DataSource = _dataSet.Tables[table].DefaultView;
+        DLClass.DataSource = _dataTable.DefaultView;
         DLClass.DataBind();
     }
     //当购买商品时，获取商品信息

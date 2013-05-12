@@ -32,8 +32,8 @@ public partial class User_ShipFeeInfo : System.Web.UI.Page
     }
     public void gvShipBind()
     {
-        DataSet ds = mcObj.ReturnShipDs("ShipInfo");
-        gvShip.DataSource = ds.Tables["ShipInfo"].DefaultView;
+        DataTable ds = mcObj.ReturnShipDs("ShipInfo");
+        gvShip.DataSource = ds.DefaultView;
         gvShip.DataBind();
 
     }

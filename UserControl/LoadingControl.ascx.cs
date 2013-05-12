@@ -24,7 +24,7 @@ public partial class LoadingControl : System.Web.UI.UserControl
             {
 
                 tabLoad.Visible = true;
-                 tabLoading.Visible =false ;
+                tabLoading.Visible =false ;
             }        
         }
        
@@ -48,12 +48,11 @@ public partial class LoadingControl : System.Web.UI.UserControl
                 bool P_Int_IsExists = uiObj.UserExists(txtName.Text.Trim(), txtPassword.Text.Trim());
                 if (P_Int_IsExists)
                 {
-                    DataSet ds = uiObj.ReturnUIDs(txtName.Text.Trim(), txtPassword.Text.Trim(), "users");
+                    DataTable dt = uiObj.ReturnUsers(txtName.Text.Trim(), txtPassword.Text.Trim());
 
-                    Session["UID"] = Convert.ToInt32(ds.Tables["users"].Rows[0][0].ToString());
-                    Session["Username"] = ds.Tables["users"].Rows[0][1].ToString();
+                    Session["UID"] = Convert.ToInt32(dt.Rows[0][0].ToString());
+                    Session["Username"] = dt.Rows[0][1].ToString();
                     Response.Redirect("index.aspx");
-                  
                 }
                 else
                 {

@@ -28,9 +28,9 @@ public partial class User_AddAdvancePay : System.Web.UI.Page
         else
         {
 
-            DataSet ds = new DataSet();
-            ds = uiObj.ReturnUIDsByID(Convert.ToInt32(Session["UID"].ToString()), "UserInfo");
-            txtAdvancePayment.Text = ds.Tables["UserInfo"].Rows[0][12].ToString();
+            DataTable ds = new DataTable();
+            ds = uiObj.ReturnUIDsByID(Convert.ToInt32(Session["UID"].ToString()));
+            txtAdvancePayment.Text = ds.Rows[0][12].ToString();
         }
     }
     protected void btnConfirm_Click(object sender, EventArgs e)

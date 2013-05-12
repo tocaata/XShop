@@ -43,7 +43,7 @@ public partial class User_ClassGoods : System.Web.UI.Page
     public void dlClassBind()
     {
        
-        ucObj.DCGIBind(Convert.ToInt32(this.Request.QueryString["ClassID"].ToString()), "Class", DLClass);
+        ucObj.DCGIBind(Convert.ToInt32(this.Request.QueryString["ClassID"].ToString()), DLClass);
     }
     //当购买商品时，获取商品信息
     public SaveSubGoodsClass GetSubGoodsInformation(DataListCommandEventArgs e, DataList DLName)

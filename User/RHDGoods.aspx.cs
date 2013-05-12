@@ -17,7 +17,7 @@ public partial class User_RHDGoods : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GoodsControl.setAll(ucObj.DGIBind(2, "Discount"), "Discount", "特价商品");
+            GoodsControl.setAll(ucObj.DGIBind(2), "Discount", "特价商品");
         }
     }
 }

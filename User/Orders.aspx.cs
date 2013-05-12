@@ -72,9 +72,9 @@ public partial class User_Orders : System.Web.UI.Page
         {
             case 0: stat = "购物车";
                 break;
-            case 1: stat = "未付款";
+            case 1: stat = "未审核";
                 break;
-            case 2: stat = "付款";
+            case 2: stat = "审核";
                 break;
             case 3: stat = "出货";
                 break;

@@ -46,7 +46,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     public void ShopCartBind()
     {
         int userId = GetUserId();
-        ucObj.SCIBind("ShopCart", gvShopCart, userId);
+        ucObj.SCIBind(gvShopCart, userId);
     }
    /// <summary>
    /// 显示购物车中的商品合计金额和商品数量
@@ -54,9 +54,9 @@ public partial class User_CommitGoods : System.Web.UI.Page
     public void  TotalDs()
     {
        GetUserId();
-       DataSet ds= ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()), "TotalInfo");
-       lbSumPrice.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][0].ToString(),1);
-       lbSumNum.Text = ucObj.VarStr(ds.Tables["TotalInfo"].Rows[0][1].ToString(),1);
+       DataTable ds= ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()));
+       lbSumPrice.Text = ucObj.VarStr(ds.Rows[0][0].ToString(),1);
+       lbSumNum.Text = ucObj.VarStr(ds.Rows[0][1].ToString(),1);
     }
     protected void lnkbtnContinue_Click(object sender, EventArgs e)
     {
@@ -69,7 +69,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     protected void lnkbtnClear_Click(object sender, EventArgs e)
     {
         GetUserId();
-        ucObj.DeleteShopCart(Convert.ToInt32(Session["UID"].ToString()));
+        ucObj.ClearShopCart(Convert.ToInt32(Session["UID"].ToString()));
         ShopCartBind();
         TotalDs();
         lbLag.Visible = true;
@@ -85,7 +85,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
     {
         GetUserId();
         int P_Int_CartID = Convert.ToInt32(gvShopCart.DataKeys[e.RowIndex].Value.ToString());
-        ucObj.DeleteShopCartByID(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID);
+        ucObj.RemoveOrderItemByID(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID);
         ShopCartBind();
         TotalDs();
     }
@@ -105,7 +105,7 @@ public partial class User_CommitGoods : System.Web.UI.Page
         int P_Int_Num =Convert.ToInt32( ((TextBox)(gvShopCart.Rows[e.RowIndex].Cells[2].Controls[0])).Text.ToString());
         if (IsValidNum(P_Int_Num.ToString()) == true)
         {
-            ucObj.UpdateSCI(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID, P_Int_Num);
+            ucObj.UpdateItemOrder(Convert.ToInt32(Session["UID"].ToString()), P_Int_CartID, P_Int_Num);
             gvShopCart.EditIndex = -1;
             ShopCartBind();
             TotalDs();

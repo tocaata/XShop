@@ -40,8 +40,8 @@ public partial class Manger_Payment : System.Web.UI.Page
     }
     public void gvPayBind()
     {
-        DataSet ds = mcObj.ReturnPayDs("PayInfo");
-        gvPay.DataSource = ds.Tables["PayInfo"].DefaultView;
+        DataTable ds = mcObj.ReturnPayDs("PayInfo");
+        gvPay.DataSource = ds.DefaultView;
         gvPay.DataBind();
     
     }
@@ -59,8 +59,8 @@ public partial class Manger_Payment : System.Web.UI.Page
     }
     public void GetPayInfo()
     {
-        DataSet ds = mcObj.ReturnPayDsByID(Convert.ToInt32(this.Request["PayID"].ToString()), "PayInfo");
-        txtName.Text = ds.Tables["PayInfo"].Rows[0][1].ToString();
+        DataTable ds = mcObj.ReturnPayDsByID(Convert.ToInt32(this.Request["PayID"].ToString()));
+        txtName.Text = ds.Rows[0][1].ToString();
     
     }
     protected void btnSave_Click(object sender, EventArgs e)

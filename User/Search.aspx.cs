@@ -22,7 +22,7 @@ public partial class User_Search : System.Web.UI.Page
         {
             if (Request["string"] != null && Request["string"].Trim() != "")
             {
-                GoodsControl.setAll(ucObj.SearchBind(Request["string"].Trim(), "result"), "result", "搜索结果");
+                GoodsControl.setAll(ucObj.SearchBind(Request["string"].Trim()), "result", "搜索结果");
             }
             else
             {

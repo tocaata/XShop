@@ -29,8 +29,8 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     /// </summary>
     public void gvBind()
     {
-        DataSet ds = mcObj.GetGoodsInfoDs("GoodsInfo");
-        gvGoodsInfo.DataSource = ds.Tables["GoodsInfo"].DefaultView;
+        DataTable dt = mcObj.GetGoodsInfoDs();
+        gvGoodsInfo.DataSource = dt.DefaultView;
         gvGoodsInfo.DataBind();
     }
     /// <summary>
@@ -38,8 +38,8 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     /// </summary>
     public void gvSearchBind()
     {
-        DataSet ds = mcObj.SearchGoodsInfoDs("GoodsInfo", txtKey.Text.Trim());
-        gvGoodsInfo.DataSource = ds.Tables["GoodsInfo"].DefaultView;
+        DataTable ds = mcObj.SearchGoodsInfoDs(txtKey.Text.Trim());
+        gvGoodsInfo.DataSource = ds.DefaultView;
         gvGoodsInfo.DataBind();
     }
 

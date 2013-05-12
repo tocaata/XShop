@@ -30,12 +30,11 @@ public partial class User_UpdateMember : System.Web.UI.Page
         }
         else
          { 
-                DataSet ds = new DataSet();
-                ds = uiObj.ReturnUIDsByID(Convert.ToInt32(Session["UID"].ToString()), "UserInfo");
-                txtName.Text=ds.Tables["UserInfo"].Rows[0][1].ToString();
-                txtPassword.Text=ds.Tables["UserInfo"].Rows[0][3].ToString ();
+                DataTable ds = new DataTable();
+                ds = uiObj.ReturnUIDsByID(Convert.ToInt32(Session["UID"].ToString()));
+                txtPassword.Text=ds.Rows[0][3].ToString ();
                
-                if(Convert.ToBoolean(ds.Tables["UserInfo"].Rows[0][2])==true )
+                if(Convert.ToBoolean(ds.Rows[0][2])==true )
                 {
                     ddlSex.SelectedIndex =0;
                 }
@@ -43,18 +42,18 @@ public partial class User_UpdateMember : System.Web.UI.Page
                 {
                     ddlSex.SelectedIndex = 1;
                 }
-                txtTrueName.Text =ds.Tables["UserInfo"].Rows[0][4].ToString ();
-                ddlCity.SelectedItem.Text =ds.Tables["UserInfo"].Rows [0][8].ToString ();
-                txtAddress.Text=ds.Tables["UserInfo"].Rows[0][7].ToString ();
-                //txtPostCode.Text =ds.Tables["UserInfo"].Rows[0][11].ToString();
-                txtPhone.Text=ds.Tables["UserInfo"].Rows[0][5].ToString ();
-                txtEmail.Text = ds.Tables["UserInfo"].Rows[0][6].ToString();
+                txtTrueName.Text =ds.Rows[0][4].ToString ();
+                ddlCity.SelectedItem.Text =ds.Rows [0][8].ToString ();
+                txtAddress.Text=ds.Rows[0][7].ToString ();
+                //txtPostCode.Text =ds.Rows[0][11].ToString();
+                txtPhone.Text=ds.Rows[0][5].ToString ();
+                txtEmail.Text = ds.Rows[0][6].ToString();
                
         }
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-        if (txtName.Text.Trim() == "" && txtPassword.Text.Trim() == "" && txtAddress.Text.Trim() == "" && txtPassword.Text.Trim() == "")
+        if (txtPassword.Text.Trim() == "" && txtAddress.Text.Trim() == "" && txtPassword.Text.Trim() == "")
         {
             Response.Write("<script>alert('请输入完整信息！');location='javascript:history.go(-1)';</script>");
         }
@@ -83,10 +82,9 @@ public partial class User_UpdateMember : System.Web.UI.Page
                     P_Bl_Sex = false;
 
                 }
-                uiObj.UpdateUInfo(txtName.Text.Trim(), P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim(), Convert.ToInt32(Session["UID"].ToString()));
+                uiObj.UpdateUInfo(P_Bl_Sex, txtPassword.Text.Trim(), txtTrueName.Text.Trim(), "", "", txtPhone.Text.Trim(), txtEmail.Text.Trim(), ddlCity.SelectedItem.Text.Trim(), txtAddress.Text.Trim(), Convert.ToInt32(Session["UID"].ToString()));
 
                 Session["Username"] = "";
-                Session["Username"] = txtName.Text.Trim();
                 Response.Write("<script>alert('恭喜您，修改成功！');location='index.aspx';</script>");
             }
         }

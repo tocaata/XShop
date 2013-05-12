@@ -43,8 +43,8 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void pageBind()
     {
-        DataSet ds = mcObj.OrderByStatus(false, 1, "orders");
-        gvOrderList.DataSource = ds.Tables["orders"].DefaultView;
+        DataTable ds = mcObj.OrderByStatus(false, 1);
+        gvOrderList.DataSource = ds.DefaultView;
         gvOrderList.DataBind();
     }
 
@@ -53,9 +53,9 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void gvSearchBind()
     {
-        DataSet ds = mcObj.OrderByStatus(Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
-            Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue), "Orders");
-        gvOrderList.DataSource = ds.Tables["Orders"].DefaultView;
+        DataTable ds = mcObj.OrderByStatus(Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
+            Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue));
+        gvOrderList.DataSource = ds.DefaultView;
         gvOrderList.DataBind();
     }
 
@@ -104,15 +104,15 @@ public partial class Manger_OrderList : System.Web.UI.Page
     }
     public string GetMemberName(int P_Int_MemberId)
     {
-        DataSet ds = new DataSet();
-        ds = uiObj.ReturnUIDsByID(P_Int_MemberId, "UserInfo");
-        return (ds.Tables["UserInfo"].Rows[0][1].ToString());
+        DataTable ds = new DataTable();
+        ds = uiObj.ReturnUIDsByID(P_Int_MemberId);
+        return (ds.Rows[0][1].ToString());
 
     }
     public string GetStatus(int P_Int_OrderID)
     {
-        DataSet ds = mcObj.GetStatusDS(P_Int_OrderID, "OrderInfo");
-        return (ds.Tables["OrderInfo"].Rows[0][0].ToString() + "|" + ds.Tables["OrderInfo"].Rows[0][1].ToString() + "<Br>" + ds.Tables["OrderInfo"].Rows[0][2].ToString() + "|" + ds.Tables["OrderInfo"].Rows[0][3].ToString());
+        DataTable ds = mcObj.GetStatusDS(P_Int_OrderID);
+        return (ds.Rows[0][0].ToString() + "|" + ds.Rows[0][1].ToString() + "<Br>" + ds.Rows[0][2].ToString() + "|" + ds.Rows[0][3].ToString());
     }
 
 

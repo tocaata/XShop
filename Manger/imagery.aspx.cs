@@ -23,8 +23,8 @@ public partial class Manger_imagegallery : System.Web.UI.Page
     }
     public void gvImageBind()
     {
-        DataSet ds = mcObj.ReturnImagerDs("ImageInfo");
-        dlImage.DataSource = ds.Tables["ImageInfo"].DefaultView;
+        DataTable ds = mcObj.ReturnImagerDs("ImageInfo");
+        dlImage.DataSource = ds.DefaultView;
         dlImage.DataBind();
     }
     protected void UploadImage_OnClick(object sender, EventArgs e)

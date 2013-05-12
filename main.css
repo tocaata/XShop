@@ -274,3 +274,15 @@ input.user
     color: #f00000;
     font-family: arial;
 }
+
+table.update
+{
+    width: 600px
+}
+
+tr.update
+{
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

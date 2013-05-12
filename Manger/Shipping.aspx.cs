@@ -51,8 +51,8 @@ public partial class Manger_Shipping : System.Web.UI.Page
     }
     public void gvShipBind()
     {
-        DataSet ds = mcObj.ReturnShipDs("ShipInfo");
-        gvShip.DataSource = ds.Tables["ShipInfo"].DefaultView;
+        DataTable ds = mcObj.ReturnShipDs("ShipInfo");
+        gvShip.DataSource = ds.DefaultView;
         gvShip.DataBind();
     
     }
@@ -73,10 +73,10 @@ public partial class Manger_Shipping : System.Web.UI.Page
     }
     public void GetShipInfo()
     {
-        DataSet ds = mcObj.ReturnShipDsByID(Convert.ToInt32(this.Request["ShipID"].ToString()), "ShipInfo");
-        txtName.Text=ds.Tables["ShipInfo"].Rows[0][1].ToString();
-        txtPrice.Text =mcObj.VarStr(ds.Tables["ShipInfo"].Rows[0][2].ToString(),2);
-        ddlClassName.SelectedItem.Value = ds.Tables["ShipInfo"].Rows[0][3].ToString();
+        DataTable ds = mcObj.ReturnShipDsByID(Convert.ToInt32(this.Request["ShipID"].ToString()));
+        txtName.Text=ds.Rows[0][1].ToString();
+        txtPrice.Text =mcObj.VarStr(ds.Rows[0][2].ToString(),2);
+        ddlClassName.SelectedItem.Value = ds.Rows[0][3].ToString();
       
     
     }

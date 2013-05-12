@@ -27,12 +27,12 @@ public class MangerClass
     /// </summary>
     /// <param name="gvName">控件名字</param>
     /// <param name="P_Str_srcTable">绑定信息</param>
-    public void gvBind(GridView gvName, SqlCommand myCmd, string P_Str_srcTable)
+    public void gvBind(GridView gvName, SqlCommand myCmd)
     {
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
-        gvName.DataSource = ds.Tables[P_Str_srcTable].DefaultView;
+        DataTable ds = new DataTable();
+        da.Fill(ds);
+        gvName.DataSource = ds.DefaultView;
         gvName.DataBind();
     }
     /// <summary>
@@ -54,16 +54,16 @@ public class MangerClass
     }
 
     // 得到一天以内的所有订单
-    public DataSet GetNewOrder(string TableSrc)
+    public DataTable GetNewOrder()
     {
-        DataSet ds = dbObj.GetDataSet("SELECT * FROM orders LEFT JOIN carts ON carts.order_id = orders.order_id WHERE DATEDIFF(day, orders.create_at, getdate()) < 1 AND carts.cart_id IS NULL", TableSrc);
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM orders LEFT JOIN carts ON carts.order_id = orders.order_id WHERE DATEDIFF(day, orders.create_at, getdate()) < 1 AND carts.cart_id IS NULL");
         return ds;
     }
 
     // 得到一天以内新建的用户
-    public DataSet GetNewUser(string TableSrc)
+    public DataTable GetNewUser()
     {
-        DataSet ds = dbObj.GetDataSet("SELECT * FROM users WHERE DATEDIFF(day, create_at, getdate()) < 1", TableSrc);
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE DATEDIFF(day, create_at, getdate()) < 1");
         return ds;
     }
     /// <summary>
@@ -116,14 +116,14 @@ public class MangerClass
     /// <param name="P_Int_IsPigeonhole">订单是否已归档</param>
     /// <returns>返回Sqlcommand</returns>
     /// 
-    public DataSet OrderByStatus(bool flag, int Status, string TableSrc)
+    public DataTable OrderByStatus(bool flag, int Status)
     {
-        return dbObj.GetDataSet("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE orders.status " + 
+        return DBClass.GetDataTable("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE orders.status " + 
             (flag ? "=" : "<>") + " @status AND carts.cart_id IS NULL",
-            TableSrc, new SqlParameter("@status", Status));
+            new SqlParameter("@status", Status));
     }
 
-    public DataSet OrderByStatus(int IsShipped, int IsConfirm, int IsReturn, int IsSpeed, int IsReceive, string TableSrc)
+    public DataTable OrderByStatus(int IsShipped, int IsConfirm, int IsReturn, int IsSpeed, int IsReceive)
     {
         string[] str = { "1=1", "1=1", "1=1", "1=1", "1=1" };
         int[] stat = { IsShipped, IsConfirm, IsReturn, IsReceive }, value = {3, 2, 5, 4};
@@ -156,7 +156,7 @@ public class MangerClass
 
 
         String condition = String.Join(" AND ", str);
-        return dbObj.GetDataSet("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE " + condition + " AND carts.cart_id IS NULL", TableSrc);
+        return DBClass.GetDataTable("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE " + condition + " AND carts.cart_id IS NULL");
     }
 
     public SqlCommand GetOrderInfo(int P_Int_Flag, int P_Int_IsMember, int P_Int_MemberID, int P_Int_OrderID, int P_Int_Confirm, int P_Int_Payed, int P_Int_Shipped, int P_Int_Finished, int P_Int_IsConfirm, int P_Int_IsPayment, int P_Int_IsConsignment, int P_Int_IsPigeonhole)
@@ -302,12 +302,12 @@ public class MangerClass
         return P_Str_PayWay;
     }
     /// <summary>
-    /// 获取订单状态的Dataset数据集
+    /// 获取订单状态的DataTable数据集
     /// </summary>
     /// <param name="P_Int_OrderID">订单编号</param>
     /// <param name="P_Str_srcTable">订单信息</param>
-    /// <returns>返回Dataset</returns>
-    public DataSet GetStatusDS(int P_Int_OrderID, string P_Str_srcTable)
+    /// <returns>返回DataTable</returns>
+    public DataTable GetStatusDS(int P_Int_OrderID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetStatus", myConn);
@@ -320,19 +320,19 @@ public class MangerClass
         myConn.Open();
         myCmd.ExecuteNonQuery();
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         myCmd.Dispose();
         myConn.Dispose();
         return ds;
     }
     /// <summary>
-    /// 获取订单状态的Dataset数据集
+    /// 获取订单状态的DataTable数据集
     /// </summary>
     /// <param name="P_Int_OrderID">订单编号</param>
     /// <param name="P_Str_srcTable">订单信息</param>
-    /// <returns>返回Dataset</returns>
-    public DataSet GetOdIfDS(int P_Int_OrderID, string P_Str_srcTable)
+    /// <returns>返回DataTable</returns>
+    public DataTable GetOdIfDS(int P_Int_OrderID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetOdIf", myConn);
@@ -345,8 +345,8 @@ public class MangerClass
         myConn.Open();
         myCmd.ExecuteNonQuery();
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         myCmd.Dispose();
         myConn.Dispose();
         return ds;
@@ -357,7 +357,7 @@ public class MangerClass
     /// <param name="P_Int_OrderID">订单ID代号</param>
     /// <param name="P_Str_srcTable">信息</param>
     /// <returns>返回信息的数据集Ds</returns>
-    public DataSet GetGIByOID(int P_Int_OrderID, string P_Str_srcTable)
+    public DataTable GetGIByOID(int P_Int_OrderID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetGIByOID", myConn);
@@ -370,8 +370,8 @@ public class MangerClass
         myConn.Open();
         myCmd.ExecuteNonQuery();
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         myCmd.Dispose();
         myConn.Dispose();
         return ds;
@@ -459,9 +459,9 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">商品类别信息表名</param>
     /// <returns>商品类别的数据集</returns>
-    public DataSet GetCategory(string P_Str_srcTable)
+    public DataTable GetCategory(string P_Str_srcTable)
     {
-        return dbObj.GetDataSet("SELECT * FROM categories", P_Str_srcTable);
+        return DBClass.GetDataTable("SELECT * FROM categories");
     }
     /// <summary>
     /// 删除指定商品的类别名
@@ -501,10 +501,10 @@ public class MangerClass
     /// <param name="ddlName">绑定控件名</param>
     public void ddlClassBind(DropDownList ddlName)
     {
-        DataSet ds = dbObj.GetDataSet("SELECT category_id, name FROM categories", "Class");
-        ddlName.DataSource = ds.Tables["Class"].DefaultView;
-        ddlName.DataTextField = ds.Tables["Class"].Columns[1].ToString();
-        ddlName.DataValueField = ds.Tables["Class"].Columns[0].ToString();
+        DataTable ds = DBClass.GetDataTable("SELECT category_id, name FROM categories");
+        ddlName.DataSource = ds.DefaultView;
+        ddlName.DataTextField = ds.Columns[1].ToString();
+        ddlName.DataValueField = ds.Columns[0].ToString();
         ddlName.DataBind();
     }
     //*************************************************************************************************
@@ -514,14 +514,10 @@ public class MangerClass
     /// <param name="ddlName">绑定控件名</param>
     public void ddlUrl(DropDownList ddlName)
     {
-        string P_Str_SqlStr = "select * from tb_Image";
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlDataAdapter da = new SqlDataAdapter(P_Str_SqlStr, myConn);
-        DataSet ds = new DataSet();
-        da.Fill(ds, "Url");
-        ddlName.DataSource = ds.Tables["Url"].DefaultView;
-        ddlName.DataTextField = ds.Tables["Url"].Columns[1].ToString();
-        ddlName.DataValueField = ds.Tables["Url"].Columns[2].ToString();
+        DataTable dt = DBClass.GetDataTable("select * from tb_Image");
+        ddlName.DataSource = dt.DefaultView;
+        ddlName.DataTextField = dt.Columns[1].ToString();
+        ddlName.DataValueField = dt.Columns[2].ToString();
         ddlName.DataBind();
     }
     /// <summary>
@@ -569,9 +565,9 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">商品信息表</param>
     /// <returns>返回商品信息的数据集</returns>
-    public DataSet GetGoodsInfoDs(string P_Str_srcTable)
+    public DataTable GetGoodsInfoDs()
     {
-        return dbObj.GetDataSet("SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id", P_Str_srcTable);
+        return DBClass.GetDataTable("SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id");
     }
     /// <summary>
     /// 获取指定商品信息的数据集
@@ -579,10 +575,10 @@ public class MangerClass
     /// <param name="P_Int_GoodsID">指定商品的ID</param>
     /// <param name="P_Str_srcTable">商品信息表</param>
     /// <returns>返回指定商品信息的数据集</returns>
-    public DataSet GetGoodsInfoByIDDs(int P_Int_GoodsID, string P_Str_srcTable)
+    public DataTable GetGoodsInfoByIDDs(int P_Int_GoodsID)
     {
-        DataSet good = dbObj.GetDataSet(
-            "select items.*, categories.name as class_name from items join categories on items.cat_id = categories.category_id where item_id = @item_id", P_Str_srcTable,
+        DataTable good = DBClass.GetDataTable(
+            "select items.*, categories.name as class_name from items join categories on items.cat_id = categories.category_id where item_id = @item_id",
             new SqlParameter("@item_id", P_Int_GoodsID));
         return good;
     }
@@ -592,12 +588,12 @@ public class MangerClass
     /// <param name="P_Str_srcTable">商品信息表</param>
     /// <param name="P_Str_keywords">搜索的关键字</param>
     /// <returns>返回搜索商品信息的数据集</returns>
-    public DataSet SearchGoodsInfoDs(string P_Str_srcTable, string P_Str_keywords)
+    public DataTable SearchGoodsInfoDs(string P_Str_keywords)
     {
-        return dbObj.GetDataSet(
+        return DBClass.GetDataTable(
             "SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id WHERE " +
             "items.name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or categories.name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) +'%' or items.description LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%'",
-            P_Str_srcTable, new SqlParameter("@keywords", P_Str_keywords));
+            new SqlParameter("@keywords", P_Str_keywords));
 
         //SqlConnection myConn = dbObj.GetConnection();
         //SqlCommand myCmd = new SqlCommand("Proc_SearchGoodsInfo", myConn);
@@ -611,7 +607,7 @@ public class MangerClass
         //myConn.Open();
         //myCmd.ExecuteNonQuery();
         //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataSet ds = new DataSet();
+        //DataTable ds = new DataTable();
         //da.Fill(ds, P_Str_srcTable);
         //myCmd.Dispose();
         //myConn.Dispose();
@@ -786,11 +782,11 @@ public class MangerClass
     /// <param name="P_Str_Password">管理员密码</param>
     /// <param name="P_Str_srcTable">信息表名</param>
     /// <returns></returns>
-    public DataSet ReturnAIDs(string P_Str_Name, string P_Str_Password, string P_Str_srcTable)
+    public DataTable ReturnAIDs(string P_Str_Name, string P_Str_Password)
     {
-        DataSet ds = dbObj.GetDataSet("SELECT * FROM admins WHERE name = @name AND password = @password", P_Str_srcTable, 
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM admins WHERE name = @name AND password = @password", 
             new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
-        if (ds.Tables[P_Str_srcTable].Rows.Count > 0)
+        if (ds.Rows.Count > 0)
         {
             return ds;
         }
@@ -804,9 +800,9 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">管理员信息表名</param>
     /// <returns>返回所有管理员信息的数据集</returns>
-    public DataSet ReturnAdminIDs(string P_Str_srcTable)
+    public DataTable ReturnAdminIDs(string P_Str_srcTable)
     {
-        return dbObj.GetDataSet("SELECT * FROM admins", P_Str_srcTable);
+        return DBClass.GetDataTable("SELECT * FROM admins");
     }
     /// <summary>
     /// 删除指定管理员信息
@@ -827,7 +823,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">图像信息</param>
     /// <returns>返回图像信息数据集</returns>
-    public DataSet ReturnImagerDs(string P_Str_srcTable)
+    public DataTable ReturnImagerDs(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetImageInfo", myConn);
@@ -850,8 +846,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
 
     }
@@ -923,9 +919,9 @@ public class MangerClass
         }
     }
     //**************************************************************************************************
-    public DataSet ReturnMemberDs(string P_Str_srcTable)
+    public DataTable ReturnMemberDs(string P_Str_srcTable)
     {
-        return dbObj.GetDataSet("SELECT * FROM users", P_Str_srcTable);
+        return DBClass.GetDataTable("SELECT * FROM users");
     }
     /// <summary>
     /// 删除指定会员的信息
@@ -941,7 +937,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">配送方式表的信息</param>
     /// <returns>返回配送方式的数据集</returns>
-    public DataSet ReturnShipDs(string P_Str_srcTable)
+    public DataTable ReturnShipDs(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetShipInfo", myConn);
@@ -964,8 +960,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     /// <summary>
@@ -974,7 +970,7 @@ public class MangerClass
     /// <param name="P_Int_ShipID">配送方式ID</param>
     /// <param name="P_Str_srcTable">配送方式信息</param>
     /// <returns></returns>
-    public DataSet ReturnShipDsByID(int P_Int_ShipID, string P_Str_srcTable)
+    public DataTable ReturnShipDsByID(int P_Int_ShipID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetShipInfoByID", myConn);
@@ -1001,8 +997,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     /// <summary>
@@ -1043,22 +1039,9 @@ public class MangerClass
     /// <returns></returns>
     public string GetClass(int P_Int_ClassID)
     {
-        DataSet ds = dbObj.GetDataSet("select name from categories where category_id = @category_id", "catergory",
+        DataTable ds = DBClass.GetDataTable("select name from categories where category_id = @category_id",
             new SqlParameter("@category_id", P_Int_ClassID));
-        return ds.Tables["catergory"].Rows[0][0].ToString();
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_GetClassName", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter ClassID = new SqlParameter("@ClassID", SqlDbType.Int, 8);
-        //ClassID.Value = P_Int_ClassID;
-        //myCmd.Parameters.Add(ClassID);
-        ////执行过程
-        //myConn.Open();
-        //string P_Str_Class = Convert.ToString(myCmd.ExecuteScalar());
-        //myCmd.Dispose();
-        //myConn.Close();
-        //return P_Str_Class;
+        return ds.Rows[0][0].ToString();
     }
     public void InsertShip(string P_Str_ShipWay, float P_Flt_ShipFee, int P_int_ClassID)
     {
@@ -1142,7 +1125,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">支付方式表的信息</param>
     /// <returns>返回支付方式的数据集</returns>
-    public DataSet ReturnPayDs(string P_Str_srcTable)
+    public DataTable ReturnPayDs(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetPayInfo", myConn);
@@ -1165,8 +1148,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     /// <summary>
@@ -1175,7 +1158,7 @@ public class MangerClass
     /// <param name="P_Int_PayID">支付方式ID</param>
     /// <param name="P_Str_srcTable">支付方式信息</param>
     /// <returns></returns>
-    public DataSet ReturnPayDsByID(int P_Int_PayID, string P_Str_srcTable)
+    public DataTable ReturnPayDsByID(int P_Int_PayID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetPayInfoByID", myConn);
@@ -1202,8 +1185,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     /// <summary>
@@ -1301,7 +1284,7 @@ public class MangerClass
     /// </summary>
     /// <param name="P_Str_srcTable">地点表信息</param>
     /// <returns>返回所有配送地点信息数据集</returns>
-    public DataSet ReturnAreaDs(string P_Str_srcTable)
+    public DataTable ReturnAreaDs(string P_Str_srcTable)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetAreaInfo", myConn);
@@ -1324,8 +1307,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     /// <summary>
@@ -1365,7 +1348,7 @@ public class MangerClass
     /// <param name="P_Int_AreaID">地点编号</param>
     /// <param name="P_Str_srcTable">地点数据表</param>
     /// <returns>返回指定地点编号信息的数据集</returns>
-    public DataSet ReturnAreaDsByID(int P_Int_AreaID, string P_Str_srcTable)
+    public DataTable ReturnAreaDsByID(int P_Int_AreaID)
     {
         SqlConnection myConn = dbObj.GetConnection();
         SqlCommand myCmd = new SqlCommand("Proc_GetAreaInfoByID", myConn);
@@ -1392,8 +1375,8 @@ public class MangerClass
 
         }
         SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataSet ds = new DataSet();
-        da.Fill(ds, P_Str_srcTable);
+        DataTable ds = new DataTable();
+        da.Fill(ds);
         return ds;
     }
     public void InsertArea(string P_Str_AreaName, int P_Int_AreaKM)
@@ -1463,12 +1446,12 @@ public class MangerClass
         }
     }
 
-    public DataSet SearchUser(string TableSrc, string SearchStr)
+    public DataTable SearchUser(string TableSrc, string SearchStr)
     {
-        return dbObj.GetDataSet("SELECT * FROM users WHERE name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or true_name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
+        return DBClass.GetDataTable("SELECT * FROM users WHERE name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or true_name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
             "city LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
             "email LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%'",
-            TableSrc, new SqlParameter("@keywords", SearchStr));
+            new SqlParameter("@keywords", SearchStr));
     }
     /// <summary>
     /// 用来将字符串保留到指定长度，将超出部分用“...”代替。

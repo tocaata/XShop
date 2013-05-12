@@ -28,8 +28,8 @@ public partial class User_CheckOut : System.Web.UI.Page
     
     public float  TotalGoodsPrice()
     {
-        DataSet ds = ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()), "TotalInfo");
-       float  P_Flt_TotalGP = float.Parse(ds.Tables["TotalInfo"].Rows[0][0].ToString());
+        DataTable ds = ucObj.ReturnTotalDs(Convert.ToInt32(Session["UID"].ToString()));
+       float  P_Flt_TotalGP = float.Parse(ds.Rows[0][0].ToString());
        return P_Flt_TotalGP;
     }
 
@@ -43,9 +43,8 @@ public partial class User_CheckOut : System.Web.UI.Page
         else
         {
             int UserID = Convert.ToInt32(Session["UID"].ToString());
-            float P_Flt_TotalSF = 0;//TotalShipFee();
             float P_Flt_TotalGP = TotalGoodsPrice();
-            int P_Int_OrderID = ucObj.AddOrderInfo(UserID, P_Flt_TotalGP, P_Flt_TotalSF, 0, 0, UserID, txtReciverName.Text.Trim(), txtReceiverPhone.Text.Trim(), "", txtReceiverAddress.Text.Trim(), txtReceiverEmails.Text.Trim());
+            int P_Int_OrderID = ucObj.AddOrderInfo(UserID, txtReciverName.Text.Trim(), txtReceiverPhone.Text.Trim(), txtReceiverAddress.Text.Trim(), txtReceiverEmails.Text.Trim());
             Response.Write("<script>alert('购物成功 ！');location='index.aspx'</script>");
             return;
         }

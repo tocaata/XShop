@@ -13,12 +13,12 @@
               <div class="title"><span class="name" style="width: 120px">更新会员信息</span></div>
             </td>
           </tr>
-          <tr style="margin-bottom: 15px;">
+          <tr>
             <td align="right" width="200">
-              用户名：
+              真实姓名：
             </td>
             <td align="left">
-              <asp:TextBox ID="txtName" runat="server" CssClass="user" MaxLength="50"></asp:TextBox><font color="red">*</font>
+              <asp:TextBox ID="txtTrueName" runat="server" CssClass="user" MaxLength="50"></asp:TextBox><font color="red">*</font>
             </td>
           </tr>
           <tr>
@@ -38,14 +38,6 @@
                 <asp:ListItem Selected="True" Value="1">男</asp:ListItem>
                 <asp:ListItem Value="0">女</asp:ListItem>
               </asp:DropDownList>
-            </td>
-          </tr>
-          <tr>
-            <td align="right" width="200">
-              真实姓名：
-            </td>
-            <td align="left">
-              <asp:TextBox ID="txtTrueName" runat="server" CssClass="user" MaxLength="50"></asp:TextBox><font color="red">*</font>
             </td>
           </tr>
           <tr>

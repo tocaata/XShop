@@ -41,8 +41,8 @@ public partial class Manger_ShipArea : System.Web.UI.Page
     }
     public void gvAreaBind()
     { 
-        DataSet ds = mcObj.ReturnAreaDs("AreaInfo");
-        gvArea.DataSource = ds.Tables["AreaInfo"].DefaultView;
+        DataTable ds = mcObj.ReturnAreaDs("AreaInfo");
+        gvArea.DataSource = ds.DefaultView;
         gvArea.DataBind();
     }
     protected void gvArea_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -59,9 +59,9 @@ public partial class Manger_ShipArea : System.Web.UI.Page
     }
     public void GetAreaInfo()
     {
-        DataSet ds = mcObj.ReturnAreaDsByID(Convert.ToInt32(this.Request["AreaID"].ToString()), "AreaInfo");
-        txtName.Text = ds.Tables["AreaInfo"].Rows[0][1].ToString();
-        txtKM.Text = ds.Tables["AreaInfo"].Rows[0][2].ToString();
+        DataTable ds = mcObj.ReturnAreaDsByID(Convert.ToInt32(this.Request["AreaID"].ToString()));
+        txtName.Text = ds.Rows[0][1].ToString();
+        txtKM.Text = ds.Rows[0][2].ToString();
 
     }
     protected void btnSave_Click(object sender, EventArgs e)

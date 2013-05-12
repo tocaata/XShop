@@ -22,8 +22,8 @@ public partial class Manger_Manager : System.Web.UI.Page
     }
     public void gvMemberBind()
     {
-        DataSet ds = mcObj.ReturnMemberDs("Member");
-        gvMemberList.DataSource = ds.Tables["Member"].DefaultView;
+        DataTable ds = mcObj.ReturnMemberDs("Member");
+        gvMemberList.DataSource = ds.DefaultView;
         gvMemberList.DataBind();
     
     }
@@ -41,8 +41,8 @@ public partial class Manger_Manager : System.Web.UI.Page
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        DataSet ds = mcObj.SearchUser("users", txtKey.Text.Trim());
-        gvMemberList.DataSource = ds.Tables["users"].DefaultView;
+        DataTable ds = mcObj.SearchUser("users", txtKey.Text.Trim());
+        gvMemberList.DataSource = ds.DefaultView;
         gvMemberList.DataBind();
     }
 }

@@ -22,8 +22,8 @@ public partial class Manger_Member : System.Web.UI.Page
     }
     public void gvAdminBind()
     {
-        DataSet ds = mcObj.ReturnAdminIDs("Admin");
-        gvCategoryList.DataSource = ds.Tables["Admin"].DefaultView;
+        DataTable ds = mcObj.ReturnAdminIDs("Admin");
+        gvCategoryList.DataSource = ds.DefaultView;
         gvCategoryList.DataBind();  
     }
     protected void gvCategoryList_PageIndexChanging(object sender, GridViewPageEventArgs e)
