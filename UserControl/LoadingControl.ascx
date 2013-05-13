@@ -55,9 +55,11 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2">
-            &nbsp; &nbsp;&nbsp;
+          <td>
             <asp:HyperLink ID="hpLinkUser" runat="server" NavigateUrl="~/User/UpdateMember.aspx">更新信息</asp:HyperLink>
+          </td>
+          <td>
+            <asp:LinkButton ID="hpLinkLogout" runat="server" onclick="hpLinkLogout_Click">退出</asp:LinkButton>
           </td>
         </tr>
       </table>

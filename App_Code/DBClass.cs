@@ -244,8 +244,12 @@ public class DBClass
     public static int ExecuteScalar(string safeSql)
     {
         SqlCommand cmd = new SqlCommand(safeSql, Connection);
-        int result = (int)cmd.ExecuteScalar();
-        return result;
+        object result = cmd.ExecuteScalar();
+        if (result == null)
+        {
+            throw new RecordNotExisted("记录不存在");
+        }
+        return (int)result;
     }
 
     ///执行返回首行首列带参数的
@@ -253,8 +257,12 @@ public class DBClass
     {
         SqlCommand cmd = new SqlCommand(sql, Connection);
         cmd.Parameters.AddRange(values);
-        int result = (int)cmd.ExecuteScalar();
-        return result;
+        object result = cmd.ExecuteScalar();
+        if (result == null)
+        {
+            throw new RecordNotExisted("记录不存在");
+        }
+        return (int)result;
     }
 
     public static int ExecuteScalar(string sql, SqlParameter value)

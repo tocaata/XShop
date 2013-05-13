@@ -286,3 +286,27 @@ tr.update
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+input.search {
+    width: 95px;
+    height: 32px;
+    padding: 0;
+    padding-top: 2px	9;
+    border: 0;
+    background-position: 0 -35px;
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.search_text
+{
+    width: 529px;
+    height: 22px;
+    padding: 4px 7px;
+    padding: 6px 7px 2px	9;
+    font: 16px arial;
+    border: 1px solid #cdcdcd;
+    border-color: #9a9a9a #cdcdcd #cdcdcd #9a9a9a;
+    vertical-align: top;
+    outline: none;
+}

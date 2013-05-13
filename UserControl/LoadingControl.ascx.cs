@@ -78,5 +78,10 @@ public partial class LoadingControl : System.Web.UI.UserControl
     {
         Response.Write("<script language=javascript>window.open('ResetMemberInfo.aspx','','width=655,height=655')</script>");
     }
- 
+
+    protected void hpLinkLogout_Click(object sender, EventArgs e)
+    {
+        Session.Clear();
+        Response.Redirect("index.aspx");
+    }
 }

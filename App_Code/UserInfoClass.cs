@@ -44,7 +44,7 @@ public class UserInfoClass
     /// <returns></returns>
     public bool UserExists(string P_Str_Name,string P_Str_Password)
     {
-        DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE name=@name and password=@password", new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password", new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
         int hasUser = ds.Rows.Count;
         if (hasUser == 1)
         {
@@ -65,13 +65,13 @@ public class UserInfoClass
     public DataTable ReturnUIDs(string P_Str_Name, string P_Str_Password,string P_Str_srcTable)
     {
         StringBuilder cmd = new StringBuilder();
-        cmd.AppendFormat("SELECT * FROM users WHERE name='{0}' and password='{1}'", P_Str_Name, P_Str_Password);
+        cmd.AppendFormat("SELECT * FROM users WHERE name='{0}' AND password='{1}'", P_Str_Name, P_Str_Password);
         return DBClass.GetDataTable(cmd.ToString());
     }
 
     public DataTable ReturnUsers(string name, string password)
     {
-        return DBClass.GetDataTable("SELECT * FROM users WHERE name=@name and password=@password", new SqlParameter("@name", name), new SqlParameter("@password", password));
+        return DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password", new SqlParameter("@name", name), new SqlParameter("@password", password));
     }
 
     //***************************************注册界面************************************************************
@@ -99,7 +99,7 @@ public class UserInfoClass
         }
         else
         {
-            int user_id = DBClass.ExecuteScalar("Insert users(name,sex,password,true_name,phone,email,address) values(@Name,@Sex,@Password,@True_name,@Phone,@Email,@Address);select @@identity;",
+            int user_id = DBClass.ExecuteScalar("INSERT users(name,sex,password,true_name,phone,email,address) VALUES(@Name,@Sex,@Password,@True_name,@Phone,@Email,@Address);SELECT @@identity;",
             new SqlParameter("@Name", P_Str_Name), new SqlParameter("@sex", P_Bl_Sex),
             new SqlParameter("@Password", P_Str_Password),
             new SqlParameter("@True_name", P_Str_TrueName),
@@ -107,8 +107,8 @@ public class UserInfoClass
             new SqlParameter("@Email", P_Str_Emails),
             new SqlParameter("@Address", P_Str_Address));
 
-            int order_id = DBClass.ExecuteScalar("insert into orders (name, user_id, status) values ('cart', @user_id, 0); select @@identity", new SqlParameter("@user_id", user_id));
-            DBClass.ExecuteCommand("insert into carts (order_id, user_id) values (@order_id, @user_id)", new SqlParameter("@order_id", order_id), new SqlParameter("@user_id", user_id));
+            int order_id = DBClass.ExecuteScalar("INSERT INTO orders (name, user_id, status) VALUES ('cart', @user_id, 0); SELECT @@identity", new SqlParameter("@user_id", user_id));
+            DBClass.ExecuteCommand("INSERT INTO carts (order_id, user_id) VALUES (@order_id, @user_id)", new SqlParameter("@order_id", order_id), new SqlParameter("@user_id", user_id));
             return user_id;
         }
     }
@@ -119,7 +119,7 @@ public class UserInfoClass
     /// <param name="P_Flt_AdvancePayment">充值金额</param>
     public void UpdateAP(int UserId, float P_Flt_AdvancePayment)
     {
-        DataTable ds = DBClass.GetDataTable("set @OldPayment=(select AdvancePayment from users where MemberID=@MemberID);update tb_Member set AdvancePayment=(@AdvancePayment+@OldPayment) where MemberID=@MemberID", 
+        DataTable ds = DBClass.GetDataTable("SET @OldPayment=(SELECT AdvancePayment FROM users WHERE MemberID=@MemberID);UPDATE tb_Member SET AdvancePayment=(@AdvancePayment+@OldPayment) WHERE MemberID=@MemberID", 
             new SqlParameter("@MemberID", UserId),
             new SqlParameter("@AdvancePayment", P_Flt_AdvancePayment));
     }
@@ -133,7 +133,7 @@ public class UserInfoClass
     /// <returns></returns>
     public DataTable ReturnUIDsByID(int UserId)
     {
-        return DBClass.GetDataTable("select user_id, name, sex, password, true_name, phone, email, address, city from users where user_id=@user_id", new SqlParameter("@user_id", UserId));
+        return DBClass.GetDataTable("SELECT user_id, name, sex, password, true_name, phone, email, address, city FROM users WHERE user_id=@user_id", new SqlParameter("@user_id", UserId));
     }
     /// <summary>
     /// 修改会员表中的信息
@@ -153,7 +153,7 @@ public class UserInfoClass
     /// <param name="P_Date_LoadDate">登录日期</param>
     public void  UpdateUInfo(bool P_Bl_Sex, string P_Str_Password, string P_Str_TrueName, string P_Str_Questions, string P_Str_Answers, string P_Str_Phonecode, string P_Str_Emails, string P_Str_City, string P_Str_Address,int UserId)
     {
-        DBClass.ExecuteCommand("update users set sex=@sex, password=@password, phone=@phone, email=@email,address=@address, city=@city, true_name=@true_name where user_id=@user_id",
+        DBClass.ExecuteCommand("UPDATE users SET sex=@sex, password=@password, phone=@phone, email=@email,address=@address, city=@city, true_name=@true_name WHERE user_id=@user_id",
             new SqlParameter("@sex", P_Bl_Sex),
             new SqlParameter("@password", P_Str_Password),
             new SqlParameter("@phone", P_Str_Phonecode), 
@@ -170,7 +170,7 @@ public class UserInfoClass
     /// <param name="dlName">商品类别信息</param>
     public void DLClassBind(DataList  dlName)
     {
-        DataTable ds = DBClass.GetDataTable("select * from categories where parent_id is null");
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM categories WHERE parent_id is null");
         dlName.DataSource = ds.DefaultView;
         dlName.DataBind();
     }
@@ -198,7 +198,7 @@ public class UserInfoClass
             default:
                 throw(new Exception("Error Deplay"));
         }
-        DataTable ds = DBClass.GetDataTable("select top 4 * from items where " + stat + " = 1");
+        DataTable ds = DBClass.GetDataTable("SELECT top 4 * FROM items WHERE " + stat + " = 1");
         DLName.DataSource = ds.DefaultView;
         DLName.DataBind();
     }
@@ -220,7 +220,7 @@ public class UserInfoClass
             default:
                 throw (new Exception("Error Deplay"));
         }
-        return DBClass.GetDataTable("select top 4 * from items where " + stat + " = 1");
+        return DBClass.GetDataTable("SELECT top 4 * FROM items WHERE " + stat + " = 1");
     }
     /// <summary>
     /// 以商品类别分类绑定商品信息
@@ -230,7 +230,7 @@ public class UserInfoClass
     /// <param name="DLName">绑定控件名</param>
     public void DCGIBind(int P_Int_ClassID, DataList DLName)
     {
-        DataTable ds = DBClass.GetDataTable("select * from items where cat_id = @cat_id",
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM items WHERE cat_id = @cat_id",
             new SqlParameter("@cat_id", P_Int_ClassID));
         DLName.DataSource = ds.DefaultView;
         DLName.DataBind();
@@ -244,21 +244,22 @@ public class UserInfoClass
     /// <param name="UserId">会员编号</param>
     public void AddShopCart(int P_Int_GoodsID, float P_Flt_MemberPrice, int UserId, float P_Flt_GoodsWeight)
     {
-        int OrderId = DBClass.ExecuteScalar("select order_id from carts where user_id = @user_id",
+        int OrderId = DBClass.ExecuteScalar("SELECT order_id FROM carts WHERE user_id = @user_id",
             new SqlParameter("@user_id", UserId));
         int OrderItemId = -1;
         try
         {
-            OrderItemId = DBClass.ExecuteScalar("select order_items.order_item_id from order_items where order_id = @order_id and item_id = @item_id",
+            OrderItemId = DBClass.ExecuteScalar("SELECT order_items.order_item_id FROM order_items WHERE order_id = @order_id AND item_id = @item_id",
              new SqlParameter("@order_id", OrderId), new SqlParameter("@item_id", P_Int_GoodsID));
-            DBClass.ExecuteCommand("update order_items set count = count + 1 where order_item_id = @order_item_id", new SqlParameter("@order_item_id", OrderItemId));
+            DBClass.ExecuteCommand("UPDATE order_items SET count = count + 1 WHERE order_item_id = @order_item_id", new SqlParameter("@order_item_id", OrderItemId));
         }
         catch (RecordNotExisted)
         {
-            DBClass.ExecuteCommand("insert into order_items (item_id, order_id, count, price) select item_id, @order_id, 1, price from items where item_id = @item_id",
+            DBClass.ExecuteCommand("INSERT INTO order_items (item_id, order_id, count, price) SELECT item_id, @order_id, 1, price FROM items WHERE item_id = @item_id",
                 new SqlParameter("@order_id", OrderId), new SqlParameter("@item_id", P_Int_GoodsID));
         }
     }
+
     /// <summary>
     /// 显示购物车中的信息
     /// </summary>
@@ -268,8 +269,8 @@ public class UserInfoClass
     public void SCIBind(GridView  gvName, int UserId)
     {
         DataTable ds = DBClass.GetDataTable(
-            "select order_items.order_item_id, items.name, order_items.price, order_items.count, order_items.price * order_items.count as sum_price, carts.user_id, order_items.item_id from " +
-            "carts join order_items on carts.order_id = order_items.order_id join items on order_items.item_id = items.item_id where carts.user_id = @user_id", 
+            "SELECT order_items.order_item_id, items.name, order_items.price, order_items.count, order_items.price * order_items.count as sum_price, carts.user_id, order_items.item_id FROM " +
+            "carts JOIN order_items ON carts.order_id = order_items.order_id JOIN items ON order_items.item_id = items.item_id WHERE carts.user_id = @user_id", 
             new SqlParameter("@user_id", UserId));
         gvName.DataSource = ds.DefaultView;
         gvName.DataBind();
@@ -285,6 +286,7 @@ public class UserInfoClass
         ItemData.DataSource = ds.DefaultView;
         ItemData.DataBind();
     }
+
     /// <summary>
     /// 返回合计总数的Ds
     /// </summary>
@@ -294,10 +296,10 @@ public class UserInfoClass
     public DataTable ReturnTotalDs(int UserId)
     {
         return DBClass.GetDataTable(
-            "select Sum(order_items.price), Sum(order_items.count) from carts " + 
-            "join order_items " +
-            "on order_items.order_id = carts.order_id " +
-            "where carts.user_id = @user_id", new SqlParameter("@user_id", UserId));
+            "SELECT Sum(order_items.price), Sum(order_items.count) FROM carts " + 
+            "JOIN order_items " +
+            "ON order_items.order_id = carts.order_id " +
+            "WHERE carts.user_id = @user_id", new SqlParameter("@user_id", UserId));
     }
     /// <summary>
     /// 删除购物车中的信息
@@ -305,8 +307,8 @@ public class UserInfoClass
     /// <param name="UserId">会员编号</param>
     public void ClearShopCart(int UserId)
     {
-        int order_id = DBClass.ExecuteScalar("select order_id from carts where user_id = @user_id", new SqlParameter("@user_id", UserId));
-        DBClass.ExecuteCommand("delete from order_items where order_id = @order_id", new SqlParameter("@order_id", order_id));
+        int order_id = DBClass.ExecuteScalar("SELECT order_id FROM carts WHERE user_id = @user_id", new SqlParameter("@user_id", UserId));
+        DBClass.ExecuteCommand("DELETE FROM order_items WHERE order_id = @order_id", new SqlParameter("@order_id", order_id));
     }
     /// <summary>
     ///  删除指定购物车中的信息
@@ -316,9 +318,8 @@ public class UserInfoClass
     public void RemoveOrderItemByID(int UserId,int CartId)
     {
         DBClass.ExecuteCommand(
-            "delete from order_items where order_item_id = @order_item_id",
+            "DELETE FROM order_items WHERE order_item_id = @order_item_id",
             new SqlParameter("@order_item_id", CartId));
-
     }
     /// <summary>
     /// 当购物车中商品数量改变时，修改购物车中的信息
@@ -328,7 +329,7 @@ public class UserInfoClass
     /// <param name="Num">商品数量</param>
     public void UpdateItemOrder(int UserId, int CartId, int Num)
     {
-        DBClass.ExecuteCommand("update order_items set count = @count where order_item_id = @order_item_id",
+        DBClass.ExecuteCommand("UPDATE order_items SET count = @count WHERE order_item_id = @order_item_id",
             new SqlParameter("@count", Num),
             new SqlParameter("@order_item_id", CartId));
     }
@@ -337,44 +338,23 @@ public class UserInfoClass
     public int AddOrderInfo(int UserId, string TrueName, string Mobile, string Address, string Email)
     {
         // 获取购物车
-        DataTable order = DBClass.GetDataTable(
-            "select order_id, cart_id from carts where carts.user_id = @user_id",
-            new SqlParameter("@user_id", UserId));
-
-        // 创建新订单
-        int newOrderId = DBClass.ExecuteScalar(
-            "insert orders " +
-            "(user_id, status) " +
-            "values (@user_id, 0) " +
-            "select @@identity",
-            new SqlParameter("@user_id", UserId));
-
-        // 设定购物车指向新的订单
-        // 订单状态, 0: 购物车状态, 1:审核状态, 2: 审核完/等待出货， 3：出货状态， 4：收货状态, 5: 退货状态
-        DBClass.ExecuteCommand(
-            "update carts " + 
-            "set order_id = @order_id " + 
-            "where cart_id = @cart_id",
-            new SqlParameter("@order_id", newOrderId),
-            new SqlParameter("@cart_id", getInt32(order, "order", 0, 1)));
-
-        // 设定原订单状态，脱离购物车，成为单独一个订单
-        DBClass.ExecuteCommand(
-            "update orders set status = 1, address = @address, phone = @phone, name = @name where order_id = @order_id",
+        return DBClass.ExecuteScalar(
+            "DECLARE @cart int; DECLARE @old_order int; DECLARE @new_order int; " +
+            "SELECT @old_order = order_id, @cart = cart_id FROM carts WHERE carts.user_id = @user_id; " +
+            "INSERT orders (user_id, status) VALUES (@user_id, 0); SELECT @new_order = @@identity; " + 
+            "UPDATE carts SET order_id = @new_order WHERE cart_id = @cart; " +
+            "UPDATE orders SET status = 1, address = @address, phone = @phone, name = @name WHERE order_id = @old_order; " +
+            "UPDATE items SET items.quota = items.quota - order_items.count, items.sell_count = items.sell_count + order_items.count FROM orders JOIN order_items ON order_items.order_id = orders.order_id JOIN items ON order_items.item_id = items.item_id WHERE orders.order_id = @old_order; " +
+            "SELECT @new_order; ",
+            new SqlParameter("@user_id", UserId), 
             new SqlParameter("@address", Address),
             new SqlParameter("@phone", Mobile),
-            new SqlParameter("@name", TrueName),
-            new SqlParameter("@order_id", getInt32(order, "order", 0, 0)));
-
-        //修改商品数量
-        DBClass.ExecuteCommand("UPDATE items SET items.quota = items.quota - order_items.count, items.sell_count = items.sell_count + order_items.count FROM orders JOIN order_items ON order_items.order_id = orders.order_id JOIN items ON order_items.item_id = items.item_id WHERE orders.order_id = @order_id", 
-            new SqlParameter("@order_id", getInt32(order, "order", 0, 0)));
-        return getInt32(order, "order", 0, 0);
+            new SqlParameter("@name", TrueName));
     }
 
     public void  AddBuyInfo(int P_Int_GoodsID, int Num, int P_Int_OrderID, float  P_Flt_SumPrice, int UserId)
     {
-        DBClass.ExecuteCommand("insert into tb_BuyInfo(GoodsID,Num,OrderID,SumPrice, MemberID) values (@GoodsID,@Num,@OrderID,@SumPrice, @MemberID)",
+        DBClass.ExecuteCommand("INSERT INTO tb_BuyInfo(GoodsID,Num,OrderID,SumPrice, MemberID) VALUES (@GoodsID,@Num,@OrderID,@SumPrice, @MemberID)",
             new SqlParameter("@GoodsID", P_Int_GoodsID), new SqlParameter("@Num", Num),
             new SqlParameter("@OrderID", P_Int_OrderID), new SqlParameter("@SumPrice", P_Flt_SumPrice),
             new SqlParameter("@MemberID", UserId));
@@ -387,7 +367,7 @@ public class UserInfoClass
     /// <returns>返回购物车中的信息的数据集</returns>
     public DataTable ReturnSCDs(int UserId)
     {
-        return DBClass.GetDataTable("select * from cart where MemberID=@MemberID", new SqlParameter("@MemberID", UserId));
+        return DBClass.GetDataTable("SELECT * FROM cart WHERE MemberID=@MemberID", new SqlParameter("@MemberID", UserId));
     }
     /// <summary>
     /// 当购物车中的信息已生成订单后，删除购物车中的信息
@@ -395,7 +375,7 @@ public class UserInfoClass
     /// <param name="UserId">会员ID</param>
     public void DeleteSCInfo(int UserId)
     {
-        DBClass.GetDataTable("delete from tb_ShopCart where MemberID=@MemberID", null, new SqlParameter("@MemberID", UserId));
+        DBClass.GetDataTable("DELETE FROM tb_ShopCart WHERE MemberID=@MemberID", null, new SqlParameter("@MemberID", UserId));
     }
    /// <summary>
    ///　获取运输费用
@@ -405,7 +385,7 @@ public class UserInfoClass
     /// <returns>返回运输费用</returns>
     public float  GetSFValue(int P_Int_GoodsID,string P_Str_ShipWay)
     {
-        DataTable ds = DBClass.GetDataTable("select ShipFee from tb_ShipType where shipWay=@shipWay and ClassID=(select ClassID from tb_GoodsInfo where GoodsID=@GoodsID)",
+        DataTable ds = DBClass.GetDataTable("SELECT ShipFee FROM tb_ShipType WHERE shipWay=@shipWay AND ClassID=(SELECT ClassID FROM tb_GoodsInfo WHERE GoodsID=@GoodsID)",
             new SqlParameter("@GoodsID", P_Int_GoodsID),
             new SqlParameter("@ShipWay", P_Str_ShipWay));
         if (ds.Rows.Count > 0)

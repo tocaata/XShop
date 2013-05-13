@@ -46,7 +46,6 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     /// <returns>返回CommonProperty类的实例对像</returns>
     public CommonProperty GetOrderInfo()
     {
-       
         DataTable ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()));
         DataTable UIDs = uiObj.ReturnUIDsByID(Convert.ToInt32(ds.Rows[0][7].ToString()));
         order.OrderNo = Convert.ToInt32(ds.Rows[0][0].ToString());
@@ -68,8 +67,6 @@ public partial class Manger_OrderModify : System.Web.UI.Page
         order.BuyerPostalcode = UIDs.Rows[0][11].ToString();
         
         return (order);
-
-    
     }
     public string GetShippingName(int P_Int_ShipType)
     {
