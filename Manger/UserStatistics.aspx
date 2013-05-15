@@ -37,7 +37,7 @@
           </asp:GridView>
           <asp:SqlDataSource ID="Users" runat="server" 
             ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
-            SelectCommand="SELECT users.user_id, users.name, SUM(order_items.count) AS count, SUM(order_items.count * order_items.price) AS total_price FROM users JOIN orders ON orders.user_id = users.user_id JOIN order_items ON order_items.order_id = orders.order_id LEFT JOIN carts ON carts.order_id = orders.order_id WHERE orders.status > 2 AND carts.cart_id IS NULL  GROUP BY users.user_id, users.name">
+            SelectCommand="SELECT users.user_id, users.name, SUM(order_items.count) AS count, SUM(order_items.count * order_items.price) AS total_price FROM users JOIN orders ON orders.user_id = users.user_id JOIN order_items ON order_items.order_id = orders.order_id LEFT JOIN carts ON carts.order_id = orders.order_id WHERE orders.status > 3 AND carts.cart_id IS NULL  GROUP BY users.user_id, users.name">
           </asp:SqlDataSource>
 
           <br />

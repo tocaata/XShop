@@ -32,7 +32,8 @@
         <asp:BoundField DataField="sell_count" HeaderText="总销售量" SortExpression="sell_count" />
         <asp:BoundField DataField="cat_id" HeaderText="cat_id" SortExpression="cat_id" />
         <asp:BoundField DataField="trans_price" HeaderText="trans_price" SortExpression="trans_price" />
-        <asp:CheckBoxField DataField="is_discount" HeaderText="是否打折" SortExpression="is_discount" />
+        <asp:CheckBoxField DataField="is_discount" HeaderText="是否打折" 
+          SortExpression="is_discount" ReadOnly="True" />
         <asp:BoundField DataField="cat_name" HeaderText="商品类别名" SortExpression="cat_name" />
         <asp:CommandField ShowEditButton="True" EditText="修改"/>
       </Fields>

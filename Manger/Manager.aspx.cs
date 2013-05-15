@@ -22,7 +22,7 @@ public partial class Manger_Manager : System.Web.UI.Page
     }
     public void gvMemberBind()
     {
-        DataTable ds = mcObj.ReturnMemberDs("Member");
+        DataTable ds = mcObj.ReturnMemberDs();
         gvMemberList.DataSource = ds.DefaultView;
         gvMemberList.DataBind();
     
@@ -41,7 +41,7 @@ public partial class Manger_Manager : System.Web.UI.Page
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        DataTable ds = mcObj.SearchUser("users", txtKey.Text.Trim());
+        DataTable ds = mcObj.SearchUser("users", txtKey.Text.Trim(), chkDeleted.Checked);
         gvMemberList.DataSource = ds.DefaultView;
         gvMemberList.DataBind();
     }

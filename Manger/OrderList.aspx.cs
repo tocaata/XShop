@@ -16,6 +16,7 @@ public partial class Manger_OrderList : System.Web.UI.Page
     UserInfoClass uiObj = new UserInfoClass();
     public static int P_Int_IsSearch = 0;
     public static int P_Int_List = 0;
+    public DataTable searchResult = null;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -53,25 +54,35 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void gvSearchBind()
     {
-        DataTable ds = mcObj.OrderByStatus(Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
-            Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue));
-        gvOrderList.DataSource = ds.DefaultView;
+        if (searchResult == null)
+        {
+            int orderId = 0, userId = 0;
+            if (ddlKeyType.SelectedIndex == 0)
+            {
+                orderId = Int32.Parse(txtKeyword.Text);
+            }
+            else
+            {
+                userId = Int32.Parse(txtKeyword.Text);
+            }
+            searchResult = mcObj.OrderByStatus(orderId, userId, Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
+                Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue));
+        }
+        gvOrderList.DataSource = searchResult.DefaultView;
         gvOrderList.DataBind();
     }
 
     protected void gvOrderList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvOrderList.PageIndex = e.NewPageIndex;
-        //if (P_Int_IsSearch == 1)
-        //{
-        //    gvSearchBind();
-        //}
-        //else
-        //{
-        pageBind();
-
-        //}
-
+        if (P_Int_IsSearch == 1)
+        {
+            gvSearchBind();
+        }
+        else
+        {
+            pageBind();
+        }
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -89,9 +100,7 @@ public partial class Manger_OrderList : System.Web.UI.Page
         else
         {
             pageBind();
-
         }
-
     }
     public string GetShipName(int P_Int_ShipType)
     {
@@ -115,5 +124,24 @@ public partial class Manger_OrderList : System.Web.UI.Page
         return (ds.Rows[0][0].ToString() + "|" + ds.Rows[0][1].ToString() + "<Br>" + ds.Rows[0][2].ToString() + "|" + ds.Rows[0][3].ToString());
     }
 
-
+    protected String StatusToString(int status)
+    {
+        String stat = "";
+        switch (Convert.ToInt32(Eval("status")))
+        {
+            case 0: stat = "购物车";
+                break;
+            case 1: stat = "未审核";
+                break;
+            case 2: stat = "审核通过";
+                break;
+            case 3: stat = "发货";
+                break;
+            case 4: stat = "订单完成";
+                break;
+            case 5: stat = "退货中";
+                break;
+        }
+        return stat;
+    }
 }

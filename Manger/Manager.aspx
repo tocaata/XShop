@@ -22,8 +22,8 @@
         <td align="center">
           搜索：&nbsp;
           <asp:TextBox ID="txtKey" runat="server"></asp:TextBox>&nbsp;
-          <asp:Button ID="btnSearch" runat="server" Text="搜索" OnClick="btnSearch_Click"></asp:Button>&nbsp;
-          &nbsp; &nbsp; &nbsp; &nbsp;
+          <asp:Button ID="btnSearch" runat="server" Text="搜索" OnClick="btnSearch_Click"></asp:Button>
+          <asp:CheckBox ID="chkDeleted" runat="server" Text="删除的用户"/>
         </td>
       </tr>
       <tr>
@@ -61,7 +61,7 @@
                   <%#Convert.ToDateTime(Eval("create_at").ToString()).ToLongDateString()%>
                 </ItemTemplate>
               </asp:TemplateField>
-              <asp:CommandField ShowDeleteButton="True" DeleteText="删除" />
+              <asp:CommandField ShowDeleteButton="True" DeleteText="删除"/>
             </Columns>
           </asp:GridView>
         </td>

@@ -27,16 +27,12 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     }
     public void IsCPCPBind()
     {
-        DataTable ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()));
-        chkConfirm.Checked = Convert.ToBoolean(ds.Rows[0][10].ToString());
-        chkPay.Checked = Convert.ToBoolean(ds.Rows[0][11].ToString());
-        chkConsignment.Checked = Convert.ToBoolean(ds.Rows[0][12].ToString());
-        chkPigeonhole.Checked = Convert.ToBoolean(ds.Rows[0][13].ToString());
-    
+        DataTable ds = DBClass.GetDataTable("SELECT  * FROM orders WHERE order_id = @order_id", new SqlParameter("@order_id", Convert.ToInt32(Request["order_id"].Trim())));
+        orderStatus.SelectedValue = ds.Rows[0][5].ToString();
     }
     public void rpBind()
     {
-        DataTable ds=mcObj.GetGIByOID(Convert.ToInt32(Request["OrderID"].Trim()));
+        DataTable ds = DBClass.GetDataTable("SELECT order_items.*, items.name AS name, order_items.price * order_items.count AS sum_price, items.is_discount FROM order_items JOIN items ON order_items.item_id = items.item_id WHERE order_id = @order_id", new SqlParameter("@order_id", Convert.ToInt32(Request["order_id"].Trim())));
         rptOrderItems.DataSource = ds.DefaultView;
         rptOrderItems.DataBind();
     }
@@ -46,82 +42,29 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     /// <returns>返回CommonProperty类的实例对像</returns>
     public CommonProperty GetOrderInfo()
     {
-        DataTable ds = mcObj.GetOdIfDS(Convert.ToInt32(Request["OrderID"].Trim()));
-        DataTable UIDs = uiObj.ReturnUIDsByID(Convert.ToInt32(ds.Rows[0][7].ToString()));
+        //0: order_id, 1: name, 2: create_at, 3: finish_at, 4: user_id, 5: status, 6: address, 7: phone, 8: is_speed
+        DataTable ds = DBClass.GetDataTable("SELECT *, (SELECT SUM(price * count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders WHERE order_id = @order_id",
+            new SqlParameter("@order_id", Convert.ToInt32(Request["order_id"].Trim())));
+        //0: user_id, 1: name, 2: password, 3: email, 4: true_name, 5: address, 6: phone, 7: create_at, 8: delete_at, 9: sex, 10: city
+        DataTable UIDs = DBClass.GetDataTable("SELECT * FROM users WHERE user_id = @user_id", new SqlParameter("@user_id", Convert.ToInt32(ds.Rows[0][4].ToString())));
         order.OrderNo = Convert.ToInt32(ds.Rows[0][0].ToString());
-        order.OrderTime = Convert.ToDateTime(ds.Rows[0][1].ToString());
-        order.ProductPrice = float.Parse (ds.Rows[0][2].ToString());
-        order.TotalPrice = float.Parse (ds.Rows[0][3].ToString());
-        order.ShipPrice = float.Parse (ds.Rows[0][4].ToString());
-        order.ReceiverName=ds.Rows[0][8].ToString();
-        order.ReceiverPhone =ds.Rows[0][9].ToString();
-        order.ReceiverPostalcode=ds.Rows[0][14].ToString();
-        order.ReceiverAddress =ds.Rows[0][15].ToString();
-        order.ReceiverEmail =ds.Rows[0][16].ToString();
-        order.ShipType = Convert.ToInt32(ds.Rows[0][5].ToString());
-        order.PayType = Convert.ToInt32(ds.Rows[0][6].ToString());
-        order.BuyerAddress = UIDs.Rows[0][9].ToString();
-        order.BuyerEmail = UIDs.Rows[0][8].ToString();
-        order.BuyerName = UIDs.Rows[0][1].ToString();
-        order.BuyerPhone = UIDs.Rows[0][7].ToString();
-        order.BuyerPostalcode = UIDs.Rows[0][11].ToString();
+        order.OrderTime = Convert.ToDateTime(ds.Rows[0][2].ToString());
+        order.ProductPrice = ds.Rows[0][9].ToString().Length == 0 ? 0 : float.Parse(ds.Rows[0][9].ToString());
+        order.ReceiverName=ds.Rows[0][1].ToString();
+        order.ReceiverPhone =ds.Rows[0][7].ToString();
+        order.ReceiverAddress =ds.Rows[0][6].ToString();
+        order.BuyerAddress = UIDs.Rows[0][5].ToString();
+        order.BuyerEmail = UIDs.Rows[0][3].ToString();
+        order.BuyerName = UIDs.Rows[0][4].ToString();
+        order.BuyerPhone = UIDs.Rows[0][6].ToString();
+        order.Status = Convert.ToInt32(ds.Rows[0][5].ToString());
         
         return (order);
-    }
-    public string GetShippingName(int P_Int_ShipType)
-    {
-        return mcObj.GetShipWay(P_Int_ShipType);
-
-    }
-    public string GetPaymentName(int P_Int_PayType)
-    {
-        return mcObj.GetPayWay(P_Int_PayType);
-    }
-    public string GetStatus(int P_Int_OrderID)
-    {
-        DataTable ds = mcObj.GetStatusDS(P_Int_OrderID);
-        return (ds.Rows[0][0].ToString() + "|" + ds.Rows[0][1].ToString() + "<Br>" + ds.Rows[0][2].ToString() + "|" + ds.Rows[0][3].ToString());
     }
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        bool IsConfirm;
-        bool IsPayment;
-        bool IsConsignment;
-        bool IsPigeonhole;
-        if (chkConfirm.Checked ==true )
-        {
-            IsConfirm = true;
-        }
-        else
-        {
-            IsConfirm = false;
-        }
-        if (chkPay.Checked ==true)
-        {
-            IsPayment = true;
-        }
-        else
-        {
-            IsPayment = false;
-        }
-        if (chkConsignment.Checked==true)
-        {
-            IsConsignment = true;
-        }
-        else
-        {
-            IsConsignment = false;
-        }
-        if(chkPigeonhole.Checked ==true)
-        {
-            IsPigeonhole = true;
-        }
-        else
-        {
-            IsPigeonhole = false;
-        }
-        mcObj.UpdateOI(Convert.ToInt32(Request["OrderID"].Trim()), IsConfirm, IsPayment, IsConsignment, IsPigeonhole);
+        mcObj.UpdateOI(Convert.ToInt32(Request["order_id"].Trim()), Convert.ToInt32(orderStatus.SelectedValue));
         Response.Write("<script>alert('修改成功！')</script>");
         return;
     }

@@ -26,7 +26,7 @@
               <td>
                 <asp:DropDownList ID="ddlKeyType" runat="server">
                   <asp:ListItem Selected="True" Value="order_id">订单号</asp:ListItem>
-                  <asp:ListItem Value="MemberID">会员号</asp:ListItem>
+                  <asp:ListItem Value="user_id">会员号</asp:ListItem>
                 </asp:DropDownList>
                 <asp:TextBox ID="txtKeyword" runat="server"></asp:TextBox>
                 <asp:RegularExpressionValidator ID="revInt" runat="server" ControlToValidate="txtKeyword"
@@ -38,21 +38,6 @@
                 订单状态：
               </td>
               <td>
-                <%--<asp:DropDownList ID="ddlPayed" runat="server">
-                  <asp:ListItem Selected="True" Value="All">是否已付款</asp:ListItem>
-                  <asp:ListItem Value="2">已付款</asp:ListItem>
-                  <asp:ListItem Value="0">未付款</asp:ListItem>
-                </asp:DropDownList>
-                <asp:DropDownList ID="ddlShipped" runat="server">
-                  <asp:ListItem Selected="True" Value="All">是否已发货</asp:ListItem>
-                  <asp:ListItem Value="2">已发货</asp:ListItem>
-                  <asp:ListItem Value="0">未发货</asp:ListItem>
-                </asp:DropDownList>
-                <asp:DropDownList ID="ddlFinished" runat="server">
-                  <asp:ListItem Selected="True" Value="All">是否已归档</asp:ListItem>
-                  <asp:ListItem Value="1">已归档</asp:ListItem>
-                  <asp:ListItem Value="0">未归档</asp:ListItem>
-                </asp:DropDownList>--%>
                 <asp:DropDownList ID="ddlConfirmed" runat="server">
                   <asp:ListItem Selected="True" Value="2">是否已确认</asp:ListItem>
                   <asp:ListItem Value="1">已确认</asp:ListItem>
@@ -147,7 +132,7 @@
                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                 <ItemTemplate>
-                  <%# Eval("status")%>
+                  <%# StatusToString(Convert.ToInt32(Eval("status"))) %>
                 </ItemTemplate>
               </asp:TemplateField>
               <asp:TemplateField HeaderText="">

@@ -30,21 +30,10 @@ public partial class Manger_ProductAdd : System.Web.UI.Page
         }
         else
         {
-            bool IsDisCount;
-            
-            if(cbxDiscount.Checked ==true)
-            {
-             IsDisCount=true ;
-            }
-            else
-            {
-            IsDisCount =false ;
-            }
-
             try
             {
                 mcObj.AddGInfo(Convert.ToInt32(ddlCategory.SelectedItem.Value.ToString()), txtName.Text.Trim(), txtShortDesc.Text.Trim(),
-                txtUnit.Text.Trim(), ImageUrl.Text.Trim(), /*ddlUrl.SelectedItem.Value.Trim() */ float.Parse(txtMemberPrice.Text.Trim()), cbxDiscount.Checked == true);
+                txtUnit.Text.Trim(), ImageUrl.Text.Trim(), float.Parse(txtMemberPrice.Text.Trim()));
                 Response.Write("<script>alert('添加成功！');</script>");
             }
             catch (Exception err)

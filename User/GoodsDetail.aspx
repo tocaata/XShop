@@ -17,6 +17,9 @@
       <EditRowStyle BackColor="#2461BF" />
       <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
       <Fields>
+        <asp:TemplateField><ItemTemplate>
+          <div style="color: Red; font-size: 16px"><%# Eval("deleted").ToString() == "True" ? "该商品已下架" : "" %></div>
+        </ItemTemplate></asp:TemplateField>
         <asp:BoundField DataField="name" HeaderText="商品名称">
           <HeaderStyle CssClass="td_header" />
         </asp:BoundField>

@@ -30,6 +30,31 @@ public class CommonProperty
     public string ReceiverPostalcode;//邮政编码
     public int ShipType;//运输类型
     public int PayType;//支付类型
+    public int Status;
+
+    public string statusString
+    {
+        get
+        {
+            string stat = "";
+            switch (Status)
+            {
+                case 0: stat = "购物车";
+                    break;
+                case 1: stat = "未审核";
+                    break;
+                case 2: stat = "审核通过";
+                    break;
+                case 3: stat = "发货";
+                    break;
+                case 4: stat = "订单完成";
+                    break;
+                case 5: stat = "退货中";
+                    break;
+            }
+            return stat;
+        }
+    }
    
 
 	public CommonProperty()

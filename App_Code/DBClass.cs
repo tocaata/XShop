@@ -249,7 +249,7 @@ public class DBClass
         {
             throw new RecordNotExisted("记录不存在");
         }
-        return (int)result;
+        return Convert.ToInt32(result);
     }
 
     ///执行返回首行首列带参数的
@@ -262,7 +262,7 @@ public class DBClass
         {
             throw new RecordNotExisted("记录不存在");
         }
-        return (int)result;
+        return Convert.ToInt32(result);
     }
 
     public static int ExecuteScalar(string sql, SqlParameter value)
@@ -274,7 +274,7 @@ public class DBClass
         {
             throw new RecordNotExisted("记录不存在");
         }
-        return (int)result;
+        return Convert.ToInt32(result);
     }
 
     //查询数据库是否存在该记录
@@ -326,20 +326,7 @@ public class DBClass
         SqlDataReader reader = cmd.ExecuteReader();
         return reader;
     }
-    /// <summary>
-    /// 这个主要就是为了集合对象多服务的
-    /// </summary>
-    /// <param name="safeSql"></param>
-    /// <returns></returns>
-    //public static DataTable GetDataSet(string safeSql)
-    //{
-    //    DataTable ds = new DataTable();
-    //    SqlCommand cmd = new SqlCommand(safeSql, Connection);
-    //    SqlDataAdapter da = new SqlDataAdapter(cmd);
-    //    da.Fill(ds);
-    //    return ds.Tables[0];
-    //}
-
+   
     public static DataTable GetDataTable(string safeSql, params SqlParameter[] values)
     {
         DataSet ds = new DataSet();

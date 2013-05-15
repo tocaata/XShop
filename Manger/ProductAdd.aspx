@@ -39,7 +39,7 @@
           </tr>
           <tr>
             <td align="left">
-              计量单位：
+              库存量：
             </td>
             <td style="width: 359px">
               <asp:TextBox ID="txtUnit" runat="server"></asp:TextBox><font color="red">*</font>
@@ -94,7 +94,7 @@
               <asp:TextBox ID="ImageUrl" runat="server" Visible="false"></asp:TextBox>
             </td>
           </tr>
-          <tr>
+          <%--<tr>
             <td align="left">
               是否参与打折：
             </td>
@@ -102,7 +102,7 @@
               <asp:CheckBox ID="cbxDiscount" runat="server" Checked="True" AutoPostBack="True">
               </asp:CheckBox>
             </td>
-          </tr>
+          </tr>--%>
           <tr>
             <td align="left">
               商品简单描述：

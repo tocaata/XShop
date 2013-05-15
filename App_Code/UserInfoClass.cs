@@ -44,7 +44,7 @@ public class UserInfoClass
     /// <returns></returns>
     public bool UserExists(string P_Str_Name,string P_Str_Password)
     {
-        DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password", new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password AND delete_at IS NULL", new SqlParameter("@name", P_Str_Name), new SqlParameter("@password", P_Str_Password));
         int hasUser = ds.Rows.Count;
         if (hasUser == 1)
         {
@@ -71,7 +71,7 @@ public class UserInfoClass
 
     public DataTable ReturnUsers(string name, string password)
     {
-        return DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password", new SqlParameter("@name", name), new SqlParameter("@password", password));
+        return DBClass.GetDataTable("SELECT * FROM users WHERE name=@name AND password=@password AND delete_at IS NULL", new SqlParameter("@name", name), new SqlParameter("@password", password));
     }
 
     //***************************************注册界面************************************************************
@@ -220,7 +220,7 @@ public class UserInfoClass
             default:
                 throw (new Exception("Error Deplay"));
         }
-        return DBClass.GetDataTable("SELECT top 4 * FROM items WHERE " + stat + " = 1");
+        return DBClass.GetDataTable("SELECT top 9 * FROM items WHERE " + stat + " = 1");
     }
     /// <summary>
     /// 以商品类别分类绑定商品信息
@@ -230,7 +230,7 @@ public class UserInfoClass
     /// <param name="DLName">绑定控件名</param>
     public void DCGIBind(int P_Int_ClassID, DataList DLName)
     {
-        DataTable ds = DBClass.GetDataTable("SELECT * FROM items WHERE cat_id = @cat_id",
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM items WHERE cat_id = @cat_id AND (deleted IS NULL OR deleted = 0)",
             new SqlParameter("@cat_id", P_Int_ClassID));
         DLName.DataSource = ds.DefaultView;
         DLName.DataBind();
@@ -343,8 +343,8 @@ public class UserInfoClass
             "SELECT @old_order = order_id, @cart = cart_id FROM carts WHERE carts.user_id = @user_id; " +
             "INSERT orders (user_id, status) VALUES (@user_id, 0); SELECT @new_order = @@identity; " + 
             "UPDATE carts SET order_id = @new_order WHERE cart_id = @cart; " +
-            "UPDATE orders SET status = 1, address = @address, phone = @phone, name = @name WHERE order_id = @old_order; " +
-            "UPDATE items SET items.quota = items.quota - order_items.count, items.sell_count = items.sell_count + order_items.count FROM orders JOIN order_items ON order_items.order_id = orders.order_id JOIN items ON order_items.item_id = items.item_id WHERE orders.order_id = @old_order; " +
+            "UPDATE orders SET status = 1, address = @address, phone = @phone, name = @name, create_at = getdate() WHERE order_id = @old_order; " +
+            "UPDATE items SET items.quota = items.quota - order_items.count, items.sell_count = items.sell_count + order_items.count FROM order_items JOIN items ON order_items.item_id = items.item_id WHERE order_items.order_id = @old_order; " +
             "SELECT @new_order; ",
             new SqlParameter("@user_id", UserId), 
             new SqlParameter("@address", Address),
@@ -447,6 +447,22 @@ public class UserInfoClass
     // 如果该订单为发货状态，将状态改为收货状态
     // 行为Action
     // 0：修改为收货状态； 1：修改为退货状态
+
+    //switch (Convert.ToInt32(Eval("status")))
+    //{
+    //    case 0: stat = "购物车";
+    //        break;
+    //    case 1: stat = "未审核";
+    //        break;
+    //    case 2: stat = "审核通过";
+    //        break;
+    //    case 3: stat = "发货";
+    //        break;
+    //    case 4: stat = "订单完成";
+    //        break;
+    //    case 5: stat = "退货中";
+    //        break;
+    //}
     public void OrderChangeStatus(int OrderID, int Action)
     {
         int[,] statHash = new int[,]{{2, 3, 4}, {3, 4, 5}}; //从状态2 -- 3, 3 --> 4 , 4 --> 5

@@ -5,20 +5,20 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "XShop", ".", "{B450BF12-D1A
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/NetShop"
-		Debug.AspNetCompiler.PhysicalPath = "..\NetShop\"
+		Debug.AspNetCompiler.PhysicalPath = "..\XShop\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\NetShop\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/NetShop"
-		Release.AspNetCompiler.PhysicalPath = "..\NetShop\"
+		Release.AspNetCompiler.PhysicalPath = "..\XShop\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\NetShop\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "65498"
+		VWDPort = "7394"
 	EndProjectSection
 EndProject
 Global

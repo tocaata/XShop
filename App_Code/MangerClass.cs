@@ -123,10 +123,20 @@ public class MangerClass
             new SqlParameter("@status", Status));
     }
 
-    public DataTable OrderByStatus(int IsShipped, int IsConfirm, int IsReturn, int IsSpeed, int IsReceive)
+    public DataTable OrderByStatus(int OrderStr, int UserStr, int IsShipped, int IsConfirm, int IsReturn, int IsSpeed, int IsReceive)
     {
         string[] str = { "1=1", "1=1", "1=1", "1=1", "1=1" };
         int[] stat = { IsShipped, IsConfirm, IsReturn, IsReceive }, value = {3, 2, 5, 4};
+        string search = "";
+        if (OrderStr != 0)
+        {
+            search = " AND orders.order_id = " + OrderStr.ToString();
+        }
+
+        if (UserStr != 0)
+        {
+            search += " AND orders.user_id = " + UserStr.ToString();
+        }
 
         for (int i = 0; i < 4; i++)
         {
@@ -156,7 +166,7 @@ public class MangerClass
 
 
         String condition = String.Join(" AND ", str);
-        return DBClass.GetDataTable("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE " + condition + " AND carts.cart_id IS NULL");
+        return DBClass.GetDataTable("SELECT *, (SELECT Sum(price*count) FROM order_items WHERE order_items.order_id = orders.order_id) AS total_price FROM orders LEFT JOIN carts ON orders.order_id = carts.order_id WHERE " + condition + " AND carts.cart_id IS NULL" + search);
     }
 
     public SqlCommand GetOrderInfo(int P_Int_Flag, int P_Int_IsMember, int P_Int_MemberID, int P_Int_OrderID, int P_Int_Confirm, int P_Int_Payed, int P_Int_Shipped, int P_Int_Finished, int P_Int_IsConfirm, int P_Int_IsPayment, int P_Int_IsConsignment, int P_Int_IsPigeonhole)
@@ -326,56 +336,7 @@ public class MangerClass
         myConn.Dispose();
         return ds;
     }
-    /// <summary>
-    /// 获取订单状态的DataTable数据集
-    /// </summary>
-    /// <param name="P_Int_OrderID">订单编号</param>
-    /// <param name="P_Str_srcTable">订单信息</param>
-    /// <returns>返回DataTable</returns>
-    public DataTable GetOdIfDS(int P_Int_OrderID)
-    {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetOdIf", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter OrderID = new SqlParameter("@OrderID", SqlDbType.BigInt, 8);
-        OrderID.Value = P_Int_OrderID;
-        myCmd.Parameters.Add(OrderID);
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteNonQuery();
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataTable ds = new DataTable();
-        da.Fill(ds);
-        myCmd.Dispose();
-        myConn.Dispose();
-        return ds;
-    }
-    /// <summary>
-    /// 通过订单ID代号，获取商品信息
-    /// </summary>
-    /// <param name="P_Int_OrderID">订单ID代号</param>
-    /// <param name="P_Str_srcTable">信息</param>
-    /// <returns>返回信息的数据集Ds</returns>
-    public DataTable GetGIByOID(int P_Int_OrderID)
-    {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_GetGIByOID", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter OrderID = new SqlParameter("@OrderID", SqlDbType.BigInt, 8);
-        OrderID.Value = P_Int_OrderID;
-        myCmd.Parameters.Add(OrderID);
-        //执行过程
-        myConn.Open();
-        myCmd.ExecuteNonQuery();
-        SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        DataTable ds = new DataTable();
-        da.Fill(ds);
-        myCmd.Dispose();
-        myConn.Dispose();
-        return ds;
-    }
+
     /// <summary>
     ///  修改订单中的信息
     /// </summary>
@@ -384,47 +345,9 @@ public class MangerClass
     /// <param name="P_Bl_IsPayment">是否付款</param>
     /// <param name="P_Bl_IsConsignment">是否已发货</param>
     /// <param name="P_Bl_IsPigeonhole">是否已归档</param>
-    public void UpdateOI(int P_Int_OrderID, bool P_Bl_IsConfirm, bool P_Bl_IsPayment, bool P_Bl_IsConsignment, bool P_Bl_IsPigeonhole)
+    public void UpdateOI(int OrderID, int Status)
     {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand("Proc_UpdateOI", myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter OrderID = new SqlParameter("@OrderID", SqlDbType.BigInt, 8);
-        OrderID.Value = P_Int_OrderID;
-        myCmd.Parameters.Add(OrderID);
-        //添加参数
-        SqlParameter IsConfirm = new SqlParameter("@IsConfirm", SqlDbType.Bit, 1);
-        IsConfirm.Value = P_Bl_IsConfirm;
-        myCmd.Parameters.Add(IsConfirm);
-        //添加参数
-        SqlParameter IsPayment = new SqlParameter("@IsPayment", SqlDbType.Bit, 1);
-        IsPayment.Value = P_Bl_IsPayment;
-        myCmd.Parameters.Add(IsPayment);
-        //添加参数
-        SqlParameter IsConsignment = new SqlParameter("@IsConsignment", SqlDbType.Bit, 1);
-        IsConsignment.Value = P_Bl_IsConsignment;
-        myCmd.Parameters.Add(IsConsignment);
-        //添加参数
-        SqlParameter IsPigeonhole = new SqlParameter("@IsPigeonhole", SqlDbType.Bit, 1);
-        IsPigeonhole.Value = P_Bl_IsPigeonhole;
-        myCmd.Parameters.Add(IsPigeonhole);
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-
-        }
+        DBClass.ExecuteCommand("UPDATE orders SET status = @status WHERE order_id = @order_id", new SqlParameter("@order_id", OrderID), new SqlParameter("@status", Status));
     }
     //*************************************************************************************************
     /// <summary>
@@ -443,7 +366,7 @@ public class MangerClass
         }
         catch (Exception)
         {
-            dbObj.Update("INSERT INTO categories (name, image_url) VALUES (@name, @image_url)",
+            DBClass.ExecuteCommand("INSERT INTO categories (name, image_url) VALUES (@name, @image_url)",
                 new SqlParameter("@name", P_Str_ClassName), new SqlParameter("@image_url", P_Str_categoryUrl));
         }
         finally
@@ -536,7 +459,7 @@ public class MangerClass
     /// <param name="P_Bl_IsHot">是否是热销商品</param>
     /// <param name="P_Bl_IsDiscount">是否是打折商品</param>
     /// <returns>返回一个值，判断商品是否存在</returns>
-    public void AddGInfo(int P_Int_ClassID, string P_Str_GoodsName, string P_Str_GoodsIntroduce, string P_Str_GoodsUnit, string P_Str_GoodsUrl, float P_Flt_MemberPrice, bool P_Bl_IsDiscount)
+    public void AddGInfo(int P_Int_ClassID, string P_Str_GoodsName, string P_Str_GoodsIntroduce, string P_Str_GoodsUnit, string P_Str_GoodsUrl, float P_Flt_MemberPrice)
     {
         bool isExisted = false;
         try
@@ -546,11 +469,10 @@ public class MangerClass
         }
         catch (Exception)
         {
-            dbObj.Update("INSERT INTO items (name, price, description, image_url, quota, cat_id, is_discount) VALUES (@name, @price, @des, @image, @quota, @cat_id, @discount)",
+            DBClass.ExecuteCommand("INSERT INTO items (name, price, description, image_url, quota, cat_id, is_discount) VALUES (@name, @price, @des, @image, @quota, @cat_id, 0)",
                 new SqlParameter("@name", P_Str_GoodsName), new SqlParameter("@price", P_Flt_MemberPrice),
                 new SqlParameter("@des", P_Str_GoodsIntroduce), new SqlParameter("@image", P_Str_GoodsUrl),
-                new SqlParameter("@quota", P_Str_GoodsUnit), new SqlParameter("@cat_id", P_Int_ClassID),
-                new SqlParameter("@discount", P_Bl_IsDiscount));
+                new SqlParameter("@quota", P_Str_GoodsUnit), new SqlParameter("@cat_id", P_Int_ClassID));
         }
         finally
         {
@@ -594,24 +516,6 @@ public class MangerClass
             "SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id WHERE " +
             "items.name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or categories.name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) +'%' or items.description LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%'",
             new SqlParameter("@keywords", P_Str_keywords));
-
-        //SqlConnection myConn = dbObj.GetConnection();
-        //SqlCommand myCmd = new SqlCommand("Proc_SearchGoodsInfo", myConn);
-        //myCmd.CommandType = CommandType.StoredProcedure;
-        ////添加参数
-        //SqlParameter keywords = new SqlParameter("@keywords", SqlDbType.VarChar, 50);
-        //keywords.Value = P_Str_keywords;
-        //myCmd.Parameters.Add(keywords);
-
-        ////执行过程
-        //myConn.Open();
-        //myCmd.ExecuteNonQuery();
-        //SqlDataAdapter da = new SqlDataAdapter(myCmd);
-        //DataTable ds = new DataTable();
-        //da.Fill(ds, P_Str_srcTable);
-        //myCmd.Dispose();
-        //myConn.Dispose();
-        //return ds;
     }
     /// <summary>
     /// 删除指定的商品信息
@@ -619,17 +523,17 @@ public class MangerClass
     /// <param name="P_Int_GoodsID">指定商品的编号</param>
     public void DeleteGoodsInfo(int P_Int_GoodsID)
     {
-        dbObj.Update("DELETE FROM items WHERE item_id = @id", new SqlParameter("@id", P_Int_GoodsID));
+        DBClass.ExecuteCommand("UPDATE items SET items.deleted = 1 WHERE item_id = @id", new SqlParameter("@id", P_Int_GoodsID));
     }
 
     public void SetDiscount(int P_Int_GoodsID, bool IsDiscount)
     {
-        dbObj.Update("UPDATE items SET items.is_discount = @discount WHERE item_id = @id", new SqlParameter("@discount", IsDiscount), new SqlParameter("@id", P_Int_GoodsID));
+        DBClass.ExecuteCommand("UPDATE items SET items.is_discount = @discount WHERE item_id = @id", new SqlParameter("@discount", IsDiscount), new SqlParameter("@id", P_Int_GoodsID));
     }
 
     public void SetPrice(int P_Int_GoodsID, Double Price)
     {
-        dbObj.Update("UPDATE items SET items.price = @price WHERE item_id = @id", new SqlParameter("@price", Price), new SqlParameter("@id", P_Int_GoodsID));
+        DBClass.ExecuteCommand("UPDATE items SET items.price = @price WHERE item_id = @id", new SqlParameter("@price", Price), new SqlParameter("@id", P_Int_GoodsID));
     }
 
     public void UpdateGInfo(int P_Int_ClassID, string P_Str_GoodsName, string P_Str_GoodsIntroduce, string P_Str_GoodsBrand, string P_Str_GoodsUnit, float P_Flt_GoodsWeight, string P_Str_GoodsUrl, float P_Flt_MarketPrice, float P_Flt_MemberPrice, bool P_Bl_Isrefinement, bool P_Bl_IsHot, bool P_Bl_IsDiscount, int P_Int_GoodsID)
@@ -810,11 +714,11 @@ public class MangerClass
     /// <param name="P_Int_AdminID">管理员编号</param>
     public void DeleteAdminInfo(int P_Int_AdminID)
     {
-        dbObj.Update("DELETE FROM admins WHERE admin_id = @id", new SqlParameter("@id", P_Int_AdminID));
+        DBClass.ExecuteCommand("DELETE FROM admins WHERE admin_id = @id", new SqlParameter("@id", P_Int_AdminID));
     }
     public void UpdateAdminInfo(int P_Int_AdminID, string P_Str_Admin, string P_Str_Password)
     {
-        dbObj.Update("UPDATE admins SET name = @name, password = @password WHERE admin_id = @id",
+        DBClass.ExecuteCommand("UPDATE admins SET name = @name, password = @password WHERE admin_id = @id",
             new SqlParameter("@name", P_Str_Admin), new SqlParameter("@password", P_Str_Password), new SqlParameter("@id", P_Int_AdminID));
     }
     //***********************************************************************************************************
@@ -919,9 +823,9 @@ public class MangerClass
         }
     }
     //**************************************************************************************************
-    public DataTable ReturnMemberDs(string P_Str_srcTable)
+    public DataTable ReturnMemberDs()
     {
-        return DBClass.GetDataTable("SELECT * FROM users");
+        return DBClass.GetDataTable("SELECT * FROM users WHERE delete_at IS NULL");
     }
     /// <summary>
     /// 删除指定会员的信息
@@ -929,7 +833,7 @@ public class MangerClass
     /// <param name="P_Int_MemberID">会员ID</param>
     public void DeleteMemberInfo(int P_Int_MemberID)
     {
-        dbObj.Update("DELETE FROM users WHERE user_id = @id", new SqlParameter("@id", P_Int_MemberID));
+        DBClass.ExecuteCommand("UPDATE users SET users.delete_at = getdate() WHERE user_id = @id", new SqlParameter("@id", P_Int_MemberID));
     }
     //*********************************************************************************************
     /// <summary>
@@ -1446,11 +1350,11 @@ public class MangerClass
         }
     }
 
-    public DataTable SearchUser(string TableSrc, string SearchStr)
+    public DataTable SearchUser(string TableSrc, string SearchStr, bool Deleted)
     {
-        return DBClass.GetDataTable("SELECT * FROM users WHERE name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or true_name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
+        return DBClass.GetDataTable("SELECT * FROM users WHERE " + (Deleted ? "delete_at IS NOT NULL AND" : "delete_at IS NULL AND") + "( name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or true_name LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
             "city LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%' or " +
-            "email LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%'",
+            "email LIKE '%' + CONVERT(NVARCHAR(50),@keywords) + '%')",
             new SqlParameter("@keywords", SearchStr));
     }
     /// <summary>

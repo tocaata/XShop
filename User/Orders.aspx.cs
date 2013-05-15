@@ -74,11 +74,11 @@ public partial class User_Orders : System.Web.UI.Page
                 break;
             case 1: stat = "未审核";
                 break;
-            case 2: stat = "审核";
+            case 2: stat = "审核通过";
                 break;
-            case 3: stat = "出货";
+            case 3: stat = "发货";
                 break;
-            case 4: stat = "已收货";
+            case 4: stat = "订单完成";
                 break;
             case 5: stat = "退货中";
                 break;

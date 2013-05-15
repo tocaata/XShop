@@ -23,7 +23,7 @@ public partial class index : System.Web.UI.Page
                 Response.Write("<script>alert('请先登录，谢谢合作！');</script>");
             }
 
-            GoodsControl.setAll(DBClass.GetDataTable("SELECT TOP 9 * FROM items"), "All", "展示商品");
+            GoodsControl.setAll(DBClass.GetDataTable("SELECT TOP 9 * FROM items WHERE deleted IS NULL OR deleted = 0"), "All", "展示商品");
         }
     }
     //绑定市场价格

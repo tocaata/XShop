@@ -53,6 +53,7 @@
                   <%# GetVarStr(Eval("price").ToString())%>￥
                 </ItemTemplate>
               </asp:TemplateField>
+              <asp:CheckBoxField DataField="deleted" HeaderText="是否下架" />
               <asp:HyperLinkField HeaderText="详细信息" Text="详细信息" DataNavigateUrlFields="item_id"
                 DataNavigateUrlFormatString="EditProduct.aspx?GoodsID={0}">
                 <ControlStyle Font-Underline="False" ForeColor="Black" />

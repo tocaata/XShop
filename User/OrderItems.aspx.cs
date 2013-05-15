@@ -20,7 +20,7 @@ public partial class User_OrderItems : System.Web.UI.Page
             }
             else
             {
-                ucObj.OrderTabBind(OrderItems, int.Parse(Session["UID"].ToString()), 2);
+                ucObj.OrderTabBind(OrderItems, int.Parse(Session["UID"].ToString()), Convert.ToInt32(Request["order_id"].Trim()));
             }
         }
     }
@@ -30,7 +30,7 @@ public partial class User_OrderItems : System.Web.UI.Page
         if (e.CommandName == "detailSee")
         {
             Session["address"] = "";
-            Session["address"] = "index.aspx";
+            Session["address"] = "Orders.aspx?order_id=" + Request["order_id"].Trim();
             Response.Redirect("~/User/GoodsDetail.aspx?GoodsID=");
         }
     }
