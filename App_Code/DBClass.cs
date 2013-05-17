@@ -334,6 +334,7 @@ public class DBClass
         cmd.Parameters.AddRange(values);
         SqlDataAdapter da = new SqlDataAdapter(cmd);
         da.Fill(ds);
+        cmd.Dispose();
         return ds.Tables[0];
     }
 

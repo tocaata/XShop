@@ -30,10 +30,7 @@ public partial class Manger_OrderList : System.Web.UI.Page
         return mcObj.VarStr(P_Str_GoodsFee, 2);
     }
     //绑定运费
-    public string GetVarSF(string P_Str_ShipFee)
-    {
-        return mcObj.VarStr(P_Str_ShipFee, 2);
-    }
+
     //绑定总金额
     public string GetVarTP(string P_Str_TotalPrice)
     {
@@ -44,9 +41,12 @@ public partial class Manger_OrderList : System.Web.UI.Page
     /// </summary>
     public void pageBind()
     {
-        DataTable ds = mcObj.OrderByStatus(false, 1);
-        gvOrderList.DataSource = ds.DefaultView;
-        gvOrderList.DataBind();
+        if (searchResult == null)
+        {
+            searchResult = mcObj.OrderByStatus(0, 0, 2, 2, 2, 2, 2);
+            gvOrderList.DataSource = searchResult.DefaultView;
+            gvOrderList.DataBind();
+        }
     }
 
     /// <summary>
@@ -57,13 +57,20 @@ public partial class Manger_OrderList : System.Web.UI.Page
         if (searchResult == null)
         {
             int orderId = 0, userId = 0;
-            if (ddlKeyType.SelectedIndex == 0)
+            try
             {
-                orderId = Int32.Parse(txtKeyword.Text);
+                if (ddlKeyType.SelectedIndex == 0)
+                {
+                    orderId = Int32.Parse(txtKeyword.Text);
+                }
+                else
+                {
+                    userId = Int32.Parse(txtKeyword.Text);
+                }
             }
-            else
+            catch (Exception)
             {
-                userId = Int32.Parse(txtKeyword.Text);
+
             }
             searchResult = mcObj.OrderByStatus(orderId, userId, Int32.Parse(ddlShipped.SelectedValue), Int32.Parse(ddlConfirmed.SelectedValue), Int32.Parse(ddlReturn.SelectedValue),
                 Int32.Parse(ddlSpeed.SelectedValue), Int32.Parse(ddlReceive.SelectedValue));
@@ -75,6 +82,7 @@ public partial class Manger_OrderList : System.Web.UI.Page
     protected void gvOrderList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvOrderList.PageIndex = e.NewPageIndex;
+        searchResult = null;
         if (P_Int_IsSearch == 1)
         {
             gvSearchBind();
@@ -87,12 +95,14 @@ public partial class Manger_OrderList : System.Web.UI.Page
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         P_Int_IsSearch = 1;
+        searchResult = null;
         gvSearchBind();
     }
     protected void gvOrderList_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int P_Int_id = Convert.ToInt32(gvOrderList.DataKeys[e.RowIndex].Value);
-        mcObj.DeleteOrderInfo(P_Int_id);
+        DBClass.ExecuteCommand("DELETE FROM order_items WHERE order_id = @order_id; DELETE FROM orders WHERE order_id = @order_id;", new SqlParameter("@order_id", P_Int_id));
+        searchResult = null;
         if (P_Int_IsSearch == 1)
         {
             gvSearchBind();
@@ -102,26 +112,14 @@ public partial class Manger_OrderList : System.Web.UI.Page
             pageBind();
         }
     }
-    public string GetShipName(int P_Int_ShipType)
-    {
-        return mcObj.GetShipWay(P_Int_ShipType);
 
-    }
-    public string GetPayName(int P_Int_PayType)
-    {
-        return mcObj.GetPayWay(P_Int_PayType);
-    }
+
     public string GetMemberName(int P_Int_MemberId)
     {
         DataTable ds = new DataTable();
         ds = uiObj.ReturnUIDsByID(P_Int_MemberId);
         return (ds.Rows[0][1].ToString());
 
-    }
-    public string GetStatus(int P_Int_OrderID)
-    {
-        DataTable ds = mcObj.GetStatusDS(P_Int_OrderID);
-        return (ds.Rows[0][0].ToString() + "|" + ds.Rows[0][1].ToString() + "<Br>" + ds.Rows[0][2].ToString() + "|" + ds.Rows[0][3].ToString());
     }
 
     protected String StatusToString(int status)
@@ -140,6 +138,8 @@ public partial class Manger_OrderList : System.Web.UI.Page
             case 4: stat = "订单完成";
                 break;
             case 5: stat = "退货中";
+                break;
+            case 6: stat = "已退货";
                 break;
         }
         return stat;

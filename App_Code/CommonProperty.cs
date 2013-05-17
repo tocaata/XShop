@@ -51,6 +51,8 @@ public class CommonProperty
                     break;
                 case 5: stat = "退货中";
                     break;
+                case 6: stat = "已退货";
+                    break;
             }
             return stat;
         }

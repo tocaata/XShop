@@ -8,6 +8,7 @@ using System.Data;
 public partial class Manger_DiscountPublish : System.Web.UI.Page
 {
     MangerClass mcObj = new MangerClass();
+    DataTable tab = null;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -29,18 +30,24 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     /// </summary>
     public void gvBind()
     {
-        DataTable dt = mcObj.GetGoodsInfoDs();
-        gvGoodsInfo.DataSource = dt.DefaultView;
-        gvGoodsInfo.DataBind();
+        if (tab == null)
+        {
+            tab = mcObj.GetGoodsInfoDs();
+            gvGoodsInfo.DataSource = tab.DefaultView;
+            gvGoodsInfo.DataBind();
+        }
     }
     /// <summary>
     /// 在搜索中绑定商品信息
     /// </summary>
     public void gvSearchBind()
     {
-        DataTable ds = mcObj.SearchGoodsInfoDs(txtKey.Text.Trim());
-        gvGoodsInfo.DataSource = ds.DefaultView;
-        gvGoodsInfo.DataBind();
+        if (tab == null)
+        {
+            tab = mcObj.SearchGoodsInfoDs(txtKey.Text.Trim());
+            gvGoodsInfo.DataSource = tab.DefaultView;
+            gvGoodsInfo.DataBind();
+        }
     }
 
     protected void gvGoodsInfo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -60,6 +67,8 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     {
         int P_Int_GoodsID = Convert.ToInt32(gvGoodsInfo.DataKeys[e.RowIndex].Value);
         mcObj.DeleteGoodsInfo(P_Int_GoodsID);
+
+        tab = null;
         if (txtKey.Text.Trim() == "")
         {
             gvBind();
@@ -71,6 +80,7 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
+        tab = null;
         gvSearchBind();
     }
 

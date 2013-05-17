@@ -36,7 +36,7 @@
             <Columns>
               <asp:TemplateField HeaderText="是否打折">
                 <ItemTemplate>
-                  <asp:CheckBox ID="IsDiscount" OnCheckedChanged="DiscountChanged" AutoPostBack="true" Checked='<%# Eval("is_discount") %>'
+                  <asp:CheckBox ID="IsDiscount" OnCheckedChanged="DiscountChanged" AutoPostBack="true" Checked='<%# Boolean.Parse(Eval("is_discount").ToString()) %>'
                     runat="server" />
                 </ItemTemplate>
               </asp:TemplateField>

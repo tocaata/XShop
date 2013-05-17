@@ -35,8 +35,15 @@ public partial class Manger_Category : System.Web.UI.Page
     protected void gvCategoryList_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int P_Int_ClassID = Convert.ToInt32(gvCategoryList.DataKeys[e.RowIndex].Value);
-        mcObj.DeleteCategory(P_Int_ClassID);
-        gvBind();
 
+        try
+        {
+            DBClass.ExecuteCommand("DELETE FROM categories WHERE category_id = @cat_id", new SqlParameter("@cat_id", P_Int_ClassID));
+        }
+        catch (Exception)
+        {
+            Response.Write("<script>alert('在删除分类之前，需要删除该分类的所有商品！');</script>");
+        }
+        gvBind();
     }
 }

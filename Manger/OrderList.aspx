@@ -19,7 +19,7 @@
       <tr>
         <td align="center">
           <table cellspacing="0" cellpadding="0" width="95%" align="center">
-            <tr>
+            <tr style="display: none;">
               <td align="right">
                 关键字：
               </td>
@@ -39,12 +39,12 @@
               </td>
               <td>
                 <asp:DropDownList ID="ddlConfirmed" runat="server">
-                  <asp:ListItem Selected="True" Value="2">是否已确认</asp:ListItem>
-                  <asp:ListItem Value="1">已确认</asp:ListItem>
-                  <asp:ListItem Value="0">未确认</asp:ListItem>
+                  <asp:ListItem Selected="True" Value="2">是否审核</asp:ListItem>
+                  <asp:ListItem Value="1">已审核</asp:ListItem>
+                  <asp:ListItem Value="0">未审核</asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlShipped" runat="server">
-                  <asp:ListItem Selected="True" Value="2">是否已发货</asp:ListItem>
+                  <asp:ListItem Selected="True" Value="2">是否发货</asp:ListItem>
                   <asp:ListItem Value="1">已发货</asp:ListItem>
                   <asp:ListItem Value="0">未发货</asp:ListItem>
                 </asp:DropDownList>
@@ -54,13 +54,13 @@
                   <asp:ListItem Value="0">未加急</asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlReceive" runat="server">
-                  <asp:ListItem Selected="True" Value="2">是否收到货</asp:ListItem>
-                  <asp:ListItem Value="1">收货</asp:ListItem>
+                  <asp:ListItem Selected="True" Value="2">是否收货</asp:ListItem>
+                  <asp:ListItem Value="1">已收货</asp:ListItem>
                   <asp:ListItem Value="0">未收货</asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlReturn" runat="server">
                   <asp:ListItem Selected="True" Value="2">是否退货</asp:ListItem>
-                  <asp:ListItem Value="1">退货</asp:ListItem>
+                  <asp:ListItem Value="1">退货中</asp:ListItem>
                   <asp:ListItem Value="0">未退货</asp:ListItem>
                 </asp:DropDownList>
               </td>

@@ -35,7 +35,8 @@
         <asp:CheckBoxField DataField="is_discount" HeaderText="是否打折" 
           SortExpression="is_discount" ReadOnly="True" />
         <asp:BoundField DataField="cat_name" HeaderText="商品类别名" SortExpression="cat_name" />
-        <asp:CommandField ShowEditButton="True" EditText="修改"/>
+        <asp:CommandField ShowEditButton="True" EditText="修改" CancelText="取消" 
+          UpdateText="提交"/>
       </Fields>
       <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
       <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />

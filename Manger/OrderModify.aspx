@@ -16,13 +16,13 @@
         <tr>
           <td valign="middle" width="3%">
             <strong>
-              <br>
+              <br/>
             </strong>
           </td>
           <td valign="middle" align="center" width="30%">
           </td>
           <td class="body-shoptitle" valign="middle" align="center" width="67%">
-            订单号码：<%=order.OrderNo%><br>
+            订单号码：<%=order.OrderNo%><br/>
             下单日期：<%=order.OrderTime%>
           </td>
         </tr>
@@ -250,6 +250,7 @@
             <asp:ListItem Value="3">已发货</asp:ListItem>
             <asp:ListItem Value="4">已收货</asp:ListItem>
             <asp:ListItem Value="5">退货中</asp:ListItem>
+            <asp:ListItem Value="6">已退货</asp:ListItem>
           </asp:DropDownList>
         </td>
       </tr>

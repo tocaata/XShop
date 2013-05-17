@@ -310,3 +310,8 @@ input.search {
     vertical-align: top;
     outline: none;
 }
+
+p.help
+{
+    text-indent: 2em;
+}
