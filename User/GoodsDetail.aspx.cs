@@ -19,8 +19,16 @@ public partial class User_GoodsDetail : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GetGoodsInfo();
-            CommentBind(Convert.ToInt32(Request["GoodsID"].Trim()));
+            try
+            {
+                Convert.ToInt32(Request["GoodsID"].Trim());
+                GetGoodsInfo();
+                CommentBind(Convert.ToInt32(Request["GoodsID"].Trim()));
+            }
+            catch (Exception)
+            {
+                Response.Write("<script>alert('该页面无法访问');location='javascript:history.go(-1)';</script>");
+            }
         }
     }
     public string GetClass(int P_Int_ClassID)
@@ -30,9 +38,16 @@ public partial class User_GoodsDetail : System.Web.UI.Page
     }
     public void GetGoodsInfo()
     {
-        DataTable ds = mcObj.GetGoodsInfoByIDDs(Convert.ToInt32(Request["GoodsID"].Trim()));
-        DetailsView.DataSource = ds.DefaultView;
-        DetailsView.DataBind();
+        try
+        {
+            DataTable ds = mcObj.GetGoodsInfoByIDDs(Convert.ToInt32(Request["GoodsID"].Trim()));
+            DetailsView.DataSource = ds.DefaultView;
+            DetailsView.DataBind();
+        }
+        catch (Exception)
+        {
+        }
+        
     }
     protected void btnExit_Click(object sender, EventArgs e)
     {
