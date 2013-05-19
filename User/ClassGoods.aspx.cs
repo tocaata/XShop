@@ -54,7 +54,6 @@ public partial class User_ClassGoods : System.Web.UI.Page
         string GoodsStyle = e.CommandArgument.ToString();
         Goods.MemberPrice = float.Parse(GoodsStyle);
         return (Goods);
-
     }
     public void AddShopCart(DataListCommandEventArgs e, DataList DLName)
     {

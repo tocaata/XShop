@@ -59,10 +59,6 @@
 
               <asp:CommandField AccessibleHeaderText="动作" CancelText="取消" EditText="更改" 
                 ShowEditButton="True" UpdateText="保存" />
-              <asp:CommandField HeaderText="删除" ShowDeleteButton="True">
-                <ControlStyle Font-Underline="False" ForeColor="Black" />
-                <ItemStyle HorizontalAlign="Center" />
-              </asp:CommandField>
             </Columns>
           </asp:GridView>
         </td>

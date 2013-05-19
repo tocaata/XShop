@@ -26,7 +26,6 @@ public partial class Manger_ProductAdd : System.Web.UI.Page
         if (txtName.Text == "" || txtUnit.Text == "" || txtMemberPrice.Text == "")
         {
             Response.Write("<script>alert('请输入必要的信息！')</script>");
-
         }
         else
         {

@@ -48,147 +48,6 @@ public class DBClass
         return myConn;
     }
 
-    public Object[] GetData(String command)
-    {
-        Object[] values = null;
-        using (SqlConnection sqlConn = GetConnection())
-        {
-            sqlConn.Open();
-            using (SqlCommand myCmd = new SqlCommand(command, sqlConn))
-            {
-                SqlDataReader reader = myCmd.ExecuteReader();
-                try
-                {
-                    values = new Object[reader.FieldCount];
-                }
-                catch (Exception ex)
-                {
-                    throw (ex);
-                }
-                finally
-                {
-                    reader.Close();
-                }
-            }
-        }
-        return values;
-    }
-
-    public DataSet GetDataSet(String command, String table_name)
-    {
-        DataSet DataTable = new DataSet();
-        using (SqlConnection sqlConn = GetConnection())
-        {
-            sqlConn.Open();
-            using (SqlCommand myCmd = new SqlCommand(command, sqlConn))
-            {
-                myCmd.ExecuteNonQuery();
-                SqlDataAdapter da = new SqlDataAdapter(myCmd);
-                if (table_name == null)
-                {
-                    da.Fill(DataTable);
-                }
-                else
-                {
-                    da.Fill(DataTable, table_name);
-                }
-            }
-        }
-        return DataTable;
-    }
-
-    public DataSet GetDataSet(String command, String table_name, params SqlParameter[] arugments)
-    {
-        DataSet DataSet = new DataSet();
-        using (SqlConnection sqlConn = GetConnection())
-        {
-            sqlConn.Open();
-            SqlCommand myCmd = new SqlCommand(command, sqlConn);
-            try
-            {
-                for (int i = 0; i < arugments.Length; i++)
-                {
-                    myCmd.Parameters.Add(arugments[i]);
-                }
-                //myCmd.ExecuteNonQuery();
-                SqlDataAdapter da = new SqlDataAdapter(myCmd);
-                if (table_name == null)
-                {
-                    da.Fill(DataSet);
-                }
-                else
-                {
-                    da.Fill(DataSet, table_name);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw(ex);
-            }
-            finally
-            {
-                myCmd.Dispose();
-            }
-        }
-        return DataSet;
-    }
-
-    public int GetInt32(String command, params SqlParameter[] arugments)
-    {
-        DataSet ds = GetDataSet(command, "re", arugments);
-        if (ds.Tables["re"].Rows.Count > 0)
-        {
-            return Convert.ToInt32(ds.Tables["re"].Rows[0][0].ToString());
-        }
-        else
-        {
-            throw(new Exception("Can't find this record"));
-        }
-    }
-
-    public void Update(String command, params SqlParameter[] arugments)
-    {
-        GetDataSet(command, "re", arugments);
-    }
-
-    public DataSet Find(String table_name, params SqlParameter[] arugments)
-    {
-        DataSet DataSet = new DataSet();
-        StringBuilder cmd = new StringBuilder();
-        cmd.AppendFormat("select * from {0} where ", table_name);
-        for (int i = 0; i < arugments.Length; i++)
-        {
-            cmd.AppendFormat("{0} = {1} ", arugments[0].ParameterName.Trim('@'), arugments[0].ParameterName);
-        }
-        using (SqlConnection sqlConn = GetConnection())
-        {
-            sqlConn.Open();
-            SqlCommand myCmd = new SqlCommand(cmd.ToString(), sqlConn);
-            try
-            {
-                for (int i = 0; i < arugments.Length; i++)
-                {
-                    myCmd.Parameters.Add(arugments[i]);
-                }
-                myCmd.ExecuteNonQuery();
-                SqlDataAdapter da = new SqlDataAdapter(myCmd);
-                if (table_name == null)
-                {
-                    da.Fill(DataSet);
-                }
-                else
-                {
-                    da.Fill(DataSet, table_name);
-                }
-            }
-            finally
-            {
-                myCmd.Dispose();
-            }
-        }
-        return DataSet;
-    }
-
     public static SqlConnection Connection
     {
         get
@@ -218,6 +77,7 @@ public class DBClass
     {
         SqlCommand cmd = new SqlCommand(safeSql, Connection);
         int result = cmd.ExecuteNonQuery();
+        cmd.Dispose();
         return result;
     }
 
@@ -227,7 +87,9 @@ public class DBClass
     {
         SqlCommand cmd = new SqlCommand(sql, Connection);
         cmd.Parameters.AddRange(values);
-        return cmd.ExecuteNonQuery();
+        int result = cmd.ExecuteNonQuery();
+        cmd.Dispose();
+        return result;
     }
 
     //这是通用的增删改的方法只带一个参数的
@@ -237,6 +99,7 @@ public class DBClass
         SqlCommand cmd = new SqlCommand(sql, Connection);
         cmd.Parameters.Add(value);
         int result = cmd.ExecuteNonQuery();
+        cmd.Dispose();
         return result;
     }
 
@@ -245,6 +108,7 @@ public class DBClass
     {
         SqlCommand cmd = new SqlCommand(safeSql, Connection);
         object result = cmd.ExecuteScalar();
+        cmd.Dispose();
         if (result == null)
         {
             throw new RecordNotExisted("记录不存在");
@@ -258,6 +122,7 @@ public class DBClass
         SqlCommand cmd = new SqlCommand(sql, Connection);
         cmd.Parameters.AddRange(values);
         object result = cmd.ExecuteScalar();
+        cmd.Dispose();
         if (result == null)
         {
             throw new RecordNotExisted("记录不存在");
@@ -270,6 +135,7 @@ public class DBClass
         SqlCommand cmd = new SqlCommand(sql, Connection);
         cmd.Parameters.Add(value);
         object result = cmd.ExecuteScalar();
+        cmd.Dispose();
         if (result == null)
         {
             throw new RecordNotExisted("记录不存在");

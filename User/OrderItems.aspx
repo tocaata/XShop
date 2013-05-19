@@ -24,9 +24,9 @@
         </Columns>
     </asp:GridView>
     <br style="clear: both" />
-    合计： &nbsp; &nbsp;
     <div class="right_div">
-    <asp:Label ID="lbSumPrice" runat="server" Text="Label"></asp:Label>￥  
+    合计：￥
+    <asp:Label ID="lbSumPrice" runat="server" Text="Label"></asp:Label>  
     <br />
     商品数量：
     <asp:Label ID="lbSumNum" runat="server" Text="Label"></asp:Label>

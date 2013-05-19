@@ -115,7 +115,6 @@ public partial class User_CommitGoods : System.Web.UI.Page
             gvShopCart.EditIndex = -1;
             ShopCartBind();
             TotalDs();
-        
         }
     }
     protected void gvShopCart_RowEditing(object sender, GridViewEditEventArgs e)

@@ -89,7 +89,6 @@ public partial class UserControl_Goods : System.Web.UI.UserControl
             {
                 ucObj.AddShopCart(Goods.GoodsID, Goods.MemberPrice, Convert.ToInt32(Session["UID"].ToString()), Goods.GoodsWeight);
                 Response.Write("<script>alert('恭喜您，添加成功！')</script>");
-
             }
         }
         else

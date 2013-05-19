@@ -170,7 +170,7 @@ public class UserInfoClass
     /// <param name="dlName">商品类别信息</param>
     public void DLClassBind(DataList  dlName)
     {
-        DataTable ds = DBClass.GetDataTable("SELECT * FROM categories WHERE parent_id is null");
+        DataTable ds = DBClass.GetDataTable("SELECT * FROM categories WHERE parent_id is null AND deleted = 0");
         dlName.DataSource = ds.DefaultView;
         dlName.DataBind();
     }
@@ -220,7 +220,7 @@ public class UserInfoClass
             default:
                 throw (new Exception("Error Deplay"));
         }
-        return DBClass.GetDataTable("SELECT top 9 * FROM items WHERE " + stat + " = 1");
+        return DBClass.GetDataTable("SELECT top 9 * FROM items WHERE " + stat + " = 1 AND (deleted IS NULL OR deleted = 0)");
     }
     /// <summary>
     /// 以商品类别分类绑定商品信息
@@ -296,7 +296,7 @@ public class UserInfoClass
     public DataTable ReturnTotalDs(int UserId)
     {
         return DBClass.GetDataTable(
-            "SELECT Sum(order_items.price), Sum(order_items.count) FROM carts " + 
+            "SELECT Sum(order_items.price * order_items.count), Sum(order_items.count) FROM carts " + 
             "JOIN order_items " +
             "ON order_items.order_id = carts.order_id " +
             "WHERE carts.user_id = @user_id", new SqlParameter("@user_id", UserId));
@@ -369,14 +369,7 @@ public class UserInfoClass
     {
         return DBClass.GetDataTable("SELECT * FROM cart WHERE MemberID=@MemberID", new SqlParameter("@MemberID", UserId));
     }
-    /// <summary>
-    /// 当购物车中的信息已生成订单后，删除购物车中的信息
-    /// </summary>
-    /// <param name="UserId">会员ID</param>
-    public void DeleteSCInfo(int UserId)
-    {
-        DBClass.GetDataTable("DELETE FROM tb_ShopCart WHERE MemberID=@MemberID", null, new SqlParameter("@MemberID", UserId));
-    }
+
    /// <summary>
    ///　获取运输费用
    /// </summary>

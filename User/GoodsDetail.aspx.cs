@@ -73,7 +73,7 @@ public partial class User_GoodsDetail : System.Web.UI.Page
         int ItemId = Convert.ToInt32(Request["GoodsID"].Trim());
         if (urObj.HasRightComment(UserId, ItemId))
         {
-            dbObj.Update("INSERT INTO comments (user_id, item_id, comment) VALUES (@user_id, @item_id, @comment)", new SqlParameter("@user_id", UserId),
+            DBClass.ExecuteCommand("INSERT INTO comments (user_id, item_id, comment) VALUES (@user_id, @item_id, @comment)", new SqlParameter("@user_id", UserId),
                 new SqlParameter("@item_id", ItemId), new SqlParameter("@comment", Comment.Text.ToString()));
             GetGoodsInfo();
             CommentBind(Convert.ToInt32(Request["GoodsID"].Trim()));

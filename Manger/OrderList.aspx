@@ -19,7 +19,7 @@
       <tr>
         <td align="center">
           <table cellspacing="0" cellpadding="0" width="95%" align="center">
-            <tr style="display: none;">
+            <tr>
               <td align="right">
                 关键字：
               </td>
@@ -33,7 +33,7 @@
                   ErrorMessage="请输入整数" ValidationExpression="[0-9]*$"></asp:RegularExpressionValidator>
               </td>
             </tr>
-            <tr>
+            <tr style="display: none;">
               <td align="right">
                 订单状态：
               </td>

@@ -32,7 +32,7 @@ public partial class Manger_DiscountPublish : System.Web.UI.Page
     {
         if (tab == null)
         {
-            tab = mcObj.GetGoodsInfoDs();
+            tab = DBClass.GetDataTable("SELECT items.*, categories.name as cat_name, categories.category_id as category_id FROM items JOIN categories ON items.cat_id = categories.category_id WHERE items.deleted = 0 OR items.deleted IS NULL");
             gvGoodsInfo.DataSource = tab.DefaultView;
             gvGoodsInfo.DataBind();
         }

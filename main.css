@@ -315,3 +315,8 @@ p.help
 {
     text-indent: 2em;
 }
+
+.calendar
+{
+    display: inline-block;
+}

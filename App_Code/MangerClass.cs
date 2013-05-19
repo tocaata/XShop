@@ -44,7 +44,7 @@ public class MangerClass
     {
         try
         {
-            dbObj.GetInt32("SELECT " + TableName.Substring(0, TableName.Length - 1) + "_id FROM " + TableName + " WHERE DATEDIFF(day, create_at, getdate()) < 1");
+            DBClass.ExecuteScalar("SELECT " + TableName.Substring(0, TableName.Length - 1) + "_id FROM " + TableName + " WHERE DATEDIFF(day, create_at, getdate()) < 1");
             return true;
         }
         catch (Exception)
@@ -66,38 +66,7 @@ public class MangerClass
         DataTable ds = DBClass.GetDataTable("SELECT * FROM users WHERE DATEDIFF(day, create_at, getdate()) < 1");
         return ds;
     }
-    /// <summary>
-    /// 绑定最新信息(最新订单信息，最新用户信息量)
-    /// </summary>
-    /// <param name="P_Str_ProcName">执行语句的存储过程名</param>
-    /// <returns></returns>
-    public SqlCommand GetNewICmd(string P_Str_ProcName)
-    {
-        SqlConnection myConn = dbObj.GetConnection();
-        SqlCommand myCmd = new SqlCommand(P_Str_ProcName, myConn);
-        myCmd.CommandType = CommandType.StoredProcedure;
-        //添加参数
-        SqlParameter returnValue = myCmd.Parameters.Add("returnValue", SqlDbType.Int, 4);
-        returnValue.Direction = ParameterDirection.ReturnValue;
-        //执行过程
-        myConn.Open();
-        try
-        {
-            myCmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
-        finally
-        {
-            myCmd.Dispose();
-            myConn.Close();
-
-        }
-
-        return myCmd;
-    }
+ 
     //*************************************************************************************************
     /// <summary>
     ///  获取订单信息
@@ -174,7 +143,14 @@ public class MangerClass
     /// <param name="P_Bl_IsPigeonhole">是否已归档</param>
     public void UpdateOI(int OrderID, int Status)
     {
-        DBClass.ExecuteCommand("UPDATE orders SET status = @status WHERE order_id = @order_id", new SqlParameter("@order_id", OrderID), new SqlParameter("@status", Status));
+        if (Status == 6)
+        {
+            DBClass.ExecuteCommand("UPDATE orders SET status = @status WHERE order_id = @order_id; UPDATE items SET quota = quota + order_items.count, sell_count = sell_count - order_items.count FROM order_items WHERE order_id = @order_id", new SqlParameter("@order_id", OrderID), new SqlParameter("@status", Status));
+        } 
+        else
+        {
+            DBClass.ExecuteCommand("UPDATE orders SET status = @status WHERE order_id = @order_id", new SqlParameter("@order_id", OrderID), new SqlParameter("@status", Status));
+        }
     }
     //*************************************************************************************************
     /// <summary>
@@ -188,7 +164,7 @@ public class MangerClass
         bool isExisted = false;
         try
         {
-            dbObj.GetInt32("SELECT category_id FROM categories WHERE name = @name", new SqlParameter("@name", P_Str_ClassName));
+            DBClass.ExecuteScalar("SELECT category_id FROM categories WHERE name = @name", new SqlParameter("@name", P_Str_ClassName));
             isExisted = true;
         }
         catch (Exception)
@@ -222,12 +198,13 @@ public class MangerClass
     /// <param name="ddlName">绑定控件名</param>
     public void ddlClassBind(DropDownList ddlName)
     {
-        DataTable ds = DBClass.GetDataTable("SELECT category_id, name FROM categories");
+        DataTable ds = DBClass.GetDataTable("SELECT category_id, name FROM categories WHERE deleted = 0 OR deleted IS NULL");
         ddlName.DataSource = ds.DefaultView;
         ddlName.DataTextField = ds.Columns[1].ToString();
         ddlName.DataValueField = ds.Columns[0].ToString();
         ddlName.DataBind();
     }
+
     //*************************************************************************************************
     /// <summary>
     /// 绑定商品图像
@@ -262,7 +239,7 @@ public class MangerClass
         bool isExisted = false;
         try
         {
-            dbObj.GetInt32("SELECT item_id FROM items WHERE name = @name", new SqlParameter("@name", P_Str_GoodsName));
+            DBClass.ExecuteScalar("SELECT item_id FROM items WHERE name = @name", new SqlParameter("@name", P_Str_GoodsName));
             isExisted = true;
         }
         catch (Exception)
@@ -346,12 +323,12 @@ public class MangerClass
         bool adminExisted = false;
         try
         {
-            dbObj.GetInt32("SELECT admin_id FROM admins WHERE name = @name", new SqlParameter("@name", P_Str_Admin));
+            DBClass.ExecuteScalar("SELECT admin_id FROM admins WHERE name = @name", new SqlParameter("@name", P_Str_Admin));
             adminExisted = true;
         }
         catch (Exception)
         {
-            return dbObj.GetInt32("INSERT INTO admins (name, password) VALUES (@name, @password);select @@identity;", new SqlParameter("@name", P_Str_Admin), new SqlParameter("@password", P_Str_Password));
+            return DBClass.ExecuteCommand("INSERT INTO admins (name, password) VALUES (@name, @password);select @@identity;", new SqlParameter("@name", P_Str_Admin), new SqlParameter("@password", P_Str_Password));
         }
         finally
         {

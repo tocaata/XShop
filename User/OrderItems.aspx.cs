@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
@@ -21,6 +23,9 @@ public partial class User_OrderItems : System.Web.UI.Page
             else
             {
                 ucObj.OrderTabBind(OrderItems, int.Parse(Session["UID"].ToString()), Convert.ToInt32(Request["order_id"].Trim()));
+                DataTable dt = DBClass.GetDataTable("SELECT SUM(price * count), SUM(count) FROM order_items WHERE order_id = @order_id", new SqlParameter("@order_id", Convert.ToInt32(Request["order_id"].Trim())));
+                lbSumPrice.Text = dt.Rows[0][0].ToString();
+                lbSumNum.Text = dt.Rows[0][1].ToString();
             }
         }
     }

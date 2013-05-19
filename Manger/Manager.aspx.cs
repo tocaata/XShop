@@ -35,8 +35,16 @@ public partial class Manger_Manager : System.Web.UI.Page
     protected void gvMemberList_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int P_Int_MemberID = Convert.ToInt32(gvMemberList.DataKeys[e.RowIndex].Value.ToString());
-        mcObj.DeleteMemberInfo(P_Int_MemberID);
-        gvMemberBind();
+        try
+        {
+            DBClass.ExecuteScalar("SELECT order_id FROM orders WHERE user_id = @user_id AND status < 4 AND status > 0;", new SqlParameter("@user_id", P_Int_MemberID));
+            Response.Write("<script>alert('用户还有未完成订单，不能删除用户');</script>");
+        }
+        catch
+        {
+            mcObj.DeleteMemberInfo(P_Int_MemberID);
+            gvMemberBind();
+        }
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)

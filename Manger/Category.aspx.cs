@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 public partial class Manger_Category : System.Web.UI.Page
 {
     MangerClass mcObj = new MangerClass();
+    protected string err_msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -35,15 +36,8 @@ public partial class Manger_Category : System.Web.UI.Page
     protected void gvCategoryList_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         int P_Int_ClassID = Convert.ToInt32(gvCategoryList.DataKeys[e.RowIndex].Value);
-
-        try
-        {
-            DBClass.ExecuteCommand("DELETE FROM categories WHERE category_id = @cat_id", new SqlParameter("@cat_id", P_Int_ClassID));
-        }
-        catch (Exception)
-        {
-            Response.Write("<script>alert('在删除分类之前，需要删除该分类的所有商品！');</script>");
-        }
+        DBClass.ExecuteCommand("UPDATE categories SET deleted = 1 WHERE category_id = @cat_id;UPDATE items SET deleted = 1  WHERE cat_id = @cat_id;", new SqlParameter("@cat_id", P_Int_ClassID));
         gvBind();
+        err_msg = "删除类别成功";
     }
 }

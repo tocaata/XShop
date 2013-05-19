@@ -65,7 +65,7 @@ public partial class Manger_OrderModify : System.Web.UI.Page
     protected void btnSave_Click(object sender, EventArgs e)
     {
         mcObj.UpdateOI(Convert.ToInt32(Request["order_id"].Trim()), Convert.ToInt32(orderStatus.SelectedValue));
-        Response.Write("<script>alert('修改成功！')</script>");
+        Response.Write("<script>alert('订单修改成功！')</script>");
         return;
     }
 }

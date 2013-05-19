@@ -30,11 +30,11 @@
         <asp:BoundField DataField="image_url" HeaderText="图像" SortExpression="image_url" />
         <asp:BoundField DataField="quota" HeaderText="库存量" SortExpression="quota" />
         <asp:BoundField DataField="sell_count" HeaderText="总销售量" SortExpression="sell_count" />
-        <asp:BoundField DataField="cat_id" HeaderText="cat_id" SortExpression="cat_id" />
-        <asp:BoundField DataField="trans_price" HeaderText="trans_price" SortExpression="trans_price" />
+        <asp:BoundField DataField="cat_id" HeaderText="类别ID" SortExpression="cat_id" />
         <asp:CheckBoxField DataField="is_discount" HeaderText="是否打折" 
           SortExpression="is_discount" ReadOnly="True" />
-        <asp:BoundField DataField="cat_name" HeaderText="商品类别名" SortExpression="cat_name" />
+        <asp:BoundField DataField="cat_name" HeaderText="商品类别名" 
+          SortExpression="cat_name" ReadOnly="True" />
         <asp:CommandField ShowEditButton="True" EditText="修改" CancelText="取消" 
           UpdateText="提交"/>
       </Fields>
@@ -45,7 +45,8 @@
     </asp:DetailsView>
     <asp:SqlDataSource ID="ProductDetails" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
       SelectCommand="SELECT items.*, categories.name AS cat_name FROM items JOIN categories ON items.cat_id = categories.category_id WHERE items.item_id = @item_id"
-      UpdateCommand="UPDATE items SET items.name = @name, price = @price, description = @description , sell_count = @sell_count, quota = @quota, cat_id = @cat_id, is_discount = @is_discount WHERE items.item_id = @item_id">
+      
+      UpdateCommand="UPDATE items SET items.name = @name, price = @price, description = @description , sell_count = @sell_count, quota = @quota, cat_id = @cat_id WHERE items.item_id = @item_id">
       <SelectParameters>
         <asp:QueryStringParameter DefaultValue="-1" Name="item_id" QueryStringField="GoodsID"
           Type="Int32" />
@@ -57,7 +58,6 @@
         <asp:Parameter Name="sell_count" Type="Int32" />
         <asp:Parameter Name="quota" Type="Int32" />
         <asp:Parameter Name="cat_id" Type="Int32" />
-        <asp:Parameter Name="is_discount" />
         <asp:Parameter Name="item_id" Type="Int32" />
       </UpdateParameters>
     </asp:SqlDataSource>
